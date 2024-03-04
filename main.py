@@ -1,5 +1,6 @@
 import arcade
 import tester
+import gameboard
 SCREEN_WIDTH = 900
 SCREEN_HEIGHT = 700
 SCREEN_TITLE = "Starting Template"
@@ -15,4 +16,5 @@ def main():
     game = tester.MyGame(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
     game.setup()
     arcade.run()
-main()
+if __name__ == "__main__":
+    main()
