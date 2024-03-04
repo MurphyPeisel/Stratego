@@ -21,7 +21,7 @@ class MyGame(arcade.Window):
             
             self.clear()
         
-        y = 1
+        y = 0
         while (y < 10):
             x = 0
             while (x < 10):
