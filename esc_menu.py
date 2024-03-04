@@ -12,14 +12,21 @@ class escape(arcade.Window):
 
         self.uimanager = arcade.gui.UIManager()
         self.uimanager.enable()
-        test_button = arcade.gui.UIFlatButton(text="Back to menu", width=200)
-        test_button.on_click = self.on_buttonclick
+        back_to_menu_button = arcade.gui.UIFlatButton(text="Back to menu", width=200)
+        back_to_menu_button.on_click = self.on_buttonclick
         self.uimanager.add(
             arcade.gui.UIAnchorWidget(
                 anchor_x="center_x",
                 anchor_y="center_y",
-                child=test_button)
+                child=back_to_menu_button)
             )
+        exit_button = arcade.gui.UIFlatButton(text="Exit", width=200)
+        exit_button.on_click = self.on_buttonclick
+        self.uimanager.add(
+            arcade.gui.UIAnchorWidget(
+                anchor_x="center_x",
+                child=exit_button)
+        )
 
     def on_draw(self):
         """
