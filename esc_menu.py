@@ -4,6 +4,9 @@ SCREEN_WIDTH = 400
 SCREEN_HEIGHT = 200
 SCREEN_TITLE = "Starting Template"
 
+class QuitButton(arcade.gui.UIFlatButton):
+    def on_click(self, event: arcade.gui.UIOnClickEvent):
+        arcade.exit()
 class escape(arcade.Window):
     def __init__(self, width, height, title):
         super().__init__(width, height, title)
@@ -12,6 +15,9 @@ class escape(arcade.Window):
 
         self.uimanager = arcade.gui.UIManager()
         self.uimanager.enable()
+
+        self.v_box = arcade.gui.UIBoxLayout
+
         back_to_menu_button = arcade.gui.UIFlatButton(text="Back to menu", width=200)
         back_to_menu_button.on_click = self.on_buttonclick
         self.uimanager.add(
