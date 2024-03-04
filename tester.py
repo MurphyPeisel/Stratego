@@ -1,7 +1,14 @@
 import arcade
-SCREEN_WIDTH = 800
-SCREEN_HEIGHT = 600
+SCREEN_WIDTH = 900
+SCREEN_HEIGHT = 700
 SCREEN_TITLE = "Starting Template"
+ROW_COUNT = 10
+COLUMN_COUNT = 10
+BOARD_RIGHT = 250
+BOARD_LEFT = 200
+BOARD_BOTTOM = 100
+BOARD_TOP = 150
+BOARD_MARGIN = 50
 class MyGame(arcade.Window):
     """
     Main application class.
@@ -14,7 +21,7 @@ class MyGame(arcade.Window):
     def __init__(self, width, height, title):
         super().__init__(width, height, title)
 
-        arcade.set_background_color(arcade.color.WHITE)
+        arcade.set_background_color(arcade.color.AVOCADO)
 
         # If you have sprite lists, you should create them here,
         # and set them to None
@@ -23,6 +30,8 @@ class MyGame(arcade.Window):
         """ Set up the game variables. Call to re-start the game. """
         # Create your sprites and sprite lists here
         pass
+
+
 
     def on_draw(self):
         """
@@ -34,14 +43,16 @@ class MyGame(arcade.Window):
         self.clear()
 
         # Call draw() on all your sprite lists below
+
+        
         y = 0
         while (y < 10):
             x = 0
             while (x < 10):
-                point_list = ((40 + 30*x, 285 + 30*y),
-                    (40 + 30*x, 255 + 30*y),
-                    (70 + 30*x, 255 + 30*y),
-                    (70 + 30*x, 285 + 30*y))
+                point_list = ((BOARD_LEFT + BOARD_MARGIN*x, BOARD_TOP + BOARD_MARGIN*y),
+                    (BOARD_LEFT + BOARD_MARGIN*x, BOARD_BOTTOM + BOARD_MARGIN*y),
+                    (BOARD_RIGHT + BOARD_MARGIN*x, BOARD_BOTTOM + BOARD_MARGIN*y),
+                    (BOARD_RIGHT + BOARD_MARGIN*x, BOARD_TOP + BOARD_MARGIN*y))
                 arcade.draw_polygon_outline(point_list, arcade.color.BLACK, 4)
                 x = x + 1
             y = y + 1
