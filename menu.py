@@ -1,17 +1,8 @@
 import arcade
-<<<<<<< HEAD
 import arcade.gui 
 
 SCREEN_WIDTH = 900
 SCREEN_HEIGHT = 700
-SCREEN_TITLE = "Starting Template"
-
-SCREEN_TITLE = "Drawing Text Example"
-=======
-import arcade.gui
-SCREEN_WIDTH = 900
-SCREEN_HEIGHT = 700
->>>>>>> refs/remotes/origin/main
 DEFAULT_LINE_HEIGHT = 45
 DEFAULT_FONT_SIZE = 20
 
@@ -109,7 +100,7 @@ class Menu(arcade.Window):
 
 
         
-<<<<<<< HEAD
+
     #called when mouse moves   
     def on_mouse_motion(self, x, y, dx, dy): 
         self.x = x 
@@ -153,47 +144,3 @@ class Menu(arcade.Window):
         return Screen
     def get_quit():
         return Quit
-        
-=======
-    def on_update(self, delta_time):
-        """
-        All the logic to move, and the game logic goes here.
-        Normally, you'll call update() on the sprite lists that
-        need it.
-        """
-        pass
-
-    def on_key_press(self, key, key_modifiers):
-        """
-        Called whenever a key on the keyboard is pressed.
-
-        For a full list of keys, see:
-        https://api.arcade.academy/en/latest/arcade.key.html
-        """
-        pass
-
-    def on_key_release(self, key, key_modifiers):
-        """
-        Called whenever the user lets off a previously pressed key.
-        """
-        pass
-
-    def on_mouse_motion(self, x, y, delta_x, delta_y):
-        """
-        Called whenever the mouse moves.
-        """
-        pass
-
-    def on_mouse_press(self, x, y, button, key_modifiers):
-        """
-        Called when the user presses a mouse button.
-        """
-    
-        pass
-
-    def on_mouse_release(self, x, y, button, key_modifiers):
-        """
-        Called when a user releases a mouse button.
-        """
-        pass
->>>>>>> refs/remotes/origin/main
