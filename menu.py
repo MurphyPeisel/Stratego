@@ -7,7 +7,7 @@ SCREEN_TITLE = "Drawing Text Example"
 DEFAULT_LINE_HEIGHT = 45
 DEFAULT_FONT_SIZE = 20
 
-class MyGame(arcade.Window):
+class Menu(arcade.Window):
     """
     Main application class.
 
