@@ -1,6 +1,8 @@
 import arcade
 SCREEN_WIDTH = 900
 SCREEN_HEIGHT = 700
+DEFAULT_LINE_HEIGHT = 45
+DEFAULT_FONT_SIZE = 20
 SCREEN_TITLE = "Starting Template"
 ROW_COUNT = 10
 COLUMN_COUNT = 10
@@ -44,6 +46,18 @@ class Gameboard(arcade.Window):
 
         # Call draw() on all your sprite lists below
 
+        start_x = 0
+        start_y = SCREEN_HEIGHT - DEFAULT_LINE_HEIGHT * 1.5
+
+        arcade.draw_rectangle_filled(840,640,84,50,
+                                     arcade.color.GRANNY_SMITH_APPLE)
+
+        arcade.draw_text("ESC",
+                         start_x + (SCREEN_WIDTH *.9),
+                         start_y,
+                         arcade.color.BLACK,
+                         DEFAULT_FONT_SIZE,
+                         font_name="Kenney Future")
         
         y = 0
         while (y < 10):
@@ -56,14 +70,25 @@ class Gameboard(arcade.Window):
                 arcade.draw_polygon_outline(point_list, arcade.color.BLACK, 4)
                 x = x + 1
             y = y + 1
+            
+    def on_mouse_motion(self, x, y, dx, dy): 
+        self.x = x 
+        self.y = y 
 
+    def on_mouse_press(self, x, y, button, key_modifiers):
+        global Screen
 
+        if x>=798 and x<=882 and y<= 665 and y>= 615:
+            Screen = 'm'
+            arcade.close_window()
+        
+    def on_key_press(self, key, key_modifiers):
+        if(key == arcade.key.Q):
+            global Quit
+            Quit = True
+            print("HEHR")
 
-def main():
-    """ Main function """
-    game = Gameboard(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
-    arcade.run()
-
-
-if __name__ == "__main__":
-    main()
+    def get_screen():
+        return Screen
+    def get_quit():
+        return Quit

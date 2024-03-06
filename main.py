@@ -27,6 +27,9 @@ def main():
                 game = gameboard.Gameboard(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
                 game.setup()
                 arcade.run()
+                hold = Screen
+                Screen = gameboard.Gameboard.get_screen()
+                
         
             case "m":
                 game = menu.Menu(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
