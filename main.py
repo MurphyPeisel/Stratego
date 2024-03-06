@@ -19,19 +19,27 @@ def main():
     
     Screen = 'm'
     quit = False
-    
+
     while(quit == False):
-    
+
         match Screen:
             case "b":
                 game = gameboard.Gameboard(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
                 game.setup()
                 arcade.run()
+        
             case "m":
                 game = menu.Menu(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
                 game.setup()
                 arcade.run()
+                hold = Screen
                 Screen = menu.Menu.get_screen()
+                quit = menu.Menu.get_quit()
+            case "r":
+                game = rules.Rules(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
+                arcade.run()
+            case "q":
+                quit = True
         
             
             
