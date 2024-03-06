@@ -44,10 +44,6 @@ class Menu(arcade.Window):
         
         
         self.clear()
-        
-
-        start_x = 0
-        start_y = SCREEN_HEIGHT - DEFAULT_LINE_HEIGHT * 1.5
 
         # Call draw() on all your sprite lists below
         
@@ -68,14 +64,7 @@ class Menu(arcade.Window):
                          width=SCREEN_WIDTH,
                          align="center",
                          font_name="Kenney Future")
-
-        arcade.draw_text("draw_rect", 243, 3, arcade.color.BLACK, 10)
-        arcade.draw_rectangle_filled(160, 160, 275, 100,
-                              arcade.color.GRANNY_SMITH_APPLE)
-        arcade.draw_rectangle_filled(160, 300, 275, 100,
-                              arcade.color.FRENCH_WINE)
-        arcade.draw_rectangle_filled(160, 440, 275, 100,
-                              arcade.color.LIGHT_STEEL_BLUE)
+        
         arcade.draw_text("Play",
                          start_x + (SCREEN_WIDTH *.05),
                          start_y - (SCREEN_HEIGHT *.3),
