@@ -21,7 +21,7 @@ def main():
     quit = False
 
     while(quit == False):
-    
+
         match Screen:
             case "b":
                 game = gameboard.Gameboard(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)

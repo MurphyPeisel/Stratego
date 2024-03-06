@@ -7,7 +7,7 @@ SCREEN_TITLE = "Starting Template"
 class QuitButton(arcade.gui.UIFlatButton):
     def on_click(self, event: arcade.gui.UIOnClickEvent):
         arcade.exit()
-class escape(arcade.Window):
+class Escape(arcade.Window):
     def __init__(self, width, height, title):
         super().__init__(width, height, title)
 
@@ -53,12 +53,13 @@ class escape(arcade.Window):
         self.clear()
         arcade.start_render()
         self.manager.draw()
+        #changes
 
     def on_buttonclick(selfself, event):
         print("button is clicked")
 def main():
     """ Main function """
-    game = escape(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
+    game = Escape(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
     arcade.run()
 
 

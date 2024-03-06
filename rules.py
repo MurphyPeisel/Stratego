@@ -8,7 +8,7 @@ import arcade
 
 SCREEN_WIDTH = 900
 SCREEN_HEIGHT = 700
-SCREEN_TITLE = "Drawing Text Example"
+SCREEN_TITLE = "Stratego Rules"
 DEFAULT_LINE_HEIGHT = 45
 DEFAULT_FONT_SIZE = 18
 
@@ -41,27 +41,27 @@ class Rules(arcade.Window):
         # Add the screen title
         start_x = 0
         start_y = SCREEN_HEIGHT - DEFAULT_LINE_HEIGHT * 1.5
-        arcade.draw_text("Text Drawing Examples",
+        arcade.draw_text("Stratego Rules",
                          start_x,
                          start_y,
                          arcade.color.BLACK,
-                         DEFAULT_FONT_SIZE * 2,
+                         DEFAULT_FONT_SIZE * 3,
                          width=SCREEN_WIDTH,
                          align="center",
                          font_name="Kenney Future")
 
         # start_x and start_y make the start point for the text. We draw a dot to make it
         # easy too see the text in relation to its start x and y.
-        start_x = 10
-        start_y = SCREEN_HEIGHT - DEFAULT_LINE_HEIGHT * 3
-        arcade.draw_text("Fonts:",
+        start_x = 50
+        start_y = SCREEN_HEIGHT - DEFAULT_LINE_HEIGHT * 2.5
+        arcade.draw_text("Welcome to Stratego:",
                          start_x,
                          start_y,
                          arcade.color.FRENCH_WINE,
-                         DEFAULT_FONT_SIZE, bold=True)
+                         DEFAULT_FONT_SIZE * 2, bold=True,
+                         font_name = "Kenney Future")
 
-
-        start_y -= DEFAULT_LINE_HEIGHT * 1.5
+        start_y -= DEFAULT_LINE_HEIGHT
         arcade.draw_text("The object of the game is to capture the enemy Flag. "
                          "As the commander of an army you are in charge of 33 movable "
                          "units of differing rank and 7 immovable pieces.",
@@ -70,12 +70,15 @@ class Rules(arcade.Window):
                          arcade.color.BLACK,
                          DEFAULT_FONT_SIZE,
                          multiline=True,
-                         width=800)
+                         width=1000,
+                         font_name = "Kenney Future")
         
-        start_y -= DEFAULT_LINE_HEIGHT * 3
+        start_y -= DEFAULT_LINE_HEIGHT 
+        col_2_start_y = start_y
         arcade.draw_text("MOVABLE PIECES:\n"
                          "----------------\n"
                          "Rank - Name (Quantity)\n"
+                         "----------------\n"
                          "10 - Marshal (1)\n"
                          "9 - General (1)\n"
                          "8 - Colonel (2)\n"
@@ -93,93 +96,89 @@ class Rules(arcade.Window):
                          multiline=True,
                          width=800,
                          font_name = "Kenney Future")
+        
+        start_y -= DEFAULT_LINE_HEIGHT *  5.5
+        arcade.draw_text("SETUP:",
+                         start_x,
+                         start_y,
+                         arcade.color.FRENCH_WINE,
+                         DEFAULT_FONT_SIZE * 1.5, bold=True,
+                         font_name = "Kenney Future")
+        
+        start_y -= DEFAULT_LINE_HEIGHT * 0.5
+        arcade.draw_text("Player 1 places all of their pieces on the first 4 rows of their side of the gameboard. "
+                         "Then, player 2 does the same on their side of the gameboard. ",
+                         start_x,
+                         start_y,
+                         arcade.color.BLACK,
+                         DEFAULT_FONT_SIZE,
+                         multiline=True,
+                         width=1000,
+                         font_name = "Kenney Future")
 
+        start_y -= DEFAULT_LINE_HEIGHT
+        arcade.draw_text("GAMEPLAY:",
+                         start_x,
+                         start_y,
+                         arcade.color.FRENCH_WINE,
+                         DEFAULT_FONT_SIZE * 1.5, bold=True,
+                         font_name = "Kenney Future")
+        
+        start_y -= DEFAULT_LINE_HEIGHT * 0.5
+        arcade.draw_text("On your turn you must do one of the following:\n"
+                         "*MOVE* one of your playing pieces to an open adjacent space.\n"
+                         "\t1. Pieces move one square at a time, forward, backward or sideways.\n"
+                         "\t(Exception: See special Scout Movement Privilege)\n"
+                         "\t2. Pieces cannot move diagonally. They cannot jump over another piece.\n"
+                         "\tThey cannot move onto a square already occupied by another piece (unless attacking)\n"
+                         "\t3. Pieces cannot jump over or move onto the two lake areas in the center of the gameboard.\n"
+                         "\t4.  A piece cannot move back and forth between the same two squares in three consecutive turns. \n",
+                         start_x,
+                         start_y,
+                         arcade.color.BLACK,
+                         DEFAULT_FONT_SIZE,
+                         multiline=True,
+                         width=1000,
+                         font_name = "Kenney Future")
         # # --- Column 2 ---
-        # start_x = 750
-        # start_y = SCREEN_HEIGHT - DEFAULT_LINE_HEIGHT * 3
-        # arcade.draw_text("Text Positioning:",
-        #                  start_x,
-        #                  start_y,
-        #                  arcade.color.FRENCH_WINE,
-        #                  DEFAULT_FONT_SIZE,
-        #                  bold=True)
-
-        # # start_x and start_y make the start point for the text.
-        # # We draw a dot to make it easy too see the text in relation to
-        # # its start x and y.
-        # start_y -= DEFAULT_LINE_HEIGHT
-        # arcade.draw_point(start_x, start_y, arcade.color.BARN_RED, 5)
-        # arcade.draw_text("Default of 'baseline' and 'Left'",
-        #                  start_x,
-        #                  start_y,
-        #                  arcade.color.BLACK,
-        #                  DEFAULT_FONT_SIZE)
-
-        # start_y -= DEFAULT_LINE_HEIGHT
-        # arcade.draw_point(start_x, start_y, arcade.color.BARN_RED, 5)
-        # arcade.draw_text("'bottom' and 'left'",
-        #                  start_x,
-        #                  start_y,
-        #                  arcade.color.BLACK,
-        #                  DEFAULT_FONT_SIZE,
-        #                  anchor_x="left",
-        #                  anchor_y="bottom")
-
-        # start_y -= DEFAULT_LINE_HEIGHT
-        # arcade.draw_point(start_x, start_y, arcade.color.BARN_RED, 5)
-        # arcade.draw_text("'top' and 'left'",
-        #                  start_x, start_y,
-        #                  arcade.color.BLACK,
-        #                  DEFAULT_FONT_SIZE,
-        #                  anchor_x="left",
-        #                  anchor_y="top")
-
-        # start_y -= DEFAULT_LINE_HEIGHT * 2
-        # arcade.draw_point(start_x, start_y, arcade.color.BARN_RED, 5)
-        # arcade.draw_text("'baseline' and 'center'",
-        #                  start_x, start_y,
-        #                  arcade.color.BLACK,
-        #                  DEFAULT_FONT_SIZE,
-        #                  anchor_x="center",
-        #                  anchor_y="baseline")
-
-        # start_y -= DEFAULT_LINE_HEIGHT
-        # arcade.draw_point(start_x, start_y, arcade.color.BARN_RED, 5)
-        # arcade.draw_text("'baseline' and 'right'",
-        #                  start_x,
-        #                  start_y,
-        #                  arcade.color.BLACK,
-        #                  DEFAULT_FONT_SIZE,
-        #                  anchor_x="right",
-        #                  anchor_y="baseline")
-
-        # start_y -= DEFAULT_LINE_HEIGHT
-        # arcade.draw_point(start_x, start_y, arcade.color.BARN_RED, 5)
-        # arcade.draw_text("'center' and 'center'",
-        #                  start_x,
-        #                  start_y,
-        #                  arcade.color.BLACK,
-        #                  DEFAULT_FONT_SIZE,
-        #                  anchor_x="center",
-        #                  anchor_y="center")
-
-        # start_y -= DEFAULT_LINE_HEIGHT * 4
-        # # start_x = 0
-        # # start_y = 0
-        # arcade.draw_point(start_x, start_y, arcade.color.BARN_RED, 5)
-        # arcade.draw_text("Rotating Text",
-        #                  start_x, start_y,
-        #                  arcade.color.BLACK,
-        #                  DEFAULT_FONT_SIZE,
-        #                  anchor_x="center",
-        #                  anchor_y="center",
-        #                  rotation=self.text_angle)
-
-
+        start_x = SCREEN_WIDTH / 4
+        arcade.draw_text("IMMOVABLE PIECES:\n"
+                         "----------------\n"
+                         "Name (Quantity)\n"
+                         "----------------\n"
+                         "Bomb (6)\n"
+                         "Flag (1)\n",
+                         start_x,
+                         col_2_start_y,
+                         arcade.color.BLACK,
+                         DEFAULT_FONT_SIZE,
+                         multiline=True,
+                         width=800,
+                         font_name = "Kenney Future")
+        
+        col_2_start_y -= DEFAULT_LINE_HEIGHT * 2.5
+        arcade.draw_text("NOTE:", 
+                         start_x, 
+                         col_2_start_y, 
+                         arcade.color.FRENCH_WINE, 
+                         DEFAULT_FONT_SIZE,
+                         width = 50, 
+                         bold = True,
+                         font_name = "Kenney Future")
+        
+        col_2_start_y -= DEFAULT_LINE_HEIGHT * 0.5
+        arcade.draw_text("Higher number indicates higher rank.\n"
+                         "The lower-ranked pieces have unique privileges.",
+                         start_x,
+                         col_2_start_y,
+                         arcade.color.BLACK,
+                         DEFAULT_FONT_SIZE,
+                         multiline=True,
+                         width=800,
+                         font_name = "Kenney Future")
 def main():
     MyGame(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
     arcade.run()
-
 
 if __name__ == "__main__":
     main()
