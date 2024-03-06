@@ -32,7 +32,7 @@ MOVE one of your playing pieces to an open adjacent space.
     or sideways. (Exception: See special Scout Movement Privilege)
 
     2. Pieces cannot move diagonally. They cannot jump over another
-    piece. They cannot move onto a square already ocupied by another
+    piece. They cannot move onto a square already occupied by another
     piece (unless attacking)
 
     3. Pieces cannot jump over or move onto the two lake areas 
