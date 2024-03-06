@@ -5,9 +5,6 @@ import rules
 
 SCREEN_WIDTH = 900
 SCREEN_HEIGHT = 700
-SCREEN_TITLE = "Starting Template"
-
-SCREEN_TITLE = "Drawing Text Example"
 DEFAULT_LINE_HEIGHT = 45
 DEFAULT_FONT_SIZE = 20
 
