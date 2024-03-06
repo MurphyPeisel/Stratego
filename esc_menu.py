@@ -59,7 +59,7 @@ class Escape(arcade.Window):
         print("button is clicked")
 def main():
     """ Main function """
-    game = escape(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
+    game = Escape(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
     arcade.run()
 
 
