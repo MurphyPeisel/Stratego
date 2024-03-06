@@ -71,9 +71,7 @@ class Gameboard(arcade.Window):
                 x = x + 1
             y = y + 1
             
-    def on_mouse_motion(self, x, y, dx, dy): 
-        self.x = x 
-        self.y = y 
+    
 
     def on_mouse_press(self, x, y, button, key_modifiers):
         global Screen
@@ -91,4 +89,4 @@ class Gameboard(arcade.Window):
     def get_screen():
         return Screen
     def get_quit():
-        return Quit
+        return quit

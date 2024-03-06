@@ -29,7 +29,7 @@ def main():
                 arcade.run()
                 hold = Screen
                 Screen = gameboard.Gameboard.get_screen()
-                
+                #quit = gameboard.Gameboard.get_quit()
         
             case "m":
                 game = menu.Menu(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
@@ -41,6 +41,7 @@ def main():
             case "r":
                 game = rules.Rules(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
                 arcade.run()
+                Screen = rules.Rules.get_screen()
             case "q":
                 quit = True
         

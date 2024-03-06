@@ -33,7 +33,20 @@ class Rules(arcade.Window):
 
         # Add the screen title
         start_x = 0
-        start_y = SCREEN_HEIGHT - DEFAULT_LINE_HEIGHT
+        #start_y = SCREEN_HEIGHT - DEFAULT_LINE_HEIGHT
+
+        start_x = 0
+        start_y = SCREEN_HEIGHT - DEFAULT_LINE_HEIGHT * 1.5
+
+        arcade.draw_rectangle_filled(840,640,84,50,
+                                     arcade.color.GRANNY_SMITH_APPLE)
+
+        arcade.draw_text("ESC",
+                         start_x + (SCREEN_WIDTH *.9),
+                         start_y,
+                         arcade.color.BLACK,
+                         DEFAULT_FONT_SIZE,
+                         font_name="Kenney Future")
         arcade.draw_text("Stratego Rules",
                          start_x,
                          start_y,
@@ -177,8 +190,31 @@ class Rules(arcade.Window):
                          multiline=True,
                          width=SCREEN_WIDTH,
                          font_name = "Kenney Future")
+        
+    def on_mouse_motion(self, x, y, dx, dy): 
+        self.x = x 
+        self.y = y 
+
+    def on_mouse_press(self, x, y, button, key_modifiers):
+        global Screen
+
+        if x>=798 and x<=882 and y<= 665 and y>= 615:
+            Screen = 'm'
+            arcade.close_window()
+        
+    def on_key_press(self, key, key_modifiers):
+        if(key == arcade.key.Q):
+            global Quit
+            Quit = True
+            print("HEHR")
+
+    def get_screen():
+        return Screen
+    def get_quit():
+        return Quit
+
 def main():
-    MyGame(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
+    Rules(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
     arcade.run()
 
 if __name__ == "__main__":
