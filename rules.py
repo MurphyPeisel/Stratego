@@ -6,14 +6,14 @@ python -m arcade.examples.drawing_text
 """
 import arcade
 
-SCREEN_WIDTH = 1200
-SCREEN_HEIGHT = 800
+SCREEN_WIDTH = 900
+SCREEN_HEIGHT = 700
 SCREEN_TITLE = "Drawing Text Example"
 DEFAULT_LINE_HEIGHT = 45
-DEFAULT_FONT_SIZE = 20
+DEFAULT_FONT_SIZE = 18
 
 
-class MyGame(arcade.Window):
+class Rules(arcade.Window):
     """
     Main application class.
     """

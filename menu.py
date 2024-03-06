@@ -1,8 +1,8 @@
 import arcade
 import arcade.gui 
 
-SCREEN_WIDTH = 800
-SCREEN_HEIGHT = 600
+SCREEN_WIDTH = 900
+SCREEN_HEIGHT = 700
 SCREEN_TITLE = "Starting Template"
 
 SCREEN_TITLE = "Drawing Text Example"
@@ -10,6 +10,7 @@ DEFAULT_LINE_HEIGHT = 45
 DEFAULT_FONT_SIZE = 20
 
 Screen = "m"
+Quit = False
 
 
 class Menu(arcade.Window):
@@ -67,6 +68,12 @@ class Menu(arcade.Window):
 
         start_x = 0
         start_y = SCREEN_HEIGHT - DEFAULT_LINE_HEIGHT * 1.5
+        arcade.draw_rectangle_filled(160,160,275,100,
+                                     arcade.color.GRANNY_SMITH_APPLE)
+        arcade.draw_rectangle_filled(160,300,275,100,
+                                     arcade.color.FRENCH_WINE)
+        arcade.draw_rectangle_filled(160,440,275,100,
+                                     arcade.color.LIGHT_STEEL_BLUE)
         arcade.draw_text("Stratego",
                          start_x,
                          start_y - (SCREEN_HEIGHT * .1),
@@ -97,17 +104,31 @@ class Menu(arcade.Window):
                          DEFAULT_FONT_SIZE * 2,
                          font_name="Kenney Future")
         
+    #called when mouse moves   
     def on_mouse_motion(self, x, y, dx, dy): 
-        """ 
-        Called whenever the mouse moves. 
-        """
         self.x = x 
         self.y = y  
+    #called when mouse is pressed
     def on_mouse_press(self, x, y, button, key_modifiers):
+        global Screen
+
         if x>=23 and x<=298 and y<= 540 and y>= 340:
-            global Screen
             Screen = 'b'
             arcade.close_window()
+        if x>=23 and x<=298 and y<= 350 and y>= 250:
+            Screen = 'r'
+            arcade.close_window()
+        if x>=23 and x<=298 and y<= 210 and y>= 110:
+            Screen = 'q'
+            arcade.close_window()
+    def on_key_press(self, key, key_modifiers):
+        if(key == arcade.key.Q):
+            global Quit
+            Quit = True
+            print("HEHR")
+            
+    
+            
         #RULES
         #center (160,300)
         
@@ -124,4 +145,6 @@ class Menu(arcade.Window):
         
     def get_screen():
         return Screen
+    def get_quit():
+        return Quit
         
