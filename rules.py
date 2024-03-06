@@ -13,14 +13,12 @@ DEFAULT_LINE_HEIGHT = 45
 DEFAULT_FONT_SIZE = 18
 
 
-class Rules(arcade.Window):
+class Rules(arcade.View):
     """
     Main application class.
     """
 
-    def __init__(self, width, height, title):
-        super().__init__(width, height, title)
-
+    def on_show_view(self):
         self.background_color = arcade.color.BEIGE
         self.text_angle = 0
         self.time_elapsed = 0.0
