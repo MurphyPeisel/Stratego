@@ -1,21 +1,19 @@
 import arcade
+import arcade.gui 
+
+SCREEN_WIDTH = 800
+SCREEN_HEIGHT = 600
+SCREEN_TITLE = "Starting Template"
+
+SCREEN_TITLE = "Drawing Text Example"
 import arcade.gui
 SCREEN_WIDTH = 900
 SCREEN_HEIGHT = 700
 DEFAULT_LINE_HEIGHT = 45
 DEFAULT_FONT_SIZE = 20
 
-import arcade
-SCREEN_WIDTH = 900
-SCREEN_HEIGHT = 700
-SCREEN_TITLE = "Starting Template"
-ROW_COUNT = 10
-COLUMN_COUNT = 10
-BOARD_RIGHT = 250
-BOARD_LEFT = 200
-BOARD_BOTTOM = 100
-BOARD_TOP = 150
-BOARD_MARGIN = 50
+Screen = "m"
+
 class Menu(arcade.Window):
     """
     Main application class.
@@ -34,11 +32,14 @@ class Menu(arcade.Window):
         # and set them to None
 
     def setup(self):
+        
+
         """ Set up the game variables. Call to re-start the game. """
         # Create your sprites and sprite lists here
         pass
 
     def on_draw(self):
+        
 
         """
         Render the screen.

@@ -1,1 +1,90 @@
-Welcome to Stratego! 
+---------------------------- WELCOME ----------------------------
+                        Welcome to Stratego! 
+The object of the game is to capture the enemy Flag. 
+As the commander of an army you are in charge of 33 movable 
+units of differing rank and 7 immovable pieces. 
+
+    |-------------------------| |--------------------------| 
+    |  ## MOVABLE PIECES ##   | |  ## IMMOVABLE PIECES ##  | 
+    | Rank - Name (Quantity)  | |  Name (Quantity)         |
+    |-------------------------| |--------------------------|
+    | 10 - Marshal (1)        | |  Bomb (6)                |
+    | 9 - General (1)         | |  Flag (1)                |
+    | 8 - Colonel (2)         | |--------------------------|
+    | 7 - Major (3)           |  
+    | 6 - Captain (4)         | |--------------------------|
+    | 5 - Lieutenant (4)      | |          NOTE:           |
+    | 4 - Sergeant (4)        | | Higher number indicates  |
+    | 3 - Miner (5)           | | higher rank. The lower-  |
+    | 2 - Scout (8)           | | ranked pieces have       |
+    | S - Spy (1)             | | unique privileges        |
+    |-------------------------| |--------------------------|
+
+---------------------------- SETUP ----------------------------
+Player 1 places all of their pieces on their 4 x 10 side 
+of the gameboard. Then, player 2 does the same on their 
+4 x 10 side of the gameboard.
+
+--------------------------- GAMEPLAY ---------------------------
+On your turn, you must do one of the following:
+MOVE one of your playing pieces to an open adjacent space. 
+    1. Pieces move one square at a time, forward, backward, 
+    or sideways. (Exception: See special Scout Movement Privilege)
+
+    2. Pieces cannot move diagonally. They cannot jump over another
+    piece. They cannot move onto a square already ocupied by another
+    piece (unless attacking)
+
+    3. Pieces cannot jump over or move onto the two lake areas 
+    in the center of the gameboard.
+
+    4. A piece cannot move back and forth between the same two 
+    squares in three consecutive turns. 
+                        OR 
+ATTACK one of your opponents playing pieces. 
+     NOTE: Flag and Bomb pieces cannot attack.
+     1. Attack Position: When a red and blue piece are 
+     orthogonally adjacent, they are in a position to attack.
+     
+     2. How to Attack: To attack on your turn, click on your piece 
+     and then click on the piece you would like to attack. 
+     The rank of each piece is then revealed and the piece with the 
+     lower rank is removed from the board. If the winning piece
+     is the attacker, it takes the place of the losing piece. If the
+     winning piece is the defender, it does not move. 
+     
+     3. When pieces of the same rank battle, both pieces
+     are removed from the board. 
+
+NOTE: If you cannot do either action, the game is over and
+you lose.
+                 
+Special Scout Privileges:
+    Scouts are the only pieces allowed to both move and
+    attack on the same turn. A Scout can move forward,
+    backward, or sideways any number of open spaces into an
+    attack position. Once in position, it can attack.
+
+Special Miner Privileges:
+    When any piece (except a Miner) strikes a Bomb, that piece is 
+    removed from the board. Exception: When a Miner strikes a Bomb,
+    the Bomb is defused and removed from the gameboard. The Miner
+    then moves onto the Bomb's space on the board. Bombs remain on
+    the same space throughout the game unless they are defused.
+    Bombs cannot attack or move. 
+
+Special Spy Privileges:
+   The Spy is rank "S". If any piece attacks the Spy, it is 
+   removed from the board. The Spy is also the only piece that can
+   capture a Marshal, provided the Spy attacks the Marshal first.
+   If the Marshal attacks first, then the Spy is removed.
+
+                        
+----------------------- WINNING THE GAME -----------------------
+The first player to attack an opponent's Flag captures it and 
+wins the game.
+
+If all of your movable pieces have been removed and you cannot
+move or attack on a turn, you must give up and declare your
+opponent the winner. 
+    
