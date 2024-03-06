@@ -12,7 +12,7 @@ SCREEN_TITLE = "Rules"
 DEFAULT_LINE_HEIGHT = 30
 DEFAULT_FONT_SIZE = 10
 
-class MyGame(arcade.Window):
+class Rules(arcade.Window):
     """
     Main application class.
     """
