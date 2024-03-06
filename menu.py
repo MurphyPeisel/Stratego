@@ -1,4 +1,6 @@
 import arcade
+import arcade.gui 
+
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
 SCREEN_TITLE = "Starting Template"
@@ -6,6 +8,9 @@ SCREEN_TITLE = "Starting Template"
 SCREEN_TITLE = "Drawing Text Example"
 DEFAULT_LINE_HEIGHT = 45
 DEFAULT_FONT_SIZE = 20
+
+Screen = "m"
+
 
 class Menu(arcade.Window):
     """
@@ -23,13 +28,22 @@ class Menu(arcade.Window):
 
         # If you have sprite lists, you should create them here,
         # and set them to None
+       
+        
+       
+        
+        
+
 
     def setup(self):
+        
+
         """ Set up the game variables. Call to re-start the game. """
         # Create your sprites and sprite lists here
         pass
 
     def on_draw(self):
+        
 
         """
         Render the screen.
@@ -82,45 +96,32 @@ class Menu(arcade.Window):
                          arcade.color.BLACK,
                          DEFAULT_FONT_SIZE * 2,
                          font_name="Kenney Future")
-
-
-    def on_update(self, delta_time):
+        
+    def on_mouse_motion(self, x, y, dx, dy): 
+        """ 
+        Called whenever the mouse moves. 
         """
-        All the logic to move, and the game logic goes here.
-        Normally, you'll call update() on the sprite lists that
-        need it.
-        """
-        pass
-
-    def on_key_press(self, key, key_modifiers):
-        """
-        Called whenever a key on the keyboard is pressed.
-
-        For a full list of keys, see:
-        https://api.arcade.academy/en/latest/arcade.key.html
-        """
-        pass
-
-    def on_key_release(self, key, key_modifiers):
-        """
-        Called whenever the user lets off a previously pressed key.
-        """
-        pass
-
-    def on_mouse_motion(self, x, y, delta_x, delta_y):
-        """
-        Called whenever the mouse moves.
-        """
-        pass
-
+        self.x = x 
+        self.y = y  
     def on_mouse_press(self, x, y, button, key_modifiers):
-        """
-        Called when the user presses a mouse button.
-        """
-        pass
-
-    def on_mouse_release(self, x, y, button, key_modifiers):
-        """
-        Called when a user releases a mouse button.
-        """
-        pass
+        if x>=23 and x<=298 and y<= 540 and y>= 340:
+            global Screen
+            Screen = 'b'
+            arcade.close_window()
+        #RULES
+        #center (160,300)
+        
+        #PLAY
+        #center (160,440)
+        #width 275
+        #100
+        
+        #QUIT
+        #center (160,160)
+        #width 275
+        #height 100
+        
+        
+    def get_screen():
+        return Screen
+        

@@ -16,19 +16,23 @@ BOARD_MARGIN = 50
 def main():
     """ Main function """
     
-    Screen = 'b'
     
+    Screen = 'm'
+    quit = False
     
-    match Screen:
-        case "b":
-            game = gameboard.Gameboard(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
-            game.setup()
-            arcade.run()
-        case "m":
-            game = menu.Menu(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
-            game.setup()
-            arcade.run()
-            
+    while(quit == False):
+    
+        match Screen:
+            case "b":
+                game = gameboard.Gameboard(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
+                game.setup()
+                arcade.run()
+            case "m":
+                game = menu.Menu(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
+                game.setup()
+                arcade.run()
+                Screen = menu.Menu.get_screen()
+        
             
             
     
