@@ -104,11 +104,10 @@ class Menu(arcade.View):
             board_view = gameboard.Gameboard()
             self.window.show_view(board_view)
         if x>=23 and x<=298 and y<= 350 and y>= 250:
-            Screen = 'r'
-            print("rules")
+            rules_view = rules.Rules()
+            self.window.show_view(rules_view)
         if x>=23 and x<=298 and y<= 210 and y>= 110:
-            Screen = 'q'
-            print("quit")
+            arcade.exit()
     def on_key_press(self, key, key_modifiers):
         if(key == arcade.key.Q):
             global Quit

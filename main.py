@@ -12,27 +12,14 @@ BOARD_LEFT = 200
 BOARD_BOTTOM = 100
 BOARD_TOP = 150
 BOARD_MARGIN = 50
-
-class iview(arcade.View):
-    def on_show_view(self):
-        arcade.set_background_color(arcade.csscolor.RED)
-    
-    def on_draw(self):
-        arcade.start_render()
         
 
 def main():
     """ Main function """
-    Screen = 'm'
-    quit = False
     window = arcade.Window(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
     menu_view = menu.Menu() 
     window.show_view(menu_view)
     arcade.run()
-
-
-    board_view = gameboard.Gameboard()
-    rules_view = rules.Rules()
     
 
 """

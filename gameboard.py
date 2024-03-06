@@ -1,4 +1,5 @@
 import arcade
+import menu
 SCREEN_WIDTH = 900
 SCREEN_HEIGHT = 700
 DEFAULT_LINE_HEIGHT = 45
@@ -70,8 +71,8 @@ class Gameboard(arcade.View):
         global Screen
 
         if x>=798 and x<=882 and y<= 665 and y>= 615:
-            Screen = 'm'
-            arcade.close_window()
+            menu_view = menu.Menu() 
+            self.window.show_view(menu_view)
         
     def on_key_press(self, key, key_modifiers):
         if(key == arcade.key.Q):

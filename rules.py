@@ -5,6 +5,7 @@ If Python and Arcade are installed, this example can be run from the command lin
 python -m arcade.examples.drawing_text
 """
 import arcade
+import menu
 
 SCREEN_WIDTH = 900
 SCREEN_HEIGHT = 700
@@ -226,11 +227,11 @@ class Rules(arcade.View):
         self.y = y 
 
     def on_mouse_press(self, x, y, button, key_modifiers):
-        global Screen
 
         if x>=798 and x<=882 and y<= 665 and y>= 615:
-            Screen = 'm'
-            arcade.close_window()
+            menu_view = menu.Menu()
+            self.window.show_view(menu_view)
+
         
     def on_key_press(self, key, key_modifiers):
         if(key == arcade.key.Q):
