@@ -1,11 +1,4 @@
 import arcade
-import arcade.gui 
-
-SCREEN_WIDTH = 800
-SCREEN_HEIGHT = 600
-SCREEN_TITLE = "Starting Template"
-
-SCREEN_TITLE = "Drawing Text Example"
 import arcade.gui
 SCREEN_WIDTH = 900
 SCREEN_HEIGHT = 700
