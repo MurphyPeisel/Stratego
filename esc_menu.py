@@ -13,26 +13,38 @@ class escape(arcade.Window):
 
         arcade.set_background_color(arcade.color.GRAY)
 
-        self.uimanager = arcade.gui.UIManager()
-        self.uimanager.enable()
+        self.manager = arcade.gui.UIManager()
+        self.manager.enable()
 
-        self.v_box = arcade.gui.UIBoxLayout
+        self.v_box = arcade.gui.UIBoxLayout()
 
         back_to_menu_button = arcade.gui.UIFlatButton(text="Back to menu", width=200)
-        back_to_menu_button.on_click = self.on_buttonclick
-        self.uimanager.add(
+        self.v_box.add(back_to_menu_button.with_space_around(bottom=20))
+        cancel_button = arcade.gui.UIFlatButton(text="Cancel", width=200)
+        self.v_box.add(cancel_button.with_space_around(bottom=20))
+        exit_button = arcade.gui.UIFlatButton(text="Exit Program", width=200)
+        self.v_box.add(exit_button.with_space_around(bottom=20))
+
+        back_to_menu_button.on_click = self.on_click_back
+        cancel_button.on_click = self.on_click_cancel
+        exit_button.on_click = self.on_click_exit
+
+        self.manager.add(
             arcade.gui.UIAnchorWidget(
                 anchor_x="center_x",
                 anchor_y="center_y",
-                child=back_to_menu_button)
-            )
-        exit_button = arcade.gui.UIFlatButton(text="Exit", width=200)
-        exit_button.on_click = self.on_buttonclick
-        self.uimanager.add(
-            arcade.gui.UIAnchorWidget(
-                anchor_x="center_x",
-                child=exit_button)
+                child=self.v_box)
         )
+
+    def on_click_back(self, event):
+        print("back to menu pressed")
+
+    def on_click_cancel(self, event):
+        print("cancel button pressed")
+
+    def on_click_exit(self, event):
+        print("exit button clicked")
+
 
     def on_draw(self):
         """
@@ -40,7 +52,7 @@ class escape(arcade.Window):
         """
         self.clear()
         arcade.start_render()
-        self.uimanager.draw()
+        self.manager.draw()
 
     def on_buttonclick(selfself, event):
         print("button is clicked")
