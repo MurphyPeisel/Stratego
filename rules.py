@@ -70,16 +70,16 @@ class Rules(arcade.Window):
         start_y -= DEFAULT_LINE_HEIGHT * 0.7
         arcade.draw_text("The object of the game is to capture the enemy Flag. "
                          "As the commander of an army you are in charge of 33 movable "
-                         "units of differing rank and 7 immovable pieces.",
+                         "units of differing rank and 7 immovable pieces: 6 Bombs and 1 Flag.",
                          start_x,
                          start_y,
                          arcade.color.BLACK,
                          DEFAULT_FONT_SIZE,
                          multiline=True,
-                         width=SCREEN_WIDTH / 1.1,
+                         width=SCREEN_WIDTH,
                          font_name = "Kenney Future")
         
-        start_y -= DEFAULT_LINE_HEIGHT * 1.15
+        start_y -= DEFAULT_LINE_HEIGHT * 1.5
         col_2_start_y = start_y
         arcade.draw_text("MOVABLE PIECES:\n"
                          "Rank - Name (Quantity)\n"
@@ -97,12 +97,12 @@ class Rules(arcade.Window):
                          start_x,
                          start_y,
                          arcade.color.BLACK,
-                         DEFAULT_FONT_SIZE * 0.7,
+                         DEFAULT_FONT_SIZE * 0.8,
                          multiline=True,
                          width=SCREEN_WIDTH / 1.1,
                          font_name = "Kenney Future")
         
-        start_y -= DEFAULT_LINE_HEIGHT *  7
+        start_y -= DEFAULT_LINE_HEIGHT *  6
         arcade.draw_text("SETUP:",
                          start_x,
                          start_y,
@@ -111,14 +111,14 @@ class Rules(arcade.Window):
                          font_name = "Kenney Future")
         
         start_y -= DEFAULT_LINE_HEIGHT * 0.5
-        arcade.draw_text("Player 1 places all of their pieces on the first 4 rows of their side of the gameboard. "
-                         "Then, player 2 does the same on their side of the gameboard. ",
+        arcade.draw_text("Player 1 places all of their pieces on the first 4 rows of their side of theboard. "
+                         "Then, player 2 does the same on their side of the board. ",
                          start_x,
                          start_y,
                          arcade.color.BLACK,
                          DEFAULT_FONT_SIZE,
                          multiline=True,
-                         width=SCREEN_WIDTH / 1.1,
+                         width=SCREEN_WIDTH,
                          font_name = "Kenney Future")
 
         start_y -= DEFAULT_LINE_HEIGHT * 1.15
@@ -136,7 +136,7 @@ class Rules(arcade.Window):
                          "\t(Exception: See special Scout Movement Privilege)\n"
                          "\t2. Pieces cannot move diagonally. They cannot jump over another piece.\n"
                          "\tThey cannot move onto a square already occupied by another piece (unless attacking)\n"
-                         "\t3. Pieces cannot jump over or move onto the two lake areas in the center of the gameboard.\n"
+                         "\t3. Pieces cannot jump over or move onto the two lake areas in the center of the board.\n"
                          "\t4.  A piece cannot move back and forth between the same two squares in three consecutive \n"
                          "\t turns.\n"
                          "*ATTACK* one of your opponents playing pieces.\n"
@@ -146,7 +146,8 @@ class Rules(arcade.Window):
                          "\t2. How to Attack: To attack on your turn, click on your piece and then click on the piece\n"
                          "\tyou would like to attack. The rank of each piece is then revealed and the piece with the\n"
                          "\tlower rank is removed from the board. If the winning piece is the attacker, \n"
-                         "\tit takes the place of the losing piece. If the winning piece is the defender, it does not move.",
+                         "\tit takes the place of the losing piece. If the winning piece is the defender, it does not move.\n"
+                         "\t3. When pieces of the same rank battle, both pieces are removed from the board.\n",
                          start_x,
                          start_y,
                          arcade.color.BLACK,
@@ -155,38 +156,69 @@ class Rules(arcade.Window):
                          width=SCREEN_WIDTH,
                          font_name = "Kenney Future")
         
-        # # --- Column 2 ---
-        start_x = SCREEN_WIDTH / 3.25
-        arcade.draw_text("IMMOVABLE PIECES:\n"
-                         "Name (Quantity)\n"
-                         "----------------\n"
-                         "Bomb (6)\n"
-                         "Flag (1)\n",
+        start_y -= DEFAULT_LINE_HEIGHT * 10
+        arcade.draw_text("ENDING THE GAME:",
                          start_x,
-                         col_2_start_y,
-                         arcade.color.BLACK,
-                         DEFAULT_FONT_SIZE * 0.7,
-                         multiline=True,
-                         width=SCREEN_WIDTH / 1.1,
+                         start_y,
+                         arcade.color.FRENCH_WINE,
+                         DEFAULT_FONT_SIZE * 1.5, bold=True,
                          font_name = "Kenney Future")
         
-        col_2_start_y -= DEFAULT_LINE_HEIGHT * 3.25
-        arcade.draw_text("NOTE:", 
+        start_y -= DEFAULT_LINE_HEIGHT * 0.5
+        arcade.draw_text("The first player to attack an opponent's Flag captures it and wins the game.\n"
+                         "Or, if all of a player's movable pieces have been removed, they lose.",
+                         start_x,
+                         start_y,
+                         arcade.color.BLACK,
+                         DEFAULT_FONT_SIZE,
+                         multiline=True,
+                         width=SCREEN_WIDTH,
+                         font_name = "Kenney Future")
+        
+        # # # --- Column 2 ---
+        # start_x = SCREEN_WIDTH / 4.5
+        # arcade.draw_text("IMMOVABLE PIECES:\n"
+        #                  "Name (Quantity)\n"
+        #                  "----------------\n"
+        #                  "Bomb (6)\n"
+        #                  "Flag (1)\n",
+        #                  start_x,
+        #                  col_2_start_y,
+        #                  arcade.color.BLACK,
+        #                  DEFAULT_FONT_SIZE * 0.8,
+        #                  multiline=True,
+        #                  width=SCREEN_WIDTH / 1.1,
+        #                  font_name = "Kenney Future")
+        
+        # # --- Column 3 ---
+        col_2_start_y += DEFAULT_LINE_HEIGHT * 0.5 
+        start_x = SCREEN_WIDTH / 4.85
+        arcade.draw_text("SPECIAL PRIVILEGES:", 
                          start_x, 
                          col_2_start_y, 
                          arcade.color.FRENCH_WINE, 
-                         DEFAULT_FONT_SIZE,
+                         DEFAULT_FONT_SIZE * 0.8,
                          width = SCREEN_WIDTH, 
                          bold = True,
                          font_name = "Kenney Future")
         
         col_2_start_y -= DEFAULT_LINE_HEIGHT * 0.5
-        arcade.draw_text("Higher number indicates higher rank.\n"
-                         "The lower-ranked pieces have unique privileges.",
+        arcade.draw_text("Scout:\n"
+                         "\tScouts are the only pieces allowed to both move and attack on the same turn.\n"
+                         "\tA Scout can move forward, backward, or sideways any number of open spaces into\n"
+                         "\tan attack position. Once in position, it can attack.\n"
+                         "Miner:\n"
+                         "\tWhen any piece (except a Miner) strikes a Bomb, that piece is removed from the board.\n"
+                         "\tException: When a Miner strikes a Bomb, it is defused and removed from the board.\n"
+                         "\tThe Miner then moves onto the Bomb's space.\n"
+                         "Spy:\n"
+                         "\tThe Spy is rank \"S\". If any piece attacks the Spy, it is removed from the board. The Spy is\n"
+                         "\talso the only piece that can capture a Marshal, if the Spy attacks the Marshal first.\n"
+                         "\tIf the Marshal attacks first, then the Spy is removed.",
                          start_x,
                          col_2_start_y,
                          arcade.color.BLACK,
-                         DEFAULT_FONT_SIZE,
+                         DEFAULT_FONT_SIZE * 0.8,
                          multiline=True,
                          width=SCREEN_WIDTH,
                          font_name = "Kenney Future")
