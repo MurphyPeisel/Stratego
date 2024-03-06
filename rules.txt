@@ -49,9 +49,42 @@ ATTACK one of your opponents playing pieces.
      2. How to Attack: To attack on your turn, click on your piece 
      and then click on the piece you would like to attack. 
      The rank of each piece is then revealed and the piece with the 
-     lower rank is removed from the board. If the higher 
-
+     lower rank is removed from the board. If the winning piece
+     is the attacker, it takes the place of the losing piece. If the
+     winning piece is the defender, it does not move. 
+     
+     3. When pieces of the same rank battle, both pieces
+     are removed from the board. 
 
 NOTE: If you cannot do either action, the game is over and
 you lose.
+                 
+Special Scout Privileges:
+    Scouts are the only pieces allowed to both move and
+    attack on the same turn. A Scout can move forward,
+    backward, or sideways any number of open spaces into an
+    attack position. Once in position, it can attack.
+
+Special Miner Privileges:
+    When any piece (except a Miner) strikes a Bomb, that piece is 
+    removed from the board. Exception: When a Miner strikes a Bomb,
+    the Bomb is defused and removed from the gameboard. The Miner
+    then moves onto the Bomb's space on the board. Bombs remain on
+    the same space throughout the game unless they are defused.
+    Bombs cannot attack or move. 
+
+Special Spy Privileges:
+   The Spy is rank "S". If any piece attacks the Spy, it is 
+   removed from the board. The Spy is also the only piece that can
+   capture a Marshal, provided the Spy attacks the Marshal first.
+   If the Marshal attacks first, then the Spy is removed.
+
                         
+----------------------- WINNING THE GAME -----------------------
+The first player to attack an opponent's Flag captures it and 
+wins the game.
+
+If all of your movable pieces have been removed and you cannot
+move or attack on a turn, you must give up and declare your
+opponent the winner. 
+    
