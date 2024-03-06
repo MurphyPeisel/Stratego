@@ -53,6 +53,7 @@ class escape(arcade.Window):
         self.clear()
         arcade.start_render()
         self.manager.draw()
+        #changes
 
     def on_buttonclick(selfself, event):
         print("button is clicked")
