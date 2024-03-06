@@ -6,11 +6,13 @@ SCREEN_HEIGHT = 600
 SCREEN_TITLE = "Starting Template"
 
 SCREEN_TITLE = "Drawing Text Example"
+import arcade.gui
+SCREEN_WIDTH = 900
+SCREEN_HEIGHT = 700
 DEFAULT_LINE_HEIGHT = 45
 DEFAULT_FONT_SIZE = 20
 
 Screen = "m"
-
 
 class Menu(arcade.Window):
     """
@@ -28,12 +30,6 @@ class Menu(arcade.Window):
 
         # If you have sprite lists, you should create them here,
         # and set them to None
-       
-        
-       
-        
-        
-
 
     def setup(self):
         
@@ -48,22 +44,18 @@ class Menu(arcade.Window):
         """
         Render the screen.
         """
+        # This command should happen before we start drawing. It will clear
+        # the screen to the background color, and erase what we drew last frame.
+        
+        
+        self.clear()
+        
 
         start_x = 0
         start_y = SCREEN_HEIGHT - DEFAULT_LINE_HEIGHT * 1.5
-        arcade.draw_text("Text Drawing Examples",
-                         start_x,
-                         start_y,
-                         arcade.color.BLACK,
-                         DEFAULT_FONT_SIZE * 2,
-                         width=SCREEN_WIDTH,
-                         align="center")
-
-        # This command should happen before we start drawing. It will clear
-        # the screen to the background color, and erase what we drew last frame.
-        self.clear()
 
         # Call draw() on all your sprite lists below
+        
 
         start_x = 0
         start_y = SCREEN_HEIGHT - DEFAULT_LINE_HEIGHT * 1.5
@@ -76,6 +68,13 @@ class Menu(arcade.Window):
                          align="center",
                          font_name="Kenney Future")
 
+        arcade.draw_text("draw_rect", 243, 3, arcade.color.BLACK, 10)
+        arcade.draw_rectangle_filled(160, 160, 275, 100,
+                              arcade.color.GRANNY_SMITH_APPLE)
+        arcade.draw_rectangle_filled(160, 300, 275, 100,
+                              arcade.color.FRENCH_WINE)
+        arcade.draw_rectangle_filled(160, 440, 275, 100,
+                              arcade.color.LIGHT_STEEL_BLUE)
         arcade.draw_text("Play",
                          start_x + (SCREEN_WIDTH *.05),
                          start_y - (SCREEN_HEIGHT *.3),
@@ -96,32 +95,48 @@ class Menu(arcade.Window):
                          arcade.color.BLACK,
                          DEFAULT_FONT_SIZE * 2,
                          font_name="Kenney Future")
+
+
+
         
-    def on_mouse_motion(self, x, y, dx, dy): 
-        """ 
-        Called whenever the mouse moves. 
+    def on_update(self, delta_time):
         """
-        self.x = x 
-        self.y = y  
+        All the logic to move, and the game logic goes here.
+        Normally, you'll call update() on the sprite lists that
+        need it.
+        """
+        pass
+
+    def on_key_press(self, key, key_modifiers):
+        """
+        Called whenever a key on the keyboard is pressed.
+
+        For a full list of keys, see:
+        https://api.arcade.academy/en/latest/arcade.key.html
+        """
+        pass
+
+    def on_key_release(self, key, key_modifiers):
+        """
+        Called whenever the user lets off a previously pressed key.
+        """
+        pass
+
+    def on_mouse_motion(self, x, y, delta_x, delta_y):
+        """
+        Called whenever the mouse moves.
+        """
+        pass
+
     def on_mouse_press(self, x, y, button, key_modifiers):
-        if x>=23 and x<=298 and y<= 540 and y>= 340:
-            global Screen
-            Screen = 'b'
-            arcade.close_window()
-        #RULES
-        #center (160,300)
-        
-        #PLAY
-        #center (160,440)
-        #width 275
-        #100
-        
-        #QUIT
-        #center (160,160)
-        #width 275
-        #height 100
-        
-        
-    def get_screen():
-        return Screen
-        
+        """
+        Called when the user presses a mouse button.
+        """
+    
+        pass
+
+    def on_mouse_release(self, x, y, button, key_modifiers):
+        """
+        Called when a user releases a mouse button.
+        """
+        pass
