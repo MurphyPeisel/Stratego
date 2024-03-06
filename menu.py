@@ -1,11 +1,18 @@
 import arcade
+import arcade.gui 
+
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
 SCREEN_TITLE = "Starting Template"
 
 SCREEN_TITLE = "Drawing Text Example"
+import arcade.gui
+SCREEN_WIDTH = 900
+SCREEN_HEIGHT = 700
 DEFAULT_LINE_HEIGHT = 45
 DEFAULT_FONT_SIZE = 20
+
+Screen = "m"
 
 class Menu(arcade.Window):
     """
@@ -25,31 +32,30 @@ class Menu(arcade.Window):
         # and set them to None
 
     def setup(self):
+        
+
         """ Set up the game variables. Call to re-start the game. """
         # Create your sprites and sprite lists here
         pass
 
     def on_draw(self):
+        
 
         """
         Render the screen.
         """
+        # This command should happen before we start drawing. It will clear
+        # the screen to the background color, and erase what we drew last frame.
+        
+        
+        self.clear()
+        
 
         start_x = 0
         start_y = SCREEN_HEIGHT - DEFAULT_LINE_HEIGHT * 1.5
-        arcade.draw_text("Text Drawing Examples",
-                         start_x,
-                         start_y,
-                         arcade.color.BLACK,
-                         DEFAULT_FONT_SIZE * 2,
-                         width=SCREEN_WIDTH,
-                         align="center")
-
-        # This command should happen before we start drawing. It will clear
-        # the screen to the background color, and erase what we drew last frame.
-        self.clear()
 
         # Call draw() on all your sprite lists below
+        
 
         start_x = 0
         start_y = SCREEN_HEIGHT - DEFAULT_LINE_HEIGHT * 1.5
@@ -62,6 +68,13 @@ class Menu(arcade.Window):
                          align="center",
                          font_name="Kenney Future")
 
+        arcade.draw_text("draw_rect", 243, 3, arcade.color.BLACK, 10)
+        arcade.draw_rectangle_filled(160, 160, 275, 100,
+                              arcade.color.GRANNY_SMITH_APPLE)
+        arcade.draw_rectangle_filled(160, 300, 275, 100,
+                              arcade.color.FRENCH_WINE)
+        arcade.draw_rectangle_filled(160, 440, 275, 100,
+                              arcade.color.LIGHT_STEEL_BLUE)
         arcade.draw_text("Play",
                          start_x + (SCREEN_WIDTH *.05),
                          start_y - (SCREEN_HEIGHT *.3),
@@ -84,6 +97,8 @@ class Menu(arcade.Window):
                          font_name="Kenney Future")
 
 
+
+        
     def on_update(self, delta_time):
         """
         All the logic to move, and the game logic goes here.
@@ -117,6 +132,7 @@ class Menu(arcade.Window):
         """
         Called when the user presses a mouse button.
         """
+    
         pass
 
     def on_mouse_release(self, x, y, button, key_modifiers):

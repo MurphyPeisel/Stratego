@@ -7,7 +7,7 @@ SCREEN_TITLE = "Starting Template"
 class QuitButton(arcade.gui.UIFlatButton):
     def on_click(self, event: arcade.gui.UIOnClickEvent):
         arcade.exit()
-class escape(arcade.Window):
+class Escape(arcade.Window):
     def __init__(self, width, height, title):
         super().__init__(width, height, title)
 
