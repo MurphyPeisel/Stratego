@@ -1,15 +1,16 @@
 import arcade
 import arcade.gui
-SCREEN_WIDTH = 400
-SCREEN_HEIGHT = 200
-SCREEN_TITLE = "Starting Template"
+import gameboard
+import menu
+import rules
 
-class QuitButton(arcade.gui.UIFlatButton):
-    def on_click(self, event: arcade.gui.UIOnClickEvent):
-        arcade.exit()
-class Escape(arcade.Window):
-    def __init__(self, width, height, title):
-        super().__init__(width, height, title)
+SCREEN_WIDTH = 900
+SCREEN_HEIGHT = 700
+DEFAULT_LINE_HEIGHT = 45
+DEFAULT_FONT_SIZE = 20
+
+class Escape(arcade.View):
+    def on_show_view(self):
 
         arcade.set_background_color(arcade.color.GRAY)
 
@@ -38,6 +39,8 @@ class Escape(arcade.Window):
 
     def on_click_back(self, event):
         print("back to menu pressed")
+        board_view = menu.Menu()
+        self.window.show_view(board_view)
 
     def on_click_cancel(self, event):
         print("cancel button pressed")
@@ -53,15 +56,6 @@ class Escape(arcade.Window):
         self.clear()
         arcade.start_render()
         self.manager.draw()
-        #changes
 
     def on_buttonclick(selfself, event):
         print("button is clicked")
-def main():
-    """ Main function """
-    game = Escape(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
-    arcade.run()
-
-
-if __name__ == "__main__":
-    main()

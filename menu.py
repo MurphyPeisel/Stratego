@@ -1,5 +1,7 @@
 import arcade
-import arcade.gui 
+import arcade.gui
+
+import esc_menu
 import gameboard
 import rules
 
@@ -112,6 +114,9 @@ class Menu(arcade.View):
         if(key == arcade.key.Q):
             global Quit
             Quit = True
+        if(key == arcade.key.ESCAPE):
+            board_view = esc_menu.Escape()
+            self.window.show_view(board_view)
             
     
             
