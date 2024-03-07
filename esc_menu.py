@@ -10,6 +10,10 @@ DEFAULT_LINE_HEIGHT = 45
 DEFAULT_FONT_SIZE = 20
 
 class Escape(arcade.View):
+    def __init__(self, menu_instance):
+        super().__init__()
+        self.menu_instance = menu_instance
+    last_screen = "menu"
     def on_show_view(self):
 
         arcade.set_background_color(arcade.color.GRAY)
@@ -44,9 +48,23 @@ class Escape(arcade.View):
 
     def on_click_cancel(self, event):
         print("cancel button pressed")
+        last_screen = self.menu_instance.get_last_screen()
+        if last_screen == "menu":
+            board_view = menu.Menu()
+            self.window.show_view(board_view)
+        elif last_screen == "game_board":
+            board_view = gameboard.Gameboard()
+            self.window.show_view(board_view)
+        elif last_screen == "rules":
+            board_view = rules.Rules()
+            self.window.show_view(board_view)
+        elif last_screen == "exit":
+            board_view = arcade.exit()
+            self.window.show_view(board_view)
 
     def on_click_exit(self, event):
         print("exit button clicked")
+        arcade.exit()
 
 
     def on_draw(self):
@@ -57,5 +75,5 @@ class Escape(arcade.View):
         arcade.start_render()
         self.manager.draw()
 
-    def on_buttonclick(selfself, event):
+    def on_buttonclick(self, event):
         print("button is clicked")

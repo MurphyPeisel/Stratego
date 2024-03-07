@@ -1,5 +1,6 @@
 import arcade
 import menu
+import esc_menu
 SCREEN_WIDTH = 900
 SCREEN_HEIGHT = 700
 DEFAULT_LINE_HEIGHT = 45
@@ -13,6 +14,7 @@ BOARD_BOTTOM = 100
 BOARD_TOP = 150
 BOARD_MARGIN = 50
 class Gameboard(arcade.View):
+    last_screen = "game_board"
     """
     Main application class.
 
@@ -79,6 +81,14 @@ class Gameboard(arcade.View):
             global Quit
             Quit = True
             print("HEHR")
+        if (key == arcade.key.ESCAPE):
+            board_view = esc_menu.Escape(self)
+            self.window.show_view(board_view)
+            esc_menu.Escape.last_screen = Gameboard.last_screen
+
+    @classmethod
+    def get_last_screen(cls):
+        return cls.last_screen
 
     def get_screen():
         return Screen

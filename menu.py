@@ -22,7 +22,7 @@ class Menu(arcade.View):
     If you do need a method, delete the 'pass' and replace it
     with your own code. Don't leave 'pass' in this program.
     """
-
+    last_screen = "menu"
     def on_show_view(self):
         arcade.set_background_color(arcade.color.WHITE)
 
@@ -105,18 +105,25 @@ class Menu(arcade.View):
         if x>=23 and x<=298 and y<= 540 and y>= 340:
             board_view = gameboard.Gameboard()
             self.window.show_view(board_view)
+            last_screen = "game_board"
         if x>=23 and x<=298 and y<= 350 and y>= 250:
             rules_view = rules.Rules()
             self.window.show_view(rules_view)
+            last_screen = "rules"
         if x>=23 and x<=298 and y<= 210 and y>= 110:
             arcade.exit()
+            last_screen = "exit"
     def on_key_press(self, key, key_modifiers):
         if(key == arcade.key.Q):
             global Quit
             Quit = True
         if(key == arcade.key.ESCAPE):
-            board_view = esc_menu.Escape()
+            board_view = esc_menu.Escape(self)
             self.window.show_view(board_view)
+            esc_menu.Escape.last_screen = Menu.last_screen
+    @classmethod
+    def get_last_screen(cls):
+        return cls.last_screen
             
     
             
@@ -137,4 +144,3 @@ class Menu(arcade.View):
         return Screen
     def get_quit():
         return Quit
-        
