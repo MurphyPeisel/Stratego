@@ -2,6 +2,7 @@ import arcade
 import gameboard
 import menu
 import rules
+import pass_turn
 SCREEN_WIDTH = 900
 SCREEN_HEIGHT = 700
 SCREEN_TITLE = "Main Window"
@@ -17,7 +18,7 @@ BOARD_MARGIN = 50
 def main():
     """ Main function """
     window = arcade.Window(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
-    menu_view = menu.Menu() 
+    menu_view = menu.Menu()
     window.show_view(menu_view)
     arcade.run()
     
