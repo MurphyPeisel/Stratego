@@ -10,6 +10,7 @@ DEFAULT_LINE_HEIGHT = 45
 DEFAULT_FONT_SIZE = 20
 
 class Escape(arcade.View):
+    last_screen = "esc_menu"
     def __init__(self, menu_instance):
         super().__init__()
         self.menu_instance = menu_instance
@@ -23,15 +24,18 @@ class Escape(arcade.View):
 
         self.v_box = arcade.gui.UIBoxLayout()
 
-        back_to_menu_button = arcade.gui.UIFlatButton(text="Back to menu", width=200)
+        resume_button = arcade.gui.UIFlatButton(text="Resume", width=200)
+        self.v_box.add(resume_button.with_space_around(bottom=20))
+        rules_button = arcade.gui.UIFlatButton(text="Rules", width=200)
+        self.v_box.add(rules_button.with_space_around(bottom=20))
+        back_to_menu_button = arcade.gui.UIFlatButton(text="Return to Menu", width=200)
         self.v_box.add(back_to_menu_button.with_space_around(bottom=20))
-        cancel_button = arcade.gui.UIFlatButton(text="Cancel", width=200)
-        self.v_box.add(cancel_button.with_space_around(bottom=20))
         exit_button = arcade.gui.UIFlatButton(text="Exit Program", width=200)
         self.v_box.add(exit_button.with_space_around(bottom=20))
-
+        
+        resume_button.on_click = self.on_click_resume
+        rules_button.on_click = self.on_click_rules
         back_to_menu_button.on_click = self.on_click_back
-        cancel_button.on_click = self.on_click_cancel
         exit_button.on_click = self.on_click_exit
 
         self.manager.add(
@@ -40,15 +44,8 @@ class Escape(arcade.View):
                 anchor_y="center_y",
                 child=self.v_box)
         )
-
-    def on_click_back(self, event):
-        print("back to menu pressed")
-        self.manager.disable()
-        board_view = menu.Menu()
-        self.window.show_view(board_view)
-
-    def on_click_cancel(self, event):
-        print("cancel button pressed")
+    def on_click_resume(self, event):
+        print("resume button pressed")
         self.manager.disable()
         last_screen = self.menu_instance.get_last_screen()
         if last_screen == "menu":
@@ -64,11 +61,23 @@ class Escape(arcade.View):
             board_view = arcade.exit()
             self.window.show_view(board_view)
 
+    def on_click_rules(self, event):
+        print("rules pressed")
+        self.manager.disable()
+        board_view = rules.Rules(self)
+        self.window.show_view(board_view)
+        rules.Rules.last_screen = Escape.last_screen
+
+    def on_click_back(self, event):
+        print("return to menu pressed")
+        self.manager.disable()
+        board_view = menu.Menu()
+        self.window.show_view(board_view)
+
     def on_click_exit(self, event):
         print("exit button clicked")
         self.manager.disable()
         arcade.exit()
-
 
     def on_draw(self):
         """

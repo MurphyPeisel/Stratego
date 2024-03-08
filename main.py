@@ -21,7 +21,6 @@ def main():
     menu_view = menu.Menu()
     window.show_view(menu_view)
     arcade.run()
-    
 
 """
 

@@ -107,8 +107,10 @@ class Menu(arcade.View):
             self.window.show_view(board_view)
             last_screen = "game_board"
         if x>=23 and x<=298 and y<= 350 and y>= 250:
-            rules_view = rules.Rules()
-            self.window.show_view(rules_view)
+            print("rules pressed")
+            board_view = rules.Rules(self)
+            self.window.show_view(board_view)
+            rules.Rules.last_screen = rules.last_screen
             last_screen = "rules"
         if x>=23 and x<=298 and y<= 210 and y>= 110:
             arcade.exit()

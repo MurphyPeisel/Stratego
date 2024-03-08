@@ -76,8 +76,9 @@ class Gameboard(arcade.View):
         global Screen
 
         if x>=798 and x<=882 and y<= 665 and y>= 615:
-            menu_view = menu.Menu() 
-            self.window.show_view(menu_view)
+            board_view = esc_menu.Escape(self)
+            self.window.show_view(board_view)
+            esc_menu.Escape.last_screen = Gameboard.last_screen
         else:
             Gameboard.click_counter = Gameboard.click_counter + 1
             print(Gameboard.click_counter)
@@ -99,8 +100,3 @@ class Gameboard(arcade.View):
     @classmethod
     def get_last_screen(cls):
         return cls.last_screen
-
-    def get_screen():
-        return Screen
-    def get_quit():
-        return quit

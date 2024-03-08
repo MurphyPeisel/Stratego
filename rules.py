@@ -7,6 +7,7 @@ python -m arcade.examples.drawing_text
 import arcade
 import menu
 import esc_menu
+import gameboard
 
 SCREEN_WIDTH = 900
 SCREEN_HEIGHT = 700
@@ -18,7 +19,11 @@ class Rules(arcade.View):
     """
     Main application class.
     """
+    def __init__(self, menu_instance):
+        super().__init__()
+        self.menu_instance = menu_instance
     last_screen = "rules"
+
     def on_show_view(self):
         self.background_color = arcade.color.BEIGE
 
@@ -41,7 +46,7 @@ class Rules(arcade.View):
         arcade.draw_rectangle_filled(840,640,84,50,
                                      arcade.color.GRANNY_SMITH_APPLE)
 
-        arcade.draw_text("ESC",
+        arcade.draw_text("Back",
                          start_x + (SCREEN_WIDTH *.9),
                          start_y,
                          arcade.color.BLACK,
@@ -228,10 +233,15 @@ class Rules(arcade.View):
         self.y = y 
 
     def on_mouse_press(self, x, y, button, key_modifiers):
-
         if x>=798 and x<=882 and y<= 665 and y>= 615:
-            menu_view = menu.Menu()
-            self.window.show_view(menu_view)
+            last_screen = self.menu_instance.get_last_screen()
+            #last_screen = "esc_menu"
+            if last_screen == "menu":
+                board_view = menu.Menu()
+                self.window.show_view(board_view)
+            else:
+                board_view = esc_menu.Escape(self)
+                self.window.show_view(board_view)
 
         
     def on_key_press(self, key, key_modifiers):
@@ -248,10 +258,6 @@ class Rules(arcade.View):
     def get_last_screen(cls):
         return cls.last_screen
 
-    def get_screen():
-        return Screen
-    def get_quit():
-        return Quit
 
 def main():
     Rules(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
