@@ -3,11 +3,14 @@ import arcade.gui
 import gameboard
 import rules
 
+# initialize formatting details
 SCREEN_WIDTH = 300
 SCREEN_HEIGHT = 200
 DEFAULT_LINE_HEIGHT = 45
 DEFAULT_FONT_SIZE = 20
 
+#The Opponent Class displays 2 buttons: play_button and play_bot_button. If the user selects the play button, they will be taken to the Gameplay page.
+#If the user selects the play_bot_button 
 class Opponent(arcade.View):
     def on_show_view(self):
 
@@ -17,7 +20,8 @@ class Opponent(arcade.View):
         self.manager.enable()
 
         self.v_box = arcade.gui.UIBoxLayout()
-
+        
+        #Intiialize Buttons
         play_button = arcade.gui.UIFlatButton(text="Pass And Play", width=200)
         self.v_box.add(play_button.with_space_around(bottom=20))
         play_bot_button = arcade.gui.UIFlatButton(text="Play Computer", width=200)
@@ -33,14 +37,25 @@ class Opponent(arcade.View):
                 anchor_y="center_y",
                 child=self.v_box)
         )
+    #Function called when bot_button is clicked
+    #Takes user to Difficulty menu
     def on_click_bot(self, event):
+        #SET MODE TO PLAY AGAINST COMPUTER (FUTURE)
+        
         print("back to menu pressed")
         self.manager.disable()
         self.window.show_view(Difficulty())
+    
+    #Function called when play_buton is clicked
+    #Takes user to Gameplay screen
     def on_click_play(self, event):
+        #SET MODE TO PASS AND PLAY (FUTURE)
+        
         print("back to menu pressed")
         self.manager.disable()
-        self.window.show_view(Other())
+        self.window.show_view(Gameplay())
+    
+    #On draw will create all of our assets onto the screen
     def on_draw(self):
         """
         Render the screen.
@@ -90,13 +105,13 @@ class Difficulty(arcade.View):
         #SET DIFFICULTY OF BOT TO MEDIUM (FOR FUTURE)
         
         #CHANGE WINDOWS
-        self.window.show_view(Other())
+        self.window.show_view(Gameplay())
         
     def on_click_hard(self, event):
         #SET DIFFICULTY OF BOT TO HARD (FOR FUTURE)
         
         #CHANGE WINDOWS
-        self.window.show_view(Other())
+        self.window.show_view(Gameplay())
 
 
         
@@ -120,7 +135,7 @@ class Difficulty(arcade.View):
         self.manager.disable()
         arcade.exit()   
 
-class Other(arcade.View):
+class Gameplay(arcade.View):
     def on_show_view(self):
         
         arcade.set_background_color(arcade.color.GRAY)
