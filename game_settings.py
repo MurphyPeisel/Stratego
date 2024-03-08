@@ -1,7 +1,6 @@
 import arcade
 import arcade.gui
 import gameboard
-import rules
 
 # initialize formatting details
 SCREEN_WIDTH = 300
@@ -26,7 +25,6 @@ class Opponent(arcade.View):
         self.v_box.add(play_button.with_space_around(bottom=20))
         play_bot_button = arcade.gui.UIFlatButton(text="Play Computer", width=200)
         self.v_box.add(play_bot_button.with_space_around(bottom=20))
-        
 
         play_bot_button.on_click = self.on_click_bot
         play_button.on_click = self.on_click_play
@@ -41,8 +39,7 @@ class Opponent(arcade.View):
     #Takes user to Difficulty menu
     def on_click_bot(self, event):
         #SET MODE TO PLAY AGAINST COMPUTER (FUTURE)
-        
-        print("back to menu pressed")
+
         self.manager.disable()
         self.window.show_view(Difficulty())
     
@@ -51,22 +48,15 @@ class Opponent(arcade.View):
     def on_click_play(self, event):
         #SET MODE TO PASS AND PLAY (FUTURE)
         
-        print("back to menu pressed")
         self.manager.disable()
         self.window.show_view(Gameplay())
     
     #On draw will create all of our assets onto the screen
     def on_draw(self):
-        """
-        Render the screen.
-        """
         self.clear()
         arcade.start_render()
         self.manager.draw()
 
-    def on_buttonclick(self, event):
-        print("button is clicked")
-    
 class Difficulty(arcade.View):
     def on_show_view(self):
         
@@ -118,20 +108,11 @@ class Difficulty(arcade.View):
         
         
     def on_draw(self):
-        """
-        Render the screen.
-        """
         self.clear()
         arcade.start_render()
         self.manager.draw()
-        
-    
 
-    
-        
-    
     def on_click_exit(self, event):
-        print("exit button clicked")
         self.manager.disable()
         arcade.exit()   
 
@@ -173,9 +154,6 @@ class Gameplay(arcade.View):
         self.window.show_view(gameboard.Gameboard())
         
     def on_draw(self):
-        """
-        Render the screen.
-        """
         self.clear()
         arcade.start_render()
         self.manager.draw()

@@ -1,6 +1,6 @@
 import arcade
 import arcade.gui 
-import gameboard
+import esc_menu
 import game_settings
 import rules
 
@@ -71,7 +71,6 @@ class Menu(arcade.View):
         if x>=23 and x<=298 and y<= 350 and y>= 250:
             rules_view = rules.Rules(self)
             self.window.show_view(rules_view)
-            rules.Rules.last_screen = rules.last_screen
         if x>=23 and x<=298 and y<= 210 and y>= 110:
             arcade.exit()
 
