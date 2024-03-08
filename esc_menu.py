@@ -18,7 +18,6 @@ class Escape(arcade.View):
     def __init__(self, menu_instance):
         super().__init__()
         self.menu_instance = menu_instance
-    last_screen = "menu"
 
     # Defines the view of the window when open
     def on_show_view(self):
@@ -57,7 +56,6 @@ class Escape(arcade.View):
     # to it when pressed. That is why there get_last_screen was added to other classes. This function will return the
     # user to the last screen they were on.
     def on_click_resume(self, event):
-        print("cancel button pressed")
         self.manager.disable()
         last_screen = self.menu_instance.get_last_screen()
         if last_screen == "menu":
@@ -75,7 +73,6 @@ class Escape(arcade.View):
 
     # This method opens the rules screen which will return to the esc menu when called from there.
     def on_click_rules(self, event):
-        print("rules pressed")
         self.manager.disable()
         board_view = rules.Rules(self)
         self.window.show_view(board_view)
@@ -83,14 +80,12 @@ class Escape(arcade.View):
 
     # Functionality for when the user presses the back to menu button to change the screen back to the menu screen
     def on_click_back(self, event):
-        print("return to menu pressed")
         self.manager.disable()
         board_view = menu.Menu()
         self.window.show_view(board_view)
 
     # This function closes the program when the user hits the exit button
     def on_click_exit(self, event):
-        print("exit button clicked")
         self.manager.disable()
         arcade.exit()
 

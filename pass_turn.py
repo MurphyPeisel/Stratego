@@ -2,8 +2,6 @@
 import arcade
 import arcade.gui
 import gameboard
-import menu
-import rules
 
 # Define constants
 SCREEN_WIDTH = 900
@@ -43,7 +41,6 @@ class Pass_Turn(arcade.View):
     # This function adds the functionality to the switch player button so that it returns to the board when the user
     # presses the button
     def on_click_switch(self, event):
-        print("player switch pressed")
         self.manager.disable()
         board_view = gameboard.Gameboard()
         self.window.show_view(board_view)
@@ -51,9 +48,6 @@ class Pass_Turn(arcade.View):
     # This function draws all that is defined in show view to allow the window to appear. it also adds text that exists
     # outside the buttons / manager so that the users are given context for what they are doing.
     def on_draw(self):
-        """
-        Render the screen.
-        """
         self.clear()
         arcade.start_render()
         self.manager.draw()
