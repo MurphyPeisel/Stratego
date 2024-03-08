@@ -9,12 +9,16 @@ SCREEN_HEIGHT = 700
 DEFAULT_LINE_HEIGHT = 45
 DEFAULT_FONT_SIZE = 20
 
+# A class to define the view and buttons for the escape menu which is pulled up whenever a user presses the escape
+# button
 class Escape(arcade.View):
     last_screen = "esc_menu"
     def __init__(self, menu_instance):
         super().__init__()
         self.menu_instance = menu_instance
     last_screen = "menu"
+
+    # Defines the view of the window when open
     def on_show_view(self):
 
         arcade.set_background_color(arcade.color.GRAY)
@@ -44,8 +48,15 @@ class Escape(arcade.View):
                 anchor_y="center_y",
                 child=self.v_box)
         )
-    def on_click_resume(self, event):
-        print("resume button pressed")
+    # Functionality for when the user presses the back to menu button to change the screen back to the menu screen
+    def on_click_back(self, event):
+        print("back to menu pressed")
+        self.manager.disable()
+        board_view = menu.Menu()
+        self.window.show_view(board_view)
+
+    def on_click_cancel(self, event):
+        print("cancel button pressed")
         self.manager.disable()
         last_screen = self.menu_instance.get_last_screen()
         if last_screen == "menu":
@@ -79,6 +90,7 @@ class Escape(arcade.View):
         self.manager.disable()
         arcade.exit()
 
+    # This function draws the window when called
     def on_draw(self):
         """
         Render the screen.
@@ -86,6 +98,3 @@ class Escape(arcade.View):
         self.clear()
         arcade.start_render()
         self.manager.draw()
-
-    def on_buttonclick(self, event):
-        print("button is clicked")
