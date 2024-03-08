@@ -1,15 +1,22 @@
+# import packages
 import arcade
 import arcade.gui
 import gameboard
 import menu
 import rules
 
+# Define constants
 SCREEN_WIDTH = 900
 SCREEN_HEIGHT = 700
 DEFAULT_LINE_HEIGHT = 45
 DEFAULT_FONT_SIZE = 20
 
+
+# Creates a class to define the look for when the game is switching between each player. This way in two player mode,
+# each player cannot see the others board by accident
 class Pass_Turn(arcade.View):
+
+    # This function Defines what the window will look like when called
     def on_show_view(self):
 
         arcade.set_background_color(arcade.color.GRAY)
@@ -33,14 +40,16 @@ class Pass_Turn(arcade.View):
                 child=self.v_box)
         )
 
+    # This function adds the functionality to the switch player button so that it returns to the board when the user
+    # presses the button
     def on_click_switch(self, event):
         print("player switch pressed")
         self.manager.disable()
         board_view = gameboard.Gameboard()
         self.window.show_view(board_view)
 
-
-
+    # This function draws all that is defined in show view to allow the window to appear. it also adds text that exists
+    # outside the buttons / manager so that the users are given context for what they are doing.
     def on_draw(self):
         """
         Render the screen.
@@ -58,6 +67,3 @@ class Pass_Turn(arcade.View):
                          width=SCREEN_WIDTH,
                          align="center",
                          font_name="Kenney Future")
-
-    def on_buttonclick(self, event):
-        print("button is clicked")
