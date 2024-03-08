@@ -4,6 +4,7 @@ import gameboard
 import menu
 import rules
 
+# initialize formatting details
 SCREEN_WIDTH = 900
 SCREEN_HEIGHT = 700
 DEFAULT_LINE_HEIGHT = 45
@@ -13,6 +14,7 @@ DEFAULT_FONT_SIZE = 20
 # button
 class Escape(arcade.View):
     last_screen = "esc_menu"
+    
     def __init__(self, menu_instance):
         super().__init__()
         self.menu_instance = menu_instance
@@ -28,6 +30,7 @@ class Escape(arcade.View):
 
         self.v_box = arcade.gui.UIBoxLayout()
 
+        # Button formatting
         resume_button = arcade.gui.UIFlatButton(text="Resume", width=200)
         self.v_box.add(resume_button.with_space_around(bottom=20))
         rules_button = arcade.gui.UIFlatButton(text="Rules", width=200)
@@ -91,16 +94,12 @@ class Escape(arcade.View):
         self.manager.disable()
         arcade.exit()
 
-
     @classmethod
     def get_last_screen(cls):
         return cls.last_screen
     
     # This function draws the window when called
     def on_draw(self):
-        """
-        Render the screen.
-        """
         self.clear()
         arcade.start_render()
         self.manager.draw()

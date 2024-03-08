@@ -1,12 +1,10 @@
 import arcade
 import menu
 import esc_menu
-import gameboard
 
 # initialize formatting details
 SCREEN_WIDTH = 900
 SCREEN_HEIGHT = 700
-SCREEN_TITLE = "Rules"
 DEFAULT_LINE_HEIGHT = 30
 DEFAULT_FONT_SIZE = 10
 
@@ -22,23 +20,18 @@ ESC_BOX_Y1 = ESC_BOX_CENTER[1] - ESC_BOX_HEIGHT / 2
 ESC_BOX_Y2 = ESC_BOX_CENTER[1] + ESC_BOX_HEIGHT / 2
 
 class Rules(arcade.View):
-    """
-    Main application class.
-    """
+    last_screen = "rules"
+
     def __init__(self, menu_instance):
         super().__init__()
         self.menu_instance = menu_instance
-    last_screen = "rules"
 
     def on_show_view(self):
         self.background_color = arcade.color.BEIGE
 
     def on_draw(self):
-        """
-        Render the screen.
-        """
-        # clear the screen
         self.clear()
+        arcade.start_render()
 
         # draw rectangle for the 'esc' button
         arcade.draw_rectangle_filled(ESC_BOX_CENTER[0], 
@@ -224,6 +217,7 @@ class Rules(arcade.View):
         self.x = x 
         self.y = y 
 
+    # Depending on where the rules page was called from is where it will be returned from upon clicking esc.
     def on_mouse_press(self, x, y, button, key_modifiers):
         # check if mouse click was in esc box bounds
         if x >= ESC_BOX_X1 and x <= ESC_BOX_X2 and y >= ESC_BOX_Y1 and y <= ESC_BOX_Y2:
@@ -235,7 +229,7 @@ class Rules(arcade.View):
                 board_view = esc_menu.Escape(self)
                 self.window.show_view(board_view)
 
-        
+    # Listening for ESC key to open esc menu
     def on_key_press(self, key, key_modifiers):
         if (key == arcade.key.Q):
             global Quit
@@ -248,11 +242,3 @@ class Rules(arcade.View):
     @classmethod
     def get_last_screen(cls):
         return cls.last_screen
-
-
-def main():
-    Rules(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
-    arcade.run()
-
-if __name__ == "__main__":
-    main()
