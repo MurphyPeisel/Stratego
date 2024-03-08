@@ -1,18 +1,24 @@
-"""
-Example showing how to draw text to the screen.
-
-If Python and Arcade are installed, this example can be run from the command line with:
-python -m arcade.examples.drawing_text
-"""
 import arcade
 import menu
 import esc_menu
 
+# initialize formatting details
 SCREEN_WIDTH = 900
 SCREEN_HEIGHT = 700
 SCREEN_TITLE = "Rules"
 DEFAULT_LINE_HEIGHT = 30
 DEFAULT_FONT_SIZE = 10
+
+# initialize escape box 
+ESC_BOX_CENTER = (810, 670)
+ESC_BOX_WIDTH = 84
+ESC_BOX_HEIGHT = 50
+
+# calculate escape box bounds
+ESC_BOX_X1 = ESC_BOX_CENTER[0] - ESC_BOX_WIDTH / 2
+ESC_BOX_X2 = ESC_BOX_CENTER[0] + ESC_BOX_WIDTH / 2
+ESC_BOX_Y1 = ESC_BOX_CENTER[1] - ESC_BOX_HEIGHT / 2
+ESC_BOX_Y2 = ESC_BOX_CENTER[1] + ESC_BOX_HEIGHT / 2
 
 class Rules(arcade.View):
     """
@@ -26,27 +32,28 @@ class Rules(arcade.View):
         """
         Render the screen.
         """
-
-        # This command should happen before we start drawing. It will clear
-        # the screen to the background color, and erase what we drew last frame.
+        # clear the screen
         self.clear()
 
-        # Add the screen title
+        # draw rectangle for the 'esc' button
+        arcade.draw_rectangle_filled(ESC_BOX_CENTER[0], 
+                                     ESC_BOX_CENTER[1],
+                                     ESC_BOX_WIDTH,
+                                     ESC_BOX_HEIGHT,
+                                     arcade.color.GRANNY_SMITH_APPLE)
+        
+        # initialize x, y variables for drawing text
         start_x = 0
         start_y = SCREEN_HEIGHT - DEFAULT_LINE_HEIGHT
-
-        start_x = 0
-        #start_y = SCREEN_HEIGHT - DEFAULT_LINE_HEIGHT * 1.5
-
-        arcade.draw_rectangle_filled(840,640,84,50,
-                                     arcade.color.GRANNY_SMITH_APPLE)
-
         arcade.draw_text("ESC",
-                         start_x + (SCREEN_WIDTH *.9),
+                         start_x + (SCREEN_WIDTH *.88),
                          start_y,
                          arcade.color.BLACK,
                          DEFAULT_FONT_SIZE,
-                         font_name="Kenney Future")
+                         font_name="Kenney Future",
+                         width=84,
+                         align="left")
+
         arcade.draw_text("Stratego Rules",
                          start_x,
                          start_y,
@@ -56,8 +63,7 @@ class Rules(arcade.View):
                          align="center",
                          font_name="Kenney Future")
 
-        # start_x and start_y make the start point for the text. We draw a dot to make it
-        # easy too see the text in relation to its start x and y.
+        # update x, y variables as lines are drawn to the screen
         start_x = 10
         start_y = SCREEN_HEIGHT - DEFAULT_LINE_HEIGHT * 1.7
         arcade.draw_text("Welcome to Stratego:",
@@ -80,6 +86,7 @@ class Rules(arcade.View):
                          font_name = "Kenney Future")
         
         start_y -= DEFAULT_LINE_HEIGHT * 1.5
+        # keep track of this y-value for more text further along the x-axis
         col_2_start_y = start_y
         arcade.draw_text("MOVABLE PIECES:\n"
                          "Rank - Name (Quantity)\n"
@@ -175,26 +182,11 @@ class Rules(arcade.View):
                          width=SCREEN_WIDTH,
                          font_name = "Kenney Future")
         
-        # # # --- Column 2 ---
-        # start_x = SCREEN_WIDTH / 4.5
-        # arcade.draw_text("IMMOVABLE PIECES:\n"
-        #                  "Name (Quantity)\n"
-        #                  "----------------\n"
-        #                  "Bomb (6)\n"
-        #                  "Flag (1)\n",
-        #                  start_x,
-        #                  col_2_start_y,
-        #                  arcade.color.BLACK,
-        #                  DEFAULT_FONT_SIZE * 0.8,
-        #                  multiline=True,
-        #                  width=SCREEN_WIDTH / 1.1,
-        #                  font_name = "Kenney Future")
-        
-        # # --- Column 3 ---
+        # x, y values for second column of text
         col_2_start_y += DEFAULT_LINE_HEIGHT * 0.5 
-        start_x = SCREEN_WIDTH / 4.85
+        col_2_start_x = SCREEN_WIDTH / 4.85
         arcade.draw_text("SPECIAL PRIVILEGES:", 
-                         start_x, 
+                         col_2_start_x, 
                          col_2_start_y, 
                          arcade.color.FRENCH_WINE, 
                          DEFAULT_FONT_SIZE * 0.8,
@@ -215,7 +207,7 @@ class Rules(arcade.View):
                          "\tThe Spy is rank \"S\". If any piece attacks the Spy, it is removed from the board. The Spy is\n"
                          "\talso the only piece that can capture a Marshal, if the Spy attacks the Marshal first.\n"
                          "\tIf the Marshal attacks first, then the Spy is removed.",
-                         start_x,
+                         col_2_start_x,
                          col_2_start_y,
                          arcade.color.BLACK,
                          DEFAULT_FONT_SIZE * 0.8,
@@ -228,17 +220,15 @@ class Rules(arcade.View):
         self.y = y 
 
     def on_mouse_press(self, x, y, button, key_modifiers):
-
-        if x>=798 and x<=882 and y<= 665 and y>= 615:
+        # check if mouse click was in esc box bounds
+        if x >= ESC_BOX_X1 and x <= ESC_BOX_X2 and y >= ESC_BOX_Y1 and y <= ESC_BOX_Y2:
             menu_view = menu.Menu()
             self.window.show_view(menu_view)
 
-        
     def on_key_press(self, key, key_modifiers):
-        if(key == arcade.key.Q):
+        if (key == arcade.key.Q):
             global Quit
             Quit = True
-            print("HEHR")
         if (key == arcade.key.ESCAPE):
             board_view = esc_menu.Escape(self)
             self.window.show_view(board_view)
@@ -247,11 +237,6 @@ class Rules(arcade.View):
     @classmethod
     def get_last_screen(cls):
         return cls.last_screen
-
-    def get_screen():
-        return Screen
-    def get_quit():
-        return Quit
 
 def main():
     Rules(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
