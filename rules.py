@@ -5,6 +5,8 @@ If Python and Arcade are installed, this example can be run from the command lin
 python -m arcade.examples.drawing_text
 """
 import arcade
+import menu
+import esc_menu
 
 SCREEN_WIDTH = 900
 SCREEN_HEIGHT = 700
@@ -12,14 +14,12 @@ SCREEN_TITLE = "Rules"
 DEFAULT_LINE_HEIGHT = 30
 DEFAULT_FONT_SIZE = 10
 
-class Rules(arcade.Window):
+class Rules(arcade.View):
     """
     Main application class.
     """
-
-    def __init__(self, width, height, title):
-        super().__init__(width, height, title)
-
+    last_screen = "rules"
+    def on_show_view(self):
         self.background_color = arcade.color.BEIGE
 
     def on_draw(self):
@@ -228,17 +228,25 @@ class Rules(arcade.Window):
         self.y = y 
 
     def on_mouse_press(self, x, y, button, key_modifiers):
-        global Screen
 
         if x>=798 and x<=882 and y<= 665 and y>= 615:
-            Screen = 'm'
-            arcade.close_window()
+            menu_view = menu.Menu()
+            self.window.show_view(menu_view)
+
         
     def on_key_press(self, key, key_modifiers):
         if(key == arcade.key.Q):
             global Quit
             Quit = True
             print("HEHR")
+        if (key == arcade.key.ESCAPE):
+            board_view = esc_menu.Escape(self)
+            self.window.show_view(board_view)
+            esc_menu.Escape.last_screen = Rules.last_screen
+
+    @classmethod
+    def get_last_screen(cls):
+        return cls.last_screen
 
     def get_screen():
         return Screen

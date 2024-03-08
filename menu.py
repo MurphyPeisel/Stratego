@@ -1,5 +1,9 @@
 import arcade
-import arcade.gui 
+import arcade.gui
+
+import esc_menu
+import gameboard
+import rules
 
 SCREEN_WIDTH = 900
 SCREEN_HEIGHT = 700
@@ -9,7 +13,8 @@ DEFAULT_FONT_SIZE = 20
 Screen = "m"
 Quit = False
 
-class Menu(arcade.Window):
+
+class Menu(arcade.View):
     """
     Main application class.
 
@@ -17,14 +22,18 @@ class Menu(arcade.Window):
     If you do need a method, delete the 'pass' and replace it
     with your own code. Don't leave 'pass' in this program.
     """
-
-    def __init__(self, width, height, title):
-        super().__init__(width, height, title)
-
+    last_screen = "menu"
+    def on_show_view(self):
         arcade.set_background_color(arcade.color.WHITE)
 
         # If you have sprite lists, you should create them here,
         # and set them to None
+       
+        
+       
+        
+        
+
 
     def setup(self):
         
@@ -34,19 +43,18 @@ class Menu(arcade.Window):
         pass
 
     def on_draw(self):
-        
+        arcade.start_render()
+ 
 
         """
         Render the screen.
         """
+
+
         # This command should happen before we start drawing. It will clear
         # the screen to the background color, and erase what we drew last frame.
-        
-        
-        self.clear()
 
         # Call draw() on all your sprite lists below
-        
 
         start_x = 0
         start_y = SCREEN_HEIGHT - DEFAULT_LINE_HEIGHT * 1.5
@@ -64,7 +72,7 @@ class Menu(arcade.Window):
                          width=SCREEN_WIDTH,
                          align="center",
                          font_name="Kenney Future")
-        
+
         arcade.draw_text("Play",
                          start_x + (SCREEN_WIDTH *.05),
                          start_y - (SCREEN_HEIGHT *.3),
@@ -85,11 +93,7 @@ class Menu(arcade.Window):
                          arcade.color.BLACK,
                          DEFAULT_FONT_SIZE * 2,
                          font_name="Kenney Future")
-
-
-
         
-
     #called when mouse moves   
     def on_mouse_motion(self, x, y, dx, dy): 
         self.x = x 
@@ -99,19 +103,27 @@ class Menu(arcade.Window):
         global Screen
 
         if x>=23 and x<=298 and y<= 540 and y>= 340:
-            Screen = 'b'
-            arcade.close_window()
+            board_view = gameboard.Gameboard()
+            self.window.show_view(board_view)
+            last_screen = "game_board"
         if x>=23 and x<=298 and y<= 350 and y>= 250:
-            Screen = 'r'
-            arcade.close_window()
+            rules_view = rules.Rules()
+            self.window.show_view(rules_view)
+            last_screen = "rules"
         if x>=23 and x<=298 and y<= 210 and y>= 110:
-            Screen = 'q'
-            arcade.close_window()
+            arcade.exit()
+            last_screen = "exit"
     def on_key_press(self, key, key_modifiers):
         if(key == arcade.key.Q):
             global Quit
             Quit = True
-            print("HEHR")
+        if(key == arcade.key.ESCAPE):
+            board_view = esc_menu.Escape(self)
+            self.window.show_view(board_view)
+            esc_menu.Escape.last_screen = Menu.last_screen
+    @classmethod
+    def get_last_screen(cls):
+        return cls.last_screen
             
     
             
@@ -126,9 +138,8 @@ class Menu(arcade.Window):
         #QUIT
         #center (160,160)
         #width 275
-        #height 100
-        
-        
+        #height 100    
+
     def get_screen():
         return Screen
     def get_quit():

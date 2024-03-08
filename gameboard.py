@@ -1,4 +1,8 @@
 import arcade
+import menu
+import esc_menu
+import pass_turn
+
 SCREEN_WIDTH = 900
 SCREEN_HEIGHT = 700
 DEFAULT_LINE_HEIGHT = 45
@@ -11,7 +15,9 @@ BOARD_LEFT = 200
 BOARD_BOTTOM = 100
 BOARD_TOP = 150
 BOARD_MARGIN = 50
-class Gameboard(arcade.Window):
+class Gameboard(arcade.View):
+    last_screen = "game_board"
+    click_counter = 0
     """
     Main application class.
 
@@ -19,31 +25,24 @@ class Gameboard(arcade.Window):
     If you do need a method, delete the 'pass' and replace it
     with your own code. Don't leave 'pass' in this program.
     """
-
-    def __init__(self, width, height, title):
-        super().__init__(width, height, title)
-
+    def on_show_view(self):
         arcade.set_background_color(arcade.color.AVOCADO)
+        self.clear()
 
-        # If you have sprite lists, you should create them here,
-        # and set them to None
+        # Call draw() on all your sprite lists below
 
-    def setup(self):
-        """ Set up the game variables. Call to re-start the game. """
-        # Create your sprites and sprite lists here
-        pass
-
-
+        
+        
 
     def on_draw(self):
+        arcade.start_render()
         """
         Render the screen.
         """
 
         # This command should happen before we start drawing. It will clear
         # the screen to the background color, and erase what we drew last frame.
-        self.clear()
-
+        arcade.start_render()
         # Call draw() on all your sprite lists below
 
         start_x = 0
@@ -77,14 +76,29 @@ class Gameboard(arcade.Window):
         global Screen
 
         if x>=798 and x<=882 and y<= 665 and y>= 615:
-            Screen = 'm'
-            arcade.close_window()
+            menu_view = menu.Menu() 
+            self.window.show_view(menu_view)
+        else:
+            Gameboard.click_counter = Gameboard.click_counter + 1
+            print(Gameboard.click_counter)
+            if Gameboard.click_counter == 2:
+                Gameboard.click_counter = 0
+                view = pass_turn.Pass_Turn()
+                self.window.show_view(view)
         
     def on_key_press(self, key, key_modifiers):
         if(key == arcade.key.Q):
             global Quit
             Quit = True
             print("HEHR")
+        if (key == arcade.key.ESCAPE):
+            board_view = esc_menu.Escape(self)
+            self.window.show_view(board_view)
+            esc_menu.Escape.last_screen = Gameboard.last_screen
+
+    @classmethod
+    def get_last_screen(cls):
+        return cls.last_screen
 
     def get_screen():
         return Screen

@@ -1,15 +1,20 @@
 import arcade
 import arcade.gui
-SCREEN_WIDTH = 400
-SCREEN_HEIGHT = 200
-SCREEN_TITLE = "Starting Template"
+import gameboard
+import menu
+import rules
 
-class QuitButton(arcade.gui.UIFlatButton):
-    def on_click(self, event: arcade.gui.UIOnClickEvent):
-        arcade.exit()
-class Escape(arcade.Window):
-    def __init__(self, width, height, title):
-        super().__init__(width, height, title)
+SCREEN_WIDTH = 900
+SCREEN_HEIGHT = 700
+DEFAULT_LINE_HEIGHT = 45
+DEFAULT_FONT_SIZE = 20
+
+class Escape(arcade.View):
+    def __init__(self, menu_instance):
+        super().__init__()
+        self.menu_instance = menu_instance
+    last_screen = "menu"
+    def on_show_view(self):
 
         arcade.set_background_color(arcade.color.GRAY)
 
@@ -38,12 +43,31 @@ class Escape(arcade.Window):
 
     def on_click_back(self, event):
         print("back to menu pressed")
+        self.manager.disable()
+        board_view = menu.Menu()
+        self.window.show_view(board_view)
 
     def on_click_cancel(self, event):
         print("cancel button pressed")
+        self.manager.disable()
+        last_screen = self.menu_instance.get_last_screen()
+        if last_screen == "menu":
+            board_view = menu.Menu()
+            self.window.show_view(board_view)
+        elif last_screen == "game_board":
+            board_view = gameboard.Gameboard()
+            self.window.show_view(board_view)
+        elif last_screen == "rules":
+            board_view = rules.Rules()
+            self.window.show_view(board_view)
+        elif last_screen == "exit":
+            board_view = arcade.exit()
+            self.window.show_view(board_view)
 
     def on_click_exit(self, event):
         print("exit button clicked")
+        self.manager.disable()
+        arcade.exit()
 
 
     def on_draw(self):
@@ -53,15 +77,6 @@ class Escape(arcade.Window):
         self.clear()
         arcade.start_render()
         self.manager.draw()
-        #changes
 
-    def on_buttonclick(selfself, event):
+    def on_buttonclick(self, event):
         print("button is clicked")
-def main():
-    """ Main function """
-    game = Escape(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
-    arcade.run()
-
-
-if __name__ == "__main__":
-    main()
