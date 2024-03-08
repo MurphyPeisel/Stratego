@@ -48,14 +48,12 @@ class Escape(arcade.View):
                 anchor_y="center_y",
                 child=self.v_box)
         )
-    # Functionality for when the user presses the back to menu button to change the screen back to the menu screen
-    def on_click_back(self, event):
-        print("back to menu pressed")
-        self.manager.disable()
-        board_view = menu.Menu()
-        self.window.show_view(board_view)
 
-    def on_click_cancel(self, event):
+    # Functionality for when the user presses the resume button
+    # This function unlike the others needs to get a hold of the previous screen displayed in order to return the user
+    # to it when pressed. That is why there get_last_screen was added to other classes. This function will return the
+    # user to the last screen they were on.
+    def on_click_resume(self, event):
         print("cancel button pressed")
         self.manager.disable()
         last_screen = self.menu_instance.get_last_screen()
@@ -72,6 +70,7 @@ class Escape(arcade.View):
             board_view = arcade.exit()
             self.window.show_view(board_view)
 
+    # This method opens the rules screen which will return to the esc menu when called from there.
     def on_click_rules(self, event):
         print("rules pressed")
         self.manager.disable()
@@ -79,17 +78,24 @@ class Escape(arcade.View):
         self.window.show_view(board_view)
         rules.Rules.last_screen = Escape.last_screen
 
+    # Functionality for when the user presses the back to menu button to change the screen back to the menu screen
     def on_click_back(self, event):
         print("return to menu pressed")
         self.manager.disable()
         board_view = menu.Menu()
         self.window.show_view(board_view)
 
+    # This function closes the program when the user hits the exit button
     def on_click_exit(self, event):
         print("exit button clicked")
         self.manager.disable()
         arcade.exit()
 
+
+    @classmethod
+    def get_last_screen(cls):
+        return cls.last_screen
+    
     # This function draws the window when called
     def on_draw(self):
         """

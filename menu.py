@@ -123,11 +123,10 @@ class Menu(arcade.View):
             board_view = esc_menu.Escape(self)
             self.window.show_view(board_view)
             esc_menu.Escape.last_screen = Menu.last_screen
+            
     @classmethod
     def get_last_screen(cls):
         return cls.last_screen
-            
-    
             
         #RULES
         #center (160,300)
@@ -141,8 +140,3 @@ class Menu(arcade.View):
         #center (160,160)
         #width 275
         #height 100    
-
-    def get_screen():
-        return Screen
-    def get_quit():
-        return Quit

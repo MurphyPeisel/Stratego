@@ -228,7 +228,6 @@ class Rules(arcade.View):
         # check if mouse click was in esc box bounds
         if x >= ESC_BOX_X1 and x <= ESC_BOX_X2 and y >= ESC_BOX_Y1 and y <= ESC_BOX_Y2:
             last_screen = self.menu_instance.get_last_screen()
-            #last_screen = "esc_menu"
             if last_screen == "menu":
                 board_view = menu.Menu()
                 self.window.show_view(board_view)
