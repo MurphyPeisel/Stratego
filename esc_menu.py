@@ -43,11 +43,13 @@ class Escape(arcade.View):
 
     def on_click_back(self, event):
         print("back to menu pressed")
+        self.manager.disable()
         board_view = menu.Menu()
         self.window.show_view(board_view)
 
     def on_click_cancel(self, event):
         print("cancel button pressed")
+        self.manager.disable()
         last_screen = self.menu_instance.get_last_screen()
         if last_screen == "menu":
             board_view = menu.Menu()
@@ -64,6 +66,7 @@ class Escape(arcade.View):
 
     def on_click_exit(self, event):
         print("exit button clicked")
+        self.manager.disable()
         arcade.exit()
 
 

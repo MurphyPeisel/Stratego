@@ -35,6 +35,7 @@ class Pass_Turn(arcade.View):
 
     def on_click_switch(self, event):
         print("player switch pressed")
+        self.manager.disable()
         board_view = gameboard.Gameboard()
         self.window.show_view(board_view)
 
