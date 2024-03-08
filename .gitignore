@@ -1,7 +1,12 @@
+# retrieved from github's suggested .gitignore
+
 # Byte-compiled / optimized / DLL files
-__pycache__/
+/__pycache__/*
 *.py[cod]
 *$py.class
+
+**/.idea/workspace.xml
+**/.idea/tasks.xml
 
 # C extensions
 *.so
