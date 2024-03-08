@@ -33,10 +33,10 @@ class Rules(arcade.Window):
 
         # Add the screen title
         start_x = 0
-        #start_y = SCREEN_HEIGHT - DEFAULT_LINE_HEIGHT
+        start_y = SCREEN_HEIGHT - DEFAULT_LINE_HEIGHT
 
         start_x = 0
-        start_y = SCREEN_HEIGHT - DEFAULT_LINE_HEIGHT * 1.5
+        #start_y = SCREEN_HEIGHT - DEFAULT_LINE_HEIGHT * 1.5
 
         arcade.draw_rectangle_filled(840,640,84,50,
                                      arcade.color.GRANNY_SMITH_APPLE)
