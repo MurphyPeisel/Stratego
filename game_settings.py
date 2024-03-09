@@ -8,8 +8,9 @@ SCREEN_HEIGHT = 200
 DEFAULT_LINE_HEIGHT = 45
 DEFAULT_FONT_SIZE = 20
 
-#The Opponent Class displays 2 buttons: play_button and play_bot_button. If the user selects the play button, they will be taken to the Gameplay page.
-#If the user selects the play_bot_button 
+#The Opponent Class displays 2 buttons: play_button and play_bot_button. 
+#If the user selects the play button, they will be taken to the Gameplay page.
+#If the user selects the play_bot_button they will be taken to the Difficulty page
 class Opponent(arcade.View):
     def on_show_view(self):
 
@@ -36,7 +37,7 @@ class Opponent(arcade.View):
                 child=self.v_box)
         )
     #Function called when bot_button is clicked
-    #Takes user to Difficulty menu
+    #Takes user to Difficulty screen
     def on_click_bot(self, event):
         #SET MODE TO PLAY AGAINST COMPUTER (FUTURE)
 
@@ -57,6 +58,9 @@ class Opponent(arcade.View):
         arcade.start_render()
         self.manager.draw()
 
+#The Difficulty class displays 3 buttons: easy_button, medium_button, and hard_button
+#Each button will take the user to the Gameplay page 
+#Different buttons will affect the difficulty of the computer in future iterations
 class Difficulty(arcade.View):
     def on_show_view(self):
         
@@ -66,7 +70,7 @@ class Difficulty(arcade.View):
         self.manager.enable()
 
         self.v_box = arcade.gui.UIBoxLayout()
-        
+        #Initialize Buttons
         easy_button = arcade.gui.UIFlatButton(text="EASY", width=200)
         self.v_box.add(easy_button.with_space_around(bottom=20))
         medium_button = arcade.gui.UIFlatButton(text="MEDIUM", width=200)
@@ -84,19 +88,21 @@ class Difficulty(arcade.View):
                 anchor_y="center_y",
                 child=self.v_box)
         )
-        
+    #Called when easy_button is clicked
     def on_click_easy(self, event):
         #SET DIFFICULTY OF BOT TO EASY (FOR FUTURE)
         
         #CHANGE WINDOWS
-        self.window.show_view(Other())
-        
+        self.window.show_view(Gameplay())
+    
+    #Called when medium_button is clicked    
     def on_click_medium(self, event):
         #SET DIFFICULTY OF BOT TO MEDIUM (FOR FUTURE)
         
         #CHANGE WINDOWS
         self.window.show_view(Gameplay())
-        
+    
+    #Called when hard_button is clicked 
     def on_click_hard(self, event):
         #SET DIFFICULTY OF BOT TO HARD (FOR FUTURE)
         
@@ -106,16 +112,15 @@ class Difficulty(arcade.View):
 
         
         
-        
+    #On draw will create all of our assets onto the screen
     def on_draw(self):
         self.clear()
         arcade.start_render()
-        self.manager.draw()
+        self.manager.draw()  
 
-    def on_click_exit(self, event):
-        self.manager.disable()
-        arcade.exit()   
-
+#The Gameplay class has 2 butons reveal_button and hide_button
+#Each button will take the user to the Gameplay page 
+#Different buttons will affect the games rules in future iterations
 class Gameplay(arcade.View):
     def on_show_view(self):
         
@@ -141,18 +146,20 @@ class Gameplay(arcade.View):
                 anchor_y="center_y",
                 child=self.v_box)
         )
-        
+    
+    #Called when reveal_button is pressed 
     def on_click_reveal(self, event):
         #CHANGE SETTING SO THAT DEFENDING PEICES ARE NOT REVEALED (FUTURE)
         
         self.window.show_view(gameboard.Gameboard())
-        
+    
+    #Called when hide_button is pressed    
     def on_click_hide(self, event):
         #CHANGE SETTING SO THAT DEFENDING PEICES ARE REVEALED (FUTURE)
         
         #CHANGE WINDOWS
         self.window.show_view(gameboard.Gameboard())
-        
+      
     def on_draw(self):
         self.clear()
         arcade.start_render()
