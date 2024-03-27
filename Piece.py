@@ -1,3 +1,5 @@
+import arcade
+
 START_X = -1
 START_Y = -1
 
@@ -38,6 +40,15 @@ class Piece():
     def setPosition(self, x, y):
         self.posX = x
         self.posY = y
+
+    def draw(self):
+        arcade.draw_text(f"{self.power}",
+                         self.posX,
+                         self.posY,
+                         arcade.color.RED,
+                         20, bold=True,
+                         font_name = "Kenney Future")
+        
 
 column = [Piece] * 10
 
