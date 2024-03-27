@@ -12,7 +12,16 @@ def draw(piece):
                     (BOARD_LEFT + BOARD_MARGIN*x, BOARD_BOTTOM + BOARD_MARGIN*y),
                     (BOARD_RIGHT + BOARD_MARGIN*x, BOARD_BOTTOM + BOARD_MARGIN*y),
                     (BOARD_RIGHT + BOARD_MARGIN*x, BOARD_TOP + BOARD_MARGIN*y))
-    arcade.draw_polygon_filled(point_list, arcade.color.BLUE)
+    if piece.getType() == "Sct":
+        arcade.draw_polygon_filled(point_list, arcade.color.BLUE)
+    elif piece.getType() == "Gen":
+        arcade.draw_polygon_filled(point_list, arcade.color.VIOLET)
+    elif piece.getType() == "Bom":
+        arcade.draw_polygon_filled(point_list, arcade.color.RED)
+    elif piece.getType() == "Msh":
+        arcade.draw_polygon_filled(point_list, arcade.color.BROWN)
+    elif piece.getType() == "Flg":
+        arcade.draw_polygon_filled(point_list, arcade.color.WHITE)
 
 #if given a piece and the location of a cursor click it will return true stating that you can select that piece.
 def is_piece(pieces, click):
@@ -32,23 +41,70 @@ def select_piece(piece, click):
     piecex = piece.getPosition()[0]
     piecey = piece.getPosition()[1]
     if x >= BOARD_LEFT + BOARD_MARGIN * piecex and x <= BOARD_RIGHT + BOARD_MARGIN * piecex and y <= BOARD_TOP + BOARD_MARGIN * piecey and y >= BOARD_BOTTOM + BOARD_MARGIN * piecey:
-        return True
+        if piece.getType() == "Bom" or piece.getType() == "Flg":
+            print("piece does not move please make another selection")
+            return False
+        else:
+            show_available_moves(piece)
+            return True
     else:
         return False
 
+def show_available_moves(piece):
+    x = piece.getPosition()[0]
+    y = piece.getPosition()[1]
+    points_list = ((BOARD_LEFT + BOARD_MARGIN, BOARD_TOP + BOARD_MARGIN),
+                   (BOARD_LEFT + BOARD_MARGIN, BOARD_BOTTOM + BOARD_MARGIN),
+                   (BOARD_RIGHT + BOARD_MARGIN, BOARD_BOTTOM + BOARD_MARGIN),
+                   (BOARD_RIGHT + BOARD_MARGIN, BOARD_TOP + BOARD_MARGIN))
+    arcade.draw_polygon_filled(points_list, arcade.color.BLACK)
 def is_move_available(pieces, piece, click):
+    loc = select_coordinate(click)
+    locx = loc[0]
+    locy = loc[1]
+    piece_loc = piece.getPosition()
+    piece_loc_x = piece_loc[0]
+    piece_loc_y = piece_loc[1]
     if is_piece(pieces, click):
         return False
     else:
-        return True
+        if piece.getType() == "Sct":
+            if locx != piece_loc_x and locy != piece_loc_y:
+                print("invalid please try again")
+                return False
+            else:
+                is_jump = False
+                x = piece_loc_x
+                y = piece_loc_y
+                while x < locx:
+                    if is_piece(pieces, [x, y]) == False:
+                        x = x + 1
+                    else:
+                        print("jump detected")
+                        return False
+                return True
+        else:
+            if locx != piece_loc_x and locy != piece_loc_y:
+                print("invalid please try again")
+                return False
+            if locx > piece_loc_x + 1:
+                print("invalid please try again")
+                return False
+            if locx < piece_loc_x - 1:
+                print("invalid please try again")
+                return False
+            if locy > piece_loc_y + 1:
+                print("invalid please try again")
+                return False
+            if locy < piece_loc_y - 1:
+                print("invalid please try again")
+                return False
+            else:
+                return True
 
-def select_move(piece, click):
+def select_coordinate(click):
     x = click[0]
     y = click[1]
-
-    locx = None
-    locy = None
-
     if y > 100 and y < 150 and x > 200 and x < 700:
         print("move the y coordinate to 0")
         locy = 0
@@ -114,6 +170,16 @@ def select_move(piece, click):
         locx = 9
     else:
         locx = None
+
+    coordinate = [locx, locy]
+    return coordinate
+def select_move(piece, click):
+    x = click[0]
+    y = click[1]
+
+    loc = select_coordinate(click)
+    locx = loc[0]
+    locy = loc[1]
 
     if locx != None and locy != None:
         return make_move(piece, locx, locy)

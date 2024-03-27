@@ -17,8 +17,11 @@ BOARD_BOTTOM = 100
 BOARD_TOP = 150
 BOARD_MARGIN = 50
 tester_piece1 = Piece.Piece("Sct", 2, 0, 0)
-tester_piece2 = Piece.Piece("Sct", 2, 2, 0)
-total_pieces = [tester_piece1, tester_piece2]
+tester_piece2 = Piece.Piece("Msh", 2, 2, 0)
+tester_piece3 = Piece.Piece("Gen", 10, 4, 0)
+tester_piece4 = Piece.Piece("Bom", 12, 6, 0)
+tester_piece5 = Piece.Piece("Flg", 0, 8, 0)
+total_pieces = [tester_piece1, tester_piece2, tester_piece3, tester_piece4, tester_piece5]
 
 # The gameboard class is where the user will engage in gameplay. They can exit via the ESC key and button.  
 # To pass turn, the user must double click the board. 
@@ -81,6 +84,7 @@ class Gameboard(arcade.View):
                 if draw_piece.select_piece(piece, click) == True:
                     print(piece.getType() + " selected")
                     Gameboard.selected = piece
+                    # draw_piece.show_available_moves(Gameboard.selected)
 
             if Gameboard.selected != None:
                 if (draw_piece.is_move_available(total_pieces, Gameboard.selected, click)):
