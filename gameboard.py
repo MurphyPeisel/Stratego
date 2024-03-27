@@ -7,6 +7,8 @@ SCREEN_WIDTH = 900
 SCREEN_HEIGHT = 700
 DEFAULT_LINE_HEIGHT = 45
 DEFAULT_FONT_SIZE = 20
+
+# BOARD CONSTANTS
 ROW_COUNT = 10
 COLUMN_COUNT = 10
 BOARD_RIGHT = 250
@@ -15,12 +17,18 @@ BOARD_BOTTOM = 100
 BOARD_TOP = 150
 BOARD_MARGIN = 50
 
-GRAVEYARD_1_LEFT = 25
-GRAVEYARD_1_RIGHT = 175
+# GRID CONSTANTS
+GRID_LEFT = 200
+GRID_RIGHT = 700
+GRID_BOTTOM = 100
+GRID_TOP = 600
+CELL_WIDTH = 50
 
-GRAVEYARD_2_LEFT = 725
-GRAVEYARD_2_RIGHT = 875
-
+# GRAVEYARD CONSTANTS
+GRAVEYARD_1_LEFT = 0
+GRAVEYARD_1_RIGHT = 200
+GRAVEYARD_2_LEFT = 700
+GRAVEYARD_2_RIGHT = 900
 GRAVEYARD_BOTTOM = 100
 GRAVEYARD_TOP = 600
 
@@ -123,6 +131,22 @@ class Gameboard(arcade.View):
             self.window.show_view(board_view)
             esc_menu.Escape.last_screen = Gameboard.last_screen
         else:
+            # get gameboard grid coordinates from mouse click      
+            if x >= GRID_LEFT and x <= GRID_RIGHT and y >= GRID_BOTTOM and y <= GRID_TOP:   
+                row = int((abs(GRID_TOP - y)) // (CELL_WIDTH)) + 1 # add 1 to make 1-index
+                column = int((abs(x - GRID_LEFT)) // (CELL_WIDTH)) + 1 # add 1 to make 1-index
+                print(f"Click coordinates: ({x}, {y}). Grid coordinates: ({row}, {column})")
+            # get graveyard 1 grid coordinates from mouse click  
+            if x >= GRAVEYARD_1_LEFT and x <= GRAVEYARD_1_RIGHT and y >= GRAVEYARD_BOTTOM and y <= GRAVEYARD_TOP:
+                row = int((abs(GRAVEYARD_TOP - y)) // (CELL_WIDTH)) + 1 # add 1 to make 1-index
+                column = int((abs(x - GRAVEYARD_1_LEFT)) // (CELL_WIDTH)) + 1 # add 1 to make 1-index
+                print(f"Click coordinates: ({x}, {y}). Graveyard1 coordinates: ({row}, {column})")
+            # get graveyard 2 grid coordinates from mouse click     
+            if x >= GRAVEYARD_2_LEFT and x <= GRAVEYARD_2_RIGHT and y >= GRAVEYARD_BOTTOM and y <= GRAVEYARD_TOP:
+                row = int((abs(GRAVEYARD_TOP - y)) // (CELL_WIDTH)) + 1 # add 1 to make 1-index
+                column = int((abs(x - GRAVEYARD_2_LEFT)) // (CELL_WIDTH)) + 1 # add 1 to make 1-index
+                print(f"Click coordinates: ({x}, {y}). Graveyard2 coordinates: ({row}, {column})")     
+
             Gameboard.click_counter = Gameboard.click_counter + 1
             print(Gameboard.click_counter)
             if Gameboard.click_counter == 2:
