@@ -78,9 +78,7 @@ class Gameboard(arcade.View):
             # we need to have an array of all the pieces on the board
             for piece in total_pieces:
                 if draw_piece.select_piece(piece, click) == True:
-                    print("AAAAAAAAAAAAA")
-                else:
-                    print("BBBBBBBBBBB")
+                    print(piece.getType() + " selected")
             # Gameboard.click_counter = Gameboard.click_counter + 1
             # print(Gameboard.click_counter)
             # if Gameboard.click_counter == 2:

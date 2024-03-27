@@ -23,3 +23,6 @@ def select_piece(piece, click):
         return True
     else:
         return False
+
+def select_move(piece, click):
+    pass
