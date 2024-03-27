@@ -1,7 +1,8 @@
 import arcade
 import esc_menu
 import pass_turn
-from Piece import * 
+import Piece
+import draw_piece
 
 # initialize formatting details
 SCREEN_WIDTH = 900
@@ -15,6 +16,12 @@ BOARD_LEFT = 200
 BOARD_BOTTOM = 100
 BOARD_TOP = 150
 BOARD_MARGIN = 50
+tester_piece1 = Piece.Piece("Sct", 2, 0, 0)
+tester_piece2 = Piece.Piece("Msh", 2, 2, 0)
+tester_piece3 = Piece.Piece("Gen", 10, 4, 0)
+tester_piece4 = Piece.Piece("Bom", 12, 6, 0)
+tester_piece5 = Piece.Piece("Flg", 0, 8, 0)
+total_pieces = [tester_piece1, tester_piece2, tester_piece3, tester_piece4, tester_piece5]
 
 # The gameboard class is where the user will engage in gameplay. They can exit via the ESC key and button.  
 # To pass turn, the user must double click the board. 
@@ -22,6 +29,7 @@ class Gameboard(arcade.View):
     last_screen = "game_board"
     
     click_counter = 0
+    selected = None
 
     def on_show_view(self):
         arcade.set_background_color(arcade.color.AVOCADO)
@@ -57,11 +65,12 @@ class Gameboard(arcade.View):
                     (BOARD_RIGHT + BOARD_MARGIN*x, BOARD_TOP + BOARD_MARGIN*y))
                 arcade.draw_polygon_outline(point_list, arcade.color.BLACK, 4)
                 x = x + 1
-            y = y + 1        
-    
-        
-        Gameboard.draw_cell(x, y)
+            y = y + 1
 
+
+        #draw it
+        for piece in total_pieces:
+            draw_piece.draw(piece)
 
     def on_mouse_press(self, x, y, button, key_modifiers):
         if x>=798 and x<=882 and y<= 665 and y>= 615:
@@ -69,19 +78,25 @@ class Gameboard(arcade.View):
             self.window.show_view(board_view)
             esc_menu.Escape.last_screen = Gameboard.last_screen
         else:
-            Gameboard.click_counter = Gameboard.click_counter + 1
-            print(Gameboard.click_counter)
+            click = [x,y]
+            # we need to have an array of all the pieces on the board
+            for piece in total_pieces:
+                if draw_piece.select_piece(piece, click) == True:
+                    print(piece.getType() + " selected")
+                    Gameboard.selected = piece
+                    # draw_piece.show_available_moves(Gameboard.selected)
 
-            # Convert the clicked mouse position into grid coordinates
-            if x >= 200 and x <= 700 and y >= 100 and y <= 600:   
-                row = int((abs(600 - y)) // (50)) + 1 # add 1 to make 1-index
-                column = int((abs(x - 200)) // (50)) + 1 # add 1 to make 1-index
-                print(f"Click coordinates: ({x}, {y}). Grid coordinates: ({row}, {column})")
+            if Gameboard.selected != None:
+                if (draw_piece.is_move_available(total_pieces, Gameboard.selected, click)):
+                    draw_piece.select_move(Gameboard.selected, click)
+                    Gameboard.selected = None
 
-            if Gameboard.click_counter == 2:
-                Gameboard.click_counter = 0
-                view = pass_turn.Pass_Turn()
-                self.window.show_view(view)
+            # Gameboard.click_counter = Gameboard.click_counter + 1
+            # print(Gameboard.click_counter)
+            # if Gameboard.click_counter == 2:
+            #     Gameboard.click_counter = 0
+            #     view = pass_turn.Pass_Turn()
+            #     self.window.show_view(view)
     
     def on_key_press(self, key, key_modifiers):
         if (key == arcade.key.ESCAPE):
