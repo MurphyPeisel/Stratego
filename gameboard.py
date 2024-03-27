@@ -84,7 +84,8 @@ class Gameboard(arcade.View):
 
             if Gameboard.selected != None:
                 if (draw_piece.is_move_available(total_pieces, Gameboard.selected, click)):
-                    draw_piece.make_move(Gameboard.selected, click)
+                    draw_piece.select_move(Gameboard.selected, click)
+                    Gameboard.selected = None
 
             # Gameboard.click_counter = Gameboard.click_counter + 1
             # print(Gameboard.click_counter)
