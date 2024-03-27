@@ -16,10 +16,15 @@ YARD_MARGIN = 50
 
 def draw_start(piece, army, index):
     yard_left = 0
+    
     if army == 1:
         yard_left = GRAVEYARD_1_LEFT
+        piece_color = arcade.color.BLUE
+        
     else:
         yard_left = GRAVEYARD_2_LEFT
+        piece_color = arcade.color.RED
+
    
     row = index // 4
     point_list = ((yard_left+YARD_MARGIN*(index - 4*row),GRAVEYARD_TOP - YARD_MARGIN*row), 
@@ -27,29 +32,29 @@ def draw_start(piece, army, index):
                   (yard_left+(YARD_MARGIN * (index-4*row)) + 40, (GRAVEYARD_TOP - YARD_MARGIN*row)-40),
                   (yard_left+(YARD_MARGIN * (index-4*row)) + 40, GRAVEYARD_TOP - YARD_MARGIN*row))
     if piece.getType() == "Flg":
-        arcade.draw_polygon_filled(point_list, arcade.color.WHITE)
+        arcade.draw_polygon_filled(point_list, piece_color)
     elif piece.getType() == "Msh":
-        arcade.draw_polygon_filled(point_list, arcade.color.BROWN)
+        arcade.draw_polygon_filled(point_list, piece_color)
     elif piece.getType() == "Gen":
-        arcade.draw_polygon_filled(point_list, arcade.color.VIOLET)
+        arcade.draw_polygon_filled(point_list, piece_color)
     if piece.getType() == "Col":
-        arcade.draw_polygon_filled(point_list, arcade.color.PINK)
+        arcade.draw_polygon_filled(point_list, piece_color)
     if piece.getType() == "Maj":
-        arcade.draw_polygon_filled(point_list, arcade.color.YELLOW)
+        arcade.draw_polygon_filled(point_list, piece_color)
     if piece.getType() == "Cap":
-        arcade.draw_polygon_filled(point_list, arcade.color.MAGENTA)
+        arcade.draw_polygon_filled(point_list, piece_color)
     if piece.getType() == "Ltn":
-        arcade.draw_polygon_filled(point_list, arcade.color.TANGERINE)
+        arcade.draw_polygon_filled(point_list, piece_color)
     if piece.getType() == "Sgt":
-        arcade.draw_polygon_filled(point_list, arcade.color.BABY_BLUE)
+        arcade.draw_polygon_filled(point_list, piece_color)
     if piece.getType() == "Min":
-        arcade.draw_polygon_filled(point_list, arcade.color.RASPBERRY)
+        arcade.draw_polygon_filled(point_list, piece_color)
     elif piece.getType() == "Sct":
-        arcade.draw_polygon_filled(point_list, arcade.color.BLUE)
+        arcade.draw_polygon_filled(point_list, piece_color)
     elif piece.getType() == "Spy":
-        arcade.draw_polygon_filled(point_list, arcade.color.BLACK)
+        arcade.draw_polygon_filled(point_list, piece_color)
     elif piece.getType() == "Bom":
-        arcade.draw_polygon_filled(point_list, arcade.color.RED)
+        arcade.draw_polygon_filled(point_list, piece_color)
 
 def draw(piece):
     x = piece.getPosition()[0]
