@@ -15,6 +15,15 @@ BOARD_BOTTOM = 100
 BOARD_TOP = 150
 BOARD_MARGIN = 50
 
+GRAVEYARD_1_LEFT = 25
+GRAVEYARD_1_RIGHT = 175
+
+GRAVEYARD_2_LEFT = 725
+GRAVEYARD_2_RIGHT = 875
+
+GRAVEYARD_BOTTOM = 100
+GRAVEYARD_TOP = 600
+
 #LAKE FORMATTING
 LAKE2_LEFT = 500
 LAKE2_RIGHT = 600
@@ -91,6 +100,20 @@ class Gameboard(arcade.View):
                  (LAKE2_LEFT, LAKE_TOP),)
         arcade.draw_polygon_filled(Lake2, arcade.color.BLUEBERRY)
         arcade.draw_polygon_outline(Lake2, arcade.color.BLACK,4)
+        
+        yard1 = ((GRAVEYARD_1_LEFT, GRAVEYARD_BOTTOM),
+                 (GRAVEYARD_1_RIGHT, GRAVEYARD_BOTTOM),
+                 (GRAVEYARD_1_RIGHT, GRAVEYARD_TOP),
+                 (GRAVEYARD_1_LEFT, GRAVEYARD_TOP),)
+        arcade.draw_polygon_filled(yard1, arcade.color.BLACK_OLIVE)
+        arcade.draw_polygon_outline(yard1, arcade.color.BLACK,8)
+        
+        yard2 = ((GRAVEYARD_2_LEFT, GRAVEYARD_BOTTOM),
+                 (GRAVEYARD_2_RIGHT, GRAVEYARD_BOTTOM),
+                 (GRAVEYARD_2_RIGHT, GRAVEYARD_TOP),
+                 (GRAVEYARD_2_LEFT, GRAVEYARD_TOP),)
+        arcade.draw_polygon_filled(yard2, arcade.color.BLACK_OLIVE)
+        arcade.draw_polygon_outline(yard2, arcade.color.BLACK,8)
 
     #ADD COMMENTS?
            
@@ -116,3 +139,13 @@ class Gameboard(arcade.View):
     @classmethod
     def get_last_screen(cls):
         return cls.last_screen
+    
+def main():
+    """ Main function """
+    window = arcade.Window(SCREEN_WIDTH, SCREEN_HEIGHT, "title")
+    menu_view = Gameboard()
+    window.show_view(menu_view)
+    arcade.run()
+
+if __name__ == "__main__":
+    main()
