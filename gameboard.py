@@ -113,15 +113,16 @@ class Gameboard(arcade.View):
                  (GRAVEYARD_1_RIGHT, GRAVEYARD_BOTTOM),
                  (GRAVEYARD_1_RIGHT, GRAVEYARD_TOP),
                  (GRAVEYARD_1_LEFT, GRAVEYARD_TOP),)
-        arcade.draw_polygon_filled(yard1, arcade.color.BLACK_OLIVE)
+        arcade.draw_polygon_filled(yard1, arcade.color.DARK_TAUPE)
         arcade.draw_polygon_outline(yard1, arcade.color.BLACK,8)
         
         yard2 = ((GRAVEYARD_2_LEFT, GRAVEYARD_BOTTOM),
                  (GRAVEYARD_2_RIGHT, GRAVEYARD_BOTTOM),
                  (GRAVEYARD_2_RIGHT, GRAVEYARD_TOP),
                  (GRAVEYARD_2_LEFT, GRAVEYARD_TOP),)
-        arcade.draw_polygon_filled(yard2, arcade.color.BLACK_OLIVE)
+        arcade.draw_polygon_filled(yard2, arcade.color.DARK_TAUPE)
         arcade.draw_polygon_outline(yard2, arcade.color.BLACK,8)
+
 
     #ADD COMMENTS?
            
