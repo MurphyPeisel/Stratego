@@ -26,6 +26,7 @@ class Gameboard(arcade.View):
     last_screen = "game_board"
     
     click_counter = 0
+    selected = None
 
     def on_show_view(self):
         arcade.set_background_color(arcade.color.AVOCADO)
@@ -79,6 +80,12 @@ class Gameboard(arcade.View):
             for piece in total_pieces:
                 if draw_piece.select_piece(piece, click) == True:
                     print(piece.getType() + " selected")
+                    Gameboard.selected = piece
+
+            if Gameboard.selected != None:
+                if (draw_piece.is_move_available(total_pieces, Gameboard.selected, click)):
+                    draw_piece.make_move(Gameboard.selected, click)
+
             # Gameboard.click_counter = Gameboard.click_counter + 1
             # print(Gameboard.click_counter)
             # if Gameboard.click_counter == 2:
