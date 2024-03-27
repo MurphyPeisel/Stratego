@@ -1,6 +1,8 @@
 import arcade
 import esc_menu
 import pass_turn
+import Piece
+import draw_piece
 
 # initialize formatting details
 SCREEN_WIDTH = 900
@@ -14,6 +16,9 @@ BOARD_LEFT = 200
 BOARD_BOTTOM = 100
 BOARD_TOP = 150
 BOARD_MARGIN = 50
+tester_piece1 = Piece.Piece("Sct", 2, 0, 0)
+tester_piece2 = Piece.Piece("Sct", 2, 2, 0)
+total_pieces = [tester_piece1, tester_piece2]
 
 # The gameboard class is where the user will engage in gameplay. They can exit via the ESC key and button.  
 # To pass turn, the user must double click the board. 
@@ -58,18 +63,30 @@ class Gameboard(arcade.View):
                 x = x + 1
             y = y + 1
 
+
+        #draw it
+        for piece in total_pieces:
+            draw_piece.draw(piece)
+
     def on_mouse_press(self, x, y, button, key_modifiers):
         if x>=798 and x<=882 and y<= 665 and y>= 615:
             board_view = esc_menu.Escape(self)
             self.window.show_view(board_view)
             esc_menu.Escape.last_screen = Gameboard.last_screen
         else:
-            Gameboard.click_counter = Gameboard.click_counter + 1
-            print(Gameboard.click_counter)
-            if Gameboard.click_counter == 2:
-                Gameboard.click_counter = 0
-                view = pass_turn.Pass_Turn()
-                self.window.show_view(view)
+            click = [x,y]
+            # we need to have an array of all the pieces on the board
+            for piece in total_pieces:
+                if draw_piece.select_piece(piece, click) == True:
+                    print("AAAAAAAAAAAAA")
+                else:
+                    print("BBBBBBBBBBB")
+            # Gameboard.click_counter = Gameboard.click_counter + 1
+            # print(Gameboard.click_counter)
+            # if Gameboard.click_counter == 2:
+            #     Gameboard.click_counter = 0
+            #     view = pass_turn.Pass_Turn()
+            #     self.window.show_view(view)
     
     def on_key_press(self, key, key_modifiers):
         if (key == arcade.key.ESCAPE):
