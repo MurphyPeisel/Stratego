@@ -19,13 +19,16 @@ class Piece():
     power = None
     posX = None
     posY = None
+    player = None
     Hidden = None
     
-    def __init__ (self, type, power, x, y):        
+    def __init__ (self, type, power, x, y, player):        
         self.type = type
         self.power = power
         self.posX = x
         self.posY = y
+        self.player = player
+
     
     def getType(self):
         return self.type
@@ -35,6 +38,9 @@ class Piece():
         pos = [self.posX, self.posY]
         return pos
     
+    def getPlayer(self):
+        return self.player
+
     def setPosition(self, x, y):
         self.posX = x
         self.posY = y

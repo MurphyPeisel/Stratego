@@ -42,12 +42,21 @@ LAKE1_RIGHT = 400
 LAKE_BOTTOM = 300
 LAKE_TOP = 400
 
-tester_piece1 = Piece.Piece("Sct", 2, 0, 0)
-tester_piece2 = Piece.Piece("Msh", 2, 2, 0)
-tester_piece3 = Piece.Piece("Gen", 10, 4, 0)
-tester_piece4 = Piece.Piece("Bom", 12, 6, 0)
-tester_piece5 = Piece.Piece("Flg", 0, 8, 0)
-total_pieces = [tester_piece1, tester_piece2, tester_piece3, tester_piece4, tester_piece5]
+p1_tester_piece1 = Piece.Piece("Sct", 2, 0, 0, 1)
+p1_tester_piece2 = Piece.Piece("Msh", 2, 2, 0, 1)
+p1_tester_piece3 = Piece.Piece("Gen", 10, 4, 0, 1)
+p1_tester_piece4 = Piece.Piece("Bom", 12, 6, 0, 1)
+p1_tester_piece5 = Piece.Piece("Flg", 0, 8, 0, 1)
+
+p2_tester_piece1 = Piece.Piece("Sct", 2, 0, 9, 2)
+p2_tester_piece2 = Piece.Piece("Msh", 2, 2, 9, 2)
+p2_tester_piece3 = Piece.Piece("Gen", 10, 4, 9, 3)
+p2_tester_piece4 = Piece.Piece("Bom", 12, 6, 9, 2)
+p2_tester_piece5 = Piece.Piece("Flg", 0, 8, 9, 2)
+
+p1_pieces = [p1_tester_piece1, p1_tester_piece2, p1_tester_piece3, p1_tester_piece4, p1_tester_piece5]
+p2_pieces = [p2_tester_piece1, p2_tester_piece2, p2_tester_piece3, p2_tester_piece4, p2_tester_piece5]
+total_pieces = p1_pieces + p2_pieces
 
 # The gameboard class is where the user will engage in gameplay. They can exit via the ESC key and button.  
 # To pass turn, the user must double click the board. 
