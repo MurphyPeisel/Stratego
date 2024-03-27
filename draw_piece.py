@@ -5,13 +5,61 @@ BOARD_MARGIN = 50
 BOARD_TOP = 150
 BOARD_RIGHT = 250
 BOARD_BOTTOM = 100
+
+GRAVEYARD_1_LEFT = 5
+GRAVEYARD_1_RIGHT = 195
+GRAVEYARD_2_LEFT = 705
+GRAVEYARD_2_RIGHT = 895
+GRAVEYARD_BOTTOM = 105
+GRAVEYARD_TOP = 595
+YARD_MARGIN = 50
+
+def draw_start(piece, army, index):
+    yard_left = 0
+    if army == 1:
+        yard_left = GRAVEYARD_1_LEFT
+    else:
+        yard_left = GRAVEYARD_2_LEFT
+   
+    row = index // 4
+    point_list = ((yard_left+YARD_MARGIN*(index - 4*row),GRAVEYARD_TOP - YARD_MARGIN*row), 
+                  (yard_left+YARD_MARGIN*(index - 4*row), (GRAVEYARD_TOP- YARD_MARGIN*row) - 40),
+                  (yard_left+(YARD_MARGIN * (index-4*row)) + 40, (GRAVEYARD_TOP - YARD_MARGIN*row)-40),
+                  (yard_left+(YARD_MARGIN * (index-4*row)) + 40, GRAVEYARD_TOP - YARD_MARGIN*row))
+    if piece.getType() == "Flg":
+        arcade.draw_polygon_filled(point_list, arcade.color.WHITE)
+    elif piece.getType() == "Msh":
+        arcade.draw_polygon_filled(point_list, arcade.color.BROWN)
+    elif piece.getType() == "Gen":
+        arcade.draw_polygon_filled(point_list, arcade.color.VIOLET)
+    if piece.getType() == "Col":
+        arcade.draw_polygon_filled(point_list, arcade.color.PINK)
+    if piece.getType() == "Maj":
+        arcade.draw_polygon_filled(point_list, arcade.color.YELLOW)
+    if piece.getType() == "Cap":
+        arcade.draw_polygon_filled(point_list, arcade.color.MAGENTA)
+    if piece.getType() == "Ltn":
+        arcade.draw_polygon_filled(point_list, arcade.color.TANGERINE)
+    if piece.getType() == "Sgt":
+        arcade.draw_polygon_filled(point_list, arcade.color.BABY_BLUE)
+    if piece.getType() == "Min":
+        arcade.draw_polygon_filled(point_list, arcade.color.RASPBERRY)
+    elif piece.getType() == "Sct":
+        arcade.draw_polygon_filled(point_list, arcade.color.BLUE)
+    elif piece.getType() == "Spy":
+        arcade.draw_polygon_filled(point_list, arcade.color.BLACK)
+    elif piece.getType() == "Bom":
+        arcade.draw_polygon_filled(point_list, arcade.color.RED)
+
 def draw(piece):
     x = piece.getPosition()[0]
     y = piece.getPosition()[1]
+      
+    
     point_list = ((BOARD_LEFT + BOARD_MARGIN*x, BOARD_TOP + BOARD_MARGIN*y),
-                    (BOARD_LEFT + BOARD_MARGIN*x, BOARD_BOTTOM + BOARD_MARGIN*y),
-                    (BOARD_RIGHT + BOARD_MARGIN*x, BOARD_BOTTOM + BOARD_MARGIN*y),
-                    (BOARD_RIGHT + BOARD_MARGIN*x, BOARD_TOP + BOARD_MARGIN*y))
+                        (BOARD_LEFT + BOARD_MARGIN*x, BOARD_BOTTOM + BOARD_MARGIN*y),
+                        (BOARD_RIGHT + BOARD_MARGIN*x, BOARD_BOTTOM + BOARD_MARGIN*y),
+                        (BOARD_RIGHT + BOARD_MARGIN*x, BOARD_TOP + BOARD_MARGIN*y))
     if piece.getType() == "Sct":
         arcade.draw_polygon_filled(point_list, arcade.color.BLUE)
     elif piece.getType() == "Gen":

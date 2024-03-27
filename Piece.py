@@ -102,21 +102,6 @@ def initPieces():
     #FLAG
     Flag = Piece("Flg", FLAG_POWER, START_X, START_Y)
     p1.append(Flag)
-    
-    #BOMBS
-    Bomb1 = Piece("Bom", BOMB_POWER, START_X, START_Y)
-    Bomb2 = Piece("Bom", BOMB_POWER, START_X, START_Y)   
-    Bomb3 = Piece("Bom", BOMB_POWER, START_X, START_Y)  
-    Bomb4 = Piece("Bom", BOMB_POWER, START_X, START_Y)
-    Bomb5 = Piece("Bom", BOMB_POWER, START_X, START_Y)       
-    Bomb6 = Piece("Bom", BOMB_POWER, START_X, START_Y)
-    p1.append(Bomb1)
-    p1.append(Bomb2)
-    p1.append(Bomb3)
-    p1.append(Bomb4)
-    p1.append(Bomb5)
-    p1.append(Bomb6)
-    
   
     #MARSHALL
     Marshall = Piece("Msh", MARSHALL_POWER, START_X, START_Y) 
@@ -182,6 +167,24 @@ def initPieces():
     p1.append(Miner4)
     p1.append(Miner5)
     
+    #BOMBS
+    Bomb1 = Piece("Bom", BOMB_POWER, START_X, START_Y)
+    Bomb2 = Piece("Bom", BOMB_POWER, START_X, START_Y)   
+    Bomb3 = Piece("Bom", BOMB_POWER, START_X, START_Y)  
+    Bomb4 = Piece("Bom", BOMB_POWER, START_X, START_Y)
+    Bomb5 = Piece("Bom", BOMB_POWER, START_X, START_Y)       
+    Bomb6 = Piece("Bom", BOMB_POWER, START_X, START_Y)
+    p1.append(Bomb1)
+    p1.append(Bomb2)
+    p1.append(Bomb3)
+    p1.append(Bomb4)
+    p1.append(Bomb5)
+    p1.append(Bomb6)
+    
+    #SPY
+    Spy = Piece("Spy", SPY_POWER, START_X, START_Y)
+    p1.append(Spy)
+
     #SCOUTS
     Scout1 = Piece("Sct", SCOUT_POWER, START_X, START_Y)
     Scout2 = Piece("Sct", SCOUT_POWER, START_X, START_Y)
@@ -199,10 +202,6 @@ def initPieces():
     p1.append(Scout6)
     p1.append(Scout7)
     p1.append(Scout8)
-    
-    #SPY
-    Spy = Piece("Spy", SPY_POWER, START_X, START_Y)
-    p1.append(Spy)
     
     return p1
         
@@ -224,11 +223,7 @@ def main():
     
     createGrid()
     
-    print (placePiece(p1Pieces[4]))
-    print (placePiece(p1Pieces[5]))
-    print (placePiece(p1Pieces[6]))
-    print (placePiece(p1Pieces[7]))
-    print (placePiece(p1Pieces[35]))
+    print (p1Pieces[0].getType())
 
     
     
@@ -239,4 +234,4 @@ def main():
     
       
         
-# main()
+main()

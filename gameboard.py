@@ -42,12 +42,19 @@ LAKE1_RIGHT = 400
 LAKE_BOTTOM = 300
 LAKE_TOP = 400
 
-tester_piece1 = Piece.Piece("Sct", 2, 0, 0)
+graveyard1 = Piece.initPieces()
+graveyard2 = Piece.initPieces()
+
+army1 = []
+army2 = []
+
+
+tester_piece1 = Piece.Piece("Sct", 2, -1, 0)
 tester_piece2 = Piece.Piece("Msh", 2, 2, 0)
 tester_piece3 = Piece.Piece("Gen", 10, 4, 0)
 tester_piece4 = Piece.Piece("Bom", 12, 6, 0)
-tester_piece5 = Piece.Piece("Flg", 0, 8, 0)
-total_pieces = [tester_piece1, tester_piece2, tester_piece3, tester_piece4, tester_piece5]
+tester_piece5 = Piece.Piece("Flg", 0, -1, -1)
+total_pieces = [tester_piece5]
 
 # The gameboard class is where the user will engage in gameplay. They can exit via the ESC key and button.  
 # To pass turn, the user must double click the board. 
@@ -137,10 +144,18 @@ class Gameboard(arcade.View):
     #ADD COMMENTS?
            
 
+        #draw army 1
+        i = 0
+        for piece in graveyard1:
+             draw_piece.draw_start(piece, 1, i)
+             i = i+1
+        #draw army 2
+        i = 0
+        for piece in graveyard2:
+             draw_piece.draw_start(piece, 2, i)
+             i = i+1
+             
 
-        #draw it
-        for piece in total_pieces:
-            draw_piece.draw(piece)
 
     def on_mouse_press(self, x, y, button, key_modifiers):
         if x>=798 and x<=882 and y<= 665 and y>= 615:
