@@ -26,6 +26,7 @@ GRID_BOTTOM = 100
 GRID_TOP = 600
 CELL_WIDTH = 50
 
+
 # GRAVEYARD CONSTANTS
 GRAVEYARD_1_LEFT = 0
 GRAVEYARD_1_RIGHT = 200
@@ -62,8 +63,21 @@ total_pieces = p1_pieces + p2_pieces
 # To pass turn, the user must double click the board. 
 class Gameboard(arcade.View):
     last_screen = "game_board"
-    
+
+    def __init__(self):
+        super().__init__()
+
+        # array backed grid
+        self.grid = []
+        for row in range(10):
+            # Add an empty array that will hold each cell
+            # in this row
+            self.grid.append([])
+            for column in range(10):
+                self.grid[row].append(0)  # Append a cell
+
     click_counter = 0
+    second_piece_select = False
     selected = None
 
     def on_show_view(self):
@@ -100,18 +114,22 @@ class Gameboard(arcade.View):
         #DRAW BOARD OUTLINE
         arcade.draw_polygon_outline(Board, arcade.color.BLACK,8)
         
-        #DRAW OUTLINES OF SPACES ON BOARD 
-        y = 0
-        while (y < 10):
-            x = 0
-            while (x < 10):
-                point_list = ((BOARD_LEFT + BOARD_MARGIN*x, BOARD_TOP + BOARD_MARGIN*y),
-                    (BOARD_LEFT + BOARD_MARGIN*x, BOARD_BOTTOM + BOARD_MARGIN*y),
-                    (BOARD_RIGHT + BOARD_MARGIN*x, BOARD_BOTTOM + BOARD_MARGIN*y),
-                    (BOARD_RIGHT + BOARD_MARGIN*x, BOARD_TOP + BOARD_MARGIN*y))
-                arcade.draw_polygon_outline(point_list, arcade.color.BLACK, 4)
-                x = x + 1
-            y = y + 1
+        # Draw the grid
+        for row in range(ROW_COUNT):
+            for column in range(COLUMN_COUNT):
+                # Figure out what color to draw the box
+                if self.grid[row][column] == 1:
+                    color = arcade.color.GREEN
+                else:
+                    color = arcade.color.WHITE
+
+                # Do the math to figure out where the box is
+                x = 200 + (50) * column + 50 // 2
+                y = 100 + (50) * row + 50 // 2
+
+                # Draw the box
+                arcade.draw_rectangle_filled(x, y, 50, 50, arcade.color.AFRICAN_VIOLET)
+                arcade.draw_rectangle_outline(x, y, 50, 50, arcade.color.BLACK, 2)
         
         #DRAW LEFT LAKE
         Lake1 = ((LAKE1_LEFT, LAKE_BOTTOM),
@@ -146,33 +164,12 @@ class Gameboard(arcade.View):
     #ADD COMMENTS?
            
 
-
-        #draw it
-        for piece in total_pieces:
-            draw_piece.draw(piece)
-
     def on_mouse_press(self, x, y, button, key_modifiers):
         if x>=798 and x<=882 and y<= 665 and y>= 615:
             board_view = esc_menu.Escape(self)
             self.window.show_view(board_view)
             esc_menu.Escape.last_screen = Gameboard.last_screen
-        else:
-            # get gameboard grid coordinates from mouse click      
-            if x >= GRID_LEFT and x <= GRID_RIGHT and y >= GRID_BOTTOM and y <= GRID_TOP:   
-                row = int((abs(GRID_TOP - y)) // (CELL_WIDTH)) + 1 # add 1 to make 1-index
-                column = int((abs(x - GRID_LEFT)) // (CELL_WIDTH)) + 1 # add 1 to make 1-index
-                print(f"Click coordinates: ({x}, {y}). Grid coordinates: ({row}, {column})")
-            # get graveyard 1 grid coordinates from mouse click  
-            if x >= GRAVEYARD_1_LEFT and x <= GRAVEYARD_1_RIGHT and y >= GRAVEYARD_BOTTOM and y <= GRAVEYARD_TOP:
-                row = int((abs(GRAVEYARD_TOP - y)) // (CELL_WIDTH)) + 1 # add 1 to make 1-index
-                column = int((abs(x - GRAVEYARD_1_LEFT)) // (CELL_WIDTH)) + 1 # add 1 to make 1-index
-                print(f"Click coordinates: ({x}, {y}). Graveyard1 coordinates: ({row}, {column})")
-            # get graveyard 2 grid coordinates from mouse click     
-            if x >= GRAVEYARD_2_LEFT and x <= GRAVEYARD_2_RIGHT and y >= GRAVEYARD_BOTTOM and y <= GRAVEYARD_TOP:
-                row = int((abs(GRAVEYARD_TOP - y)) // (CELL_WIDTH)) + 1 # add 1 to make 1-index
-                column = int((abs(x - GRAVEYARD_2_LEFT)) // (CELL_WIDTH)) + 1 # add 1 to make 1-index
-                print(f"Click coordinates: ({x}, {y}). Graveyard2 coordinates: ({row}, {column})")     
-
+        else:   
             # Gameboard.click_counter = Gameboard.click_counter + 1
             # print(Gameboard.click_counter)
             # if Gameboard.click_counter == 2:
@@ -183,15 +180,30 @@ class Gameboard(arcade.View):
             click = [x,y]
             # we need to have an array of all the pieces on the board
             for piece in total_pieces:
-                if draw_piece.select_piece(piece, click) == True:
+                if draw_piece.select_piece(piece, click) == True and Gameboard.second_piece_select == False:
+                    Gameboard.second_piece_select = True
                     print(piece.getType() + " selected")
                     Gameboard.selected = piece
                     # draw_piece.show_available_moves(Gameboard.selected)
 
-            if Gameboard.selected != None:
-                if (draw_piece.is_move_available(total_pieces, Gameboard.selected, click)):
+            if Gameboard.selected != None and Gameboard.second_piece_select == True:
+                other_selection = draw_piece.is_move_available(total_pieces, Gameboard.selected, click)
+                # if valid move and the other selection is not a piece, move piece
+                if (other_selection[0] and other_selection[1] == None):
                     draw_piece.select_move(Gameboard.selected, click)
+                    Gameboard.second_piece_select = False
                     Gameboard.selected = None
+                # if valid move and other selection is a piece, check capture condition 
+                if (other_selection[0] and other_selection[1] != None):
+                    print("COMBAT185")
+                    print(piece)
+                    print(other_selection[1])
+                    draw_piece.combat(piece, other_selection[1], click)
+                    Gameboard.second_piece_select = False
+            else:
+                Gameboard.second_piece_select = False
+
+
 
             # Gameboard.click_counter = Gameboard.click_counter + 1
             # print(Gameboard.click_counter)

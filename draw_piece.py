@@ -31,8 +31,8 @@ def is_piece(pieces, click):
         piecex = piece.getPosition()[0]
         piecey = piece.getPosition()[1]
         if x>=BOARD_LEFT + BOARD_MARGIN*piecex and x<=BOARD_RIGHT + BOARD_MARGIN*piecex and y<= BOARD_TOP + BOARD_MARGIN*piecey and y>= BOARD_BOTTOM + BOARD_MARGIN*piecey:
-            return True
-    return False
+            return (True, piece)
+    return (False, None)
 
 
 def select_piece(piece, click):
@@ -65,42 +65,49 @@ def is_move_available(pieces, piece, click):
     piece_loc = piece.getPosition()
     piece_loc_x = piece_loc[0]
     piece_loc_y = piece_loc[1]
-    if is_piece(pieces, click):
-        return False
+    # keep track of other piece 
+    other_piece = is_piece(pieces, click)
+    # allows piece to be moved on top of enemy pieces
+    if other_piece[0]:
+        if other_piece[1].getPlayer() != piece.getPlayer():
+            # pieces are owned by different players. allow movement on top.
+            return (True, other_piece[1])
+        else:
+            return (False, None)
     else:
         if piece.getType() == "Sct":
             if locx != piece_loc_x and locy != piece_loc_y:
                 print("invalid please try again")
-                return False
+                return (False, None)
             else:
                 is_jump = False
                 x = piece_loc_x
                 y = piece_loc_y
                 while x < locx:
-                    if is_piece(pieces, [x, y]) == False:
+                    if is_piece(pieces, [x, y])[0] == False:
                         x = x + 1
                     else:
                         print("jump detected")
-                        return False
-                return True
+                        return (False, None)
+                return (True, None)
         else:
             if locx != piece_loc_x and locy != piece_loc_y:
                 print("invalid please try again")
-                return False
+                return (False, None)
             if locx > piece_loc_x + 1:
                 print("invalid please try again")
-                return False
+                return (False, None)
             if locx < piece_loc_x - 1:
                 print("invalid please try again")
-                return False
+                return (False, None)
             if locy > piece_loc_y + 1:
                 print("invalid please try again")
-                return False
+                return (False, None)
             if locy < piece_loc_y - 1:
                 print("invalid please try again")
-                return False
+                return (False, None)
             else:
-                return True
+                return (True, None)
 
 def select_coordinate(click):
     x = click[0]
@@ -185,6 +192,23 @@ def select_move(piece, click):
         return make_move(piece, locx, locy)
     else:
         return None
+    
+def combat(piece1, piece2, click):
+    if piece1.getPower() > piece2.getPower():
+        # piece 1 wins. remove piece 2 from board and take its place.
+        print("piece 1 wins")
+        erase(piece2)
+        select_move(piece1, click)
+    elif piece1.getPower() < piece2.getPower():
+        # piece 2 wins. remove piece 1 from board
+        print("piece 2 wins")
+        erase(piece1)
+        select_move(piece2, click)
+    else:
+        # pieces have same power, remove both from board
+        print("both lose")
+        erase(piece1)
+        erase(piece2)
 
 # right now erase just places a square over the top of the piec location. if this causes lag or other things we should look into how to remove drawings
 def erase(piece):
@@ -194,8 +218,10 @@ def erase(piece):
                   (BOARD_LEFT + BOARD_MARGIN * x, BOARD_BOTTOM + BOARD_MARGIN * y),
                   (BOARD_RIGHT + BOARD_MARGIN * x, BOARD_BOTTOM + BOARD_MARGIN * y),
                   (BOARD_RIGHT + BOARD_MARGIN * x, BOARD_TOP + BOARD_MARGIN * y))
-    arcade.draw_polygon_filled(point_list, arcade.color.GRANNY_SMITH_APPLE)
+    arcade.draw_polygon_filled(point_list, arcade.color.BLACK)
+
 def make_move(piece, locx, locy):
     erase(piece)
     piece.setPosition(locx, locy)
     draw(piece)
+
