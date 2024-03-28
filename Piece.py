@@ -1,18 +1,4 @@
-START_X = -1
-START_Y = -1
-
-FLAG_POWER = 0
-BOMB_POWER = 12
-MARSHALL_POWER = 10
-GENERAL_POWER = 9
-COLONEL_POWER = 8
-MAJOR_POWER = 7
-CAPTAIN_POWER = 6
-LIEUTENANT_POWER = 5
-SERGEANT_POWER = 4
-MINER_POWER = 3
-SCOUT_POWER = 2
-SPY_POWER = 1
+from constants import *
 
 class Piece():
     type = None   #Piece types, Lake, Nothing, etc.
@@ -20,7 +6,7 @@ class Piece():
     posX = None
     posY = None
     player = None
-    Hidden = None
+    defeated = False
     
     def __init__ (self, type, power, x, y, player):        
         self.type = type
@@ -75,6 +61,20 @@ def placePiece(P1):
         column[y][x] = P1.getType()
         return f"{P1.getType()} Placed Succesfully"
 
+def check_orthogonal(piece1, piece2):
+    """ 
+    Checks if two pieces are orthogonally adjacent.
+    :param piece1: First piece
+    :param piece2: Second piece
+    :return: 'True' if orthongal, 'False' otherwise
+    :rtype: bool
+    """
+    x_diff = abs(piece1.posX - piece2.posX)
+    y_diff = abs(piece1.posY - piece2.posY) 
+    if (x_diff == 0 and y_diff == 1) or (x_diff == 1 and y_diff == 0):
+        return True
+    else:
+        return False
 
 #Creates a 10x10 Grid
 def createGrid():

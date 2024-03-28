@@ -3,55 +3,17 @@ import esc_menu
 import pass_turn
 import Piece
 import draw_piece
-
-# initialize formatting details
-SCREEN_WIDTH = 900
-SCREEN_HEIGHT = 700
-DEFAULT_LINE_HEIGHT = 45
-DEFAULT_FONT_SIZE = 20
-
-# BOARD CONSTANTS
-ROW_COUNT = 10
-COLUMN_COUNT = 10
-BOARD_RIGHT = 250
-BOARD_LEFT = 200
-BOARD_BOTTOM = 100
-BOARD_TOP = 150
-BOARD_MARGIN = 50
-
-# GRID CONSTANTS
-GRID_LEFT = 200
-GRID_RIGHT = 700
-GRID_BOTTOM = 100
-GRID_TOP = 600
-CELL_WIDTH = 50
-
-
-# GRAVEYARD CONSTANTS
-GRAVEYARD_1_LEFT = 0
-GRAVEYARD_1_RIGHT = 200
-GRAVEYARD_2_LEFT = 700
-GRAVEYARD_2_RIGHT = 900
-GRAVEYARD_BOTTOM = 100
-GRAVEYARD_TOP = 600
-
-#LAKE FORMATTING
-LAKE2_LEFT = 500
-LAKE2_RIGHT = 600
-LAKE1_LEFT = 300
-LAKE1_RIGHT = 400
-LAKE_BOTTOM = 300
-LAKE_TOP = 400
+from constants import *
 
 p1_tester_piece1 = Piece.Piece("Sct", 2, 0, 0, 1)
-p1_tester_piece2 = Piece.Piece("Msh", 2, 2, 0, 1)
-p1_tester_piece3 = Piece.Piece("Gen", 10, 4, 0, 1)
+p1_tester_piece2 = Piece.Piece("Msh", 10, 2, 0, 1)
+p1_tester_piece3 = Piece.Piece("Gen", 9, 4, 0, 1)
 p1_tester_piece4 = Piece.Piece("Bom", 12, 6, 0, 1)
 p1_tester_piece5 = Piece.Piece("Flg", 0, 8, 0, 1)
 
 p2_tester_piece1 = Piece.Piece("Sct", 2, 0, 9, 2)
-p2_tester_piece2 = Piece.Piece("Msh", 2, 2, 9, 2)
-p2_tester_piece3 = Piece.Piece("Gen", 10, 4, 9, 3)
+p2_tester_piece2 = Piece.Piece("Msh", 10, 2, 9, 2)
+p2_tester_piece3 = Piece.Piece("Gen", 9, 4, 9, 3)
 p2_tester_piece4 = Piece.Piece("Bom", 12, 6, 9, 2)
 p2_tester_piece5 = Piece.Piece("Flg", 0, 8, 9, 2)
 
@@ -63,21 +25,8 @@ total_pieces = p1_pieces + p2_pieces
 # To pass turn, the user must double click the board. 
 class Gameboard(arcade.View):
     last_screen = "game_board"
-
-    def __init__(self):
-        super().__init__()
-
-        # array backed grid
-        self.grid = []
-        for row in range(10):
-            # Add an empty array that will hold each cell
-            # in this row
-            self.grid.append([])
-            for column in range(10):
-                self.grid[row].append(0)  # Append a cell
-
+    
     click_counter = 0
-    second_piece_select = False
     selected = None
 
     def on_show_view(self):
@@ -114,22 +63,18 @@ class Gameboard(arcade.View):
         #DRAW BOARD OUTLINE
         arcade.draw_polygon_outline(Board, arcade.color.BLACK,8)
         
-        # Draw the grid
-        for row in range(ROW_COUNT):
-            for column in range(COLUMN_COUNT):
-                # Figure out what color to draw the box
-                if self.grid[row][column] == 1:
-                    color = arcade.color.GREEN
-                else:
-                    color = arcade.color.WHITE
-
-                # Do the math to figure out where the box is
-                x = 200 + (50) * column + 50 // 2
-                y = 100 + (50) * row + 50 // 2
-
-                # Draw the box
-                arcade.draw_rectangle_filled(x, y, 50, 50, arcade.color.AFRICAN_VIOLET)
-                arcade.draw_rectangle_outline(x, y, 50, 50, arcade.color.BLACK, 2)
+        #DRAW OUTLINES OF SPACES ON BOARD 
+        y = 0
+        while (y < 10):
+            x = 0
+            while (x < 10):
+                point_list = ((BOARD_LEFT + BOARD_MARGIN*x, BOARD_TOP + BOARD_MARGIN*y),
+                    (BOARD_LEFT + BOARD_MARGIN*x, BOARD_BOTTOM + BOARD_MARGIN*y),
+                    (BOARD_RIGHT + BOARD_MARGIN*x, BOARD_BOTTOM + BOARD_MARGIN*y),
+                    (BOARD_RIGHT + BOARD_MARGIN*x, BOARD_TOP + BOARD_MARGIN*y))
+                arcade.draw_polygon_outline(point_list, arcade.color.BLACK, 4)
+                x = x + 1
+            y = y + 1
         
         #DRAW LEFT LAKE
         Lake1 = ((LAKE1_LEFT, LAKE_BOTTOM),
@@ -160,50 +105,41 @@ class Gameboard(arcade.View):
         arcade.draw_polygon_filled(yard2, arcade.color.DARK_TAUPE)
         arcade.draw_polygon_outline(yard2, arcade.color.BLACK,8)
 
-
-    #ADD COMMENTS?
-           
+        # draw pieces
+        for piece in total_pieces:
+            if piece.defeated != True:
+                draw_piece.draw(piece)
+            else:
+                # piece is defeated --> draw it, but in the graveyard
+                pass
+                
 
     def on_mouse_press(self, x, y, button, key_modifiers):
+        # escape menu coordinates --> make constants
         if x>=798 and x<=882 and y<= 665 and y>= 615:
             board_view = esc_menu.Escape(self)
             self.window.show_view(board_view)
             esc_menu.Escape.last_screen = Gameboard.last_screen
-        else:   
-            # Gameboard.click_counter = Gameboard.click_counter + 1
-            # print(Gameboard.click_counter)
-            # if Gameboard.click_counter == 2:
-            #     Gameboard.click_counter = 0
-            #     view = pass_turn.Pass_Turn()
-            #     self.window.show_view(view)
-                
-            click = [x,y]
+        else:
+            click = (x,y)
             # we need to have an array of all the pieces on the board
             for piece in total_pieces:
-                if draw_piece.select_piece(piece, click) == True and Gameboard.second_piece_select == False:
-                    Gameboard.second_piece_select = True
+                if draw_piece.select_piece(piece, click) == True and Gameboard.selected == None:
                     print(piece.getType() + " selected")
                     Gameboard.selected = piece
                     # draw_piece.show_available_moves(Gameboard.selected)
 
-            if Gameboard.selected != None and Gameboard.second_piece_select == True:
-                other_selection = draw_piece.is_move_available(total_pieces, Gameboard.selected, click)
-                # if valid move and the other selection is not a piece, move piece
-                if (other_selection[0] and other_selection[1] == None):
-                    draw_piece.select_move(Gameboard.selected, click)
-                    Gameboard.second_piece_select = False
+            if Gameboard.selected != None:
+                is_valid_move, cell_occupant = draw_piece.is_move_available(total_pieces, Gameboard.selected, click)
+                if is_valid_move and cell_occupant == None:
+                    draw_piece.move_piece(Gameboard.selected, click)
                     Gameboard.selected = None
-                # if valid move and other selection is a piece, check capture condition 
-                if (other_selection[0] and other_selection[1] != None):
-                    print("COMBAT185")
-                    print(piece)
-                    print(other_selection[1])
-                    draw_piece.combat(piece, other_selection[1], click)
-                    Gameboard.second_piece_select = False
+                if is_valid_move and cell_occupant != None:
+                    if Piece.check_orthogonal(Gameboard.selected, cell_occupant):
+                        draw_piece.combat(Gameboard.selected, cell_occupant, click)
+                    Gameboard.selected = None
             else:
-                Gameboard.second_piece_select = False
-
-
+                Gameboard.selected = None
 
             # Gameboard.click_counter = Gameboard.click_counter + 1
             # print(Gameboard.click_counter)
