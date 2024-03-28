@@ -75,15 +75,30 @@ class Gameboard(arcade.View):
 
         # initialize formatting details
         start_x = 0
-        start_y = SCREEN_HEIGHT - DEFAULT_LINE_HEIGHT * 1.5
+        start_y = SCREEN_HEIGHT - DEFAULT_LINE_HEIGHT * 1.3
 
         # Shape for esc button
-        arcade.draw_rectangle_filled(840,640,84,50,
+        arcade.draw_rectangle_filled(840,650,84,50,
                                      arcade.color.GRANNY_SMITH_APPLE)
         # Text for esc button
         arcade.draw_text("ESC",
                          start_x + (SCREEN_WIDTH *.9),
                          start_y,
+                         arcade.color.BLACK,
+                         DEFAULT_FONT_SIZE,
+                         font_name="Kenney Future")
+        
+        start_y = SCREEN_HEIGHT - DEFAULT_LINE_HEIGHT * 8
+        arcade.draw_text("ARMY 2",
+                         745,
+                         60,
+                         arcade.color.BLACK,
+                         DEFAULT_FONT_SIZE,
+                         font_name="Kenney Future")
+        start_y = SCREEN_HEIGHT - DEFAULT_LINE_HEIGHT * 8
+        arcade.draw_text("ARMY 1",
+                         35,
+                         60,
                          arcade.color.BLACK,
                          DEFAULT_FONT_SIZE,
                          font_name="Kenney Future")
