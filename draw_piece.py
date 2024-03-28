@@ -27,10 +27,13 @@ def draw(piece):
 def is_piece(pieces, click):
     x = click[0]
     y = click[1]
+    # print("checking for piece at " + str(x) + str(y))
     for piece in pieces:
         piecex = piece.getPosition()[0]
         piecey = piece.getPosition()[1]
         if x>=BOARD_LEFT + BOARD_MARGIN*piecex and x<=BOARD_RIGHT + BOARD_MARGIN*piecex and y<= BOARD_TOP + BOARD_MARGIN*piecey and y>= BOARD_BOTTOM + BOARD_MARGIN*piecey:
+            print("click x val is " + str(x) + " click y val is " + str(y))
+            print(piece.getType() + " Detected")
             return True
     return False
 
@@ -73,15 +76,62 @@ def is_move_available(pieces, piece, click):
                 print("invalid please try again")
                 return False
             else:
-                is_jump = False
-                x = piece_loc_x
-                y = piece_loc_y
-                while x < locx:
-                    if is_piece(pieces, [x, y]) == False:
-                        x = x + 1
-                    else:
-                        print("jump detected")
-                        return False
+                x = (piece_loc_x * 50) + 225
+                y = (piece_loc_y * 50) + 125
+                print("x " + str(x) + " y " + str(y))
+                locx_tester = BOARD_LEFT + BOARD_MARGIN * locx
+                print(locx_tester)
+                locy_tester = BOARD_BOTTOM + BOARD_MARGIN * locy
+                print("locx_tester " + str(locx_tester) + " locy_tester " + str(locy_tester))
+
+                if x < locx_tester and locx != piece_loc_x:
+                    print("testing rightward movement")
+                    x = (piece_loc_x * 50) + 225
+                    y = (piece_loc_y * 50) + 125
+                    while x < locx_tester:
+                        x = x + 50
+                        if is_piece(pieces, [x, y]) == False:
+                            print("for right movement check x " + str(x) + " check y " + str(y))
+                        else:
+                            print("for right movement jump detected at " + str(x) + ", " + str(y))
+                            return False
+                elif x > locx_tester and locx != piece_loc_x:
+                    print("testing leftward movement")
+                    locx_tester = BOARD_RIGHT + BOARD_MARGIN * locx
+                    x = (piece_loc_x * 50) + 225
+                    y = (piece_loc_y * 50) + 125
+                    while x > locx_tester:
+                        x = x - 50
+                        if is_piece(pieces, [x, y]) == False:
+                            print("for left movement check x " + str(x) + " check y " + str(y))
+                        else:
+                            print("for left movement jump detected at " + str(x) + ", " + str(y))
+                            return False
+                elif y < locy_tester and locy != piece_loc_y:
+                    print("testing upward movement")
+                    x = (piece_loc_x * 50) + 225
+                    y = (piece_loc_y * 50) + 125
+                    while y < locy_tester:
+                        y = y + 50
+                        if is_piece(pieces, [x, y]) == False:
+                            print("for up movement check x " + str(x) + " check y " + str(y))
+                        else:
+                            print("for up movement jump detected at " + str(x) + ", " + str(y))
+                            return False
+
+                elif y > locy_tester and locy != piece_loc_y:
+                    print("testing upward movement")
+                    x = (piece_loc_x * 50) + 225
+                    y = (piece_loc_y * 50) + 125
+                    locy_tester = BOARD_TOP + BOARD_MARGIN * locy
+                    while y > locy_tester:
+                        y = y - 50
+                        if is_piece(pieces, [x, y]) == False:
+                            print("for up movement check x " + str(x) + " check y " + str(y))
+                        else:
+                            print("for up movement jump detected at " + str(x) + ", " + str(y))
+                            return False
+
                 return True
         else:
             if locx != piece_loc_x and locy != piece_loc_y:
@@ -106,67 +156,67 @@ def select_coordinate(click):
     x = click[0]
     y = click[1]
     if y > 100 and y < 150 and x > 200 and x < 700:
-        print("move the y coordinate to 0")
+        # print("move the y coordinate to 0")
         locy = 0
     elif y > 150 and y < 200 and x > 200 and x < 700:
-        print("move the y coordinate to 1")
+        # print("move the y coordinate to 1")
         locy = 1
     elif y > 200 and y < 250 and x > 200 and x < 700:
-        print("move the y coordinate to 2")
+        # print("move the y coordinate to 2")
         locy = 2
     elif y > 250 and y < 300 and x > 200 and x < 700:
-        print("move the y coordinate to 3")
+        # print("move the y coordinate to 3")
         locy = 3
     elif y > 300 and y < 350 and x > 200 and x < 700:
-        print("move the y coordinate to 4")
+        # print("move the y coordinate to 4")
         locy = 4
     elif y > 350 and y < 400 and x > 200 and x < 700:
-        print("move the y coordinate to 5")
+        # print("move the y coordinate to 5")
         locy = 5
     elif y > 400 and y < 450 and x > 200 and x < 700:
-        print("move the y coordinate to 6")
+        # print("move the y coordinate to 6")
         locy = 6
     elif y > 450 and y < 500 and x > 200 and x < 700:
-        print("move the y coordinate to 7")
+        # print("move the y coordinate to 7")
         locy = 7
     elif y > 500 and y < 550 and x > 200 and x < 700:
-        print("move the y coordinate to 8")
+        # print("move the y coordinate to 8")
         locy = 8
     elif y > 550 and y < 600 and x > 200 and x < 700:
-        print("move the y coordinate to 9")
+        # print("move the y coordinate to 9")
         locy = 9
     else:
         locy = None
 
     if x > 200 and x < 250 and y > 100 and y < 600:
-        print("move x coordinate to 0")
+        # print("move x coordinate to 0")
         locx = 0
     elif x > 250 and x < 300 and y > 100 and y < 600:
-        print("move x coordinate to 1")
+        # print("move x coordinate to 1")
         locx = 1
     elif x > 300 and x < 350 and y > 100 and y < 600:
-        print("move x coordinate to 2")
+        # print("move x coordinate to 2")
         locx = 2
     elif x > 350 and x < 400 and y > 100 and y < 600:
-        print("move x coordinate to 3")
+        # print("move x coordinate to 3")
         locx = 3
     elif x > 400 and x < 450 and y > 100 and y < 600:
-        print("move x coordinate to 4")
+        # print("move x coordinate to 4")
         locx = 4
     elif x > 450 and x < 500 and y > 100 and y < 600:
-        print("move x coordinate to 5")
+        # print("move x coordinate to 5")
         locx = 5
     elif x > 500 and x < 550 and y > 100 and y < 600:
-        print("move x coordinate to 6")
+        # print("move x coordinate to 6")
         locx = 6
     elif x > 550 and x < 600 and y > 100 and y < 600:
-        print("move x coordinate to 7")
+        # print("move x coordinate to 7")
         locx = 7
     elif x > 600 and x < 650 and y > 100 and y < 600:
-        print("move x coordinate to 8")
+        # print("move x coordinate to 8")
         locx = 8
     elif x > 650 and x < 700 and y > 100 and y < 600:
-        print("move x coordinate to 9")
+        # print("move x coordinate to 9")
         locx = 9
     else:
         locx = None
