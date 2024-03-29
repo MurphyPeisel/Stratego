@@ -185,7 +185,8 @@ class Gameboard(arcade.View):
             # print(Gameboard.click_counter)
             # if Gameboard.click_counter == 2:
             #     Gameboard.click_counter = 0
-            
+            #      Gameboard.player_ready()
+
             #     view = pass_turn.Pass_Turn()
             #     self.window.show_view(view)
                 
