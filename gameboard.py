@@ -5,7 +5,7 @@ import Piece
 import draw_piece
 from constants import *
 
-p1_tester_piece1 = Piece.Piece("Sct", 2, 0, 0, 1)
+p1_tester_piece1 = Piece.Piece("Min", 2, 0, 0, 1)
 p1_tester_piece2 = Piece.Piece("Msh", 10, 2, 0, 1)
 p1_tester_piece3 = Piece.Piece("Gen", 9, 4, 0, 1)
 p1_tester_piece4 = Piece.Piece("Bom", 12, 6, 0, 1)
