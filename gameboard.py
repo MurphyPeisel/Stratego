@@ -121,7 +121,7 @@ class Gameboard(arcade.View):
            
     def on_mouse_press(self, x, y, button, key_modifiers):
         if x>=798 and x<=882 and y<= 665 and y>= 615:
-            board_view = win.Win()
+            board_view = esc_menu.Escape()
             self.window.show_view(board_view)
             esc_menu.Escape.last_screen = Gameboard.last_screen
         else:
