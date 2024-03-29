@@ -535,6 +535,8 @@ def combat(attacker, defender, click, graveyard1, graveyard2, army1, army2):
     :param defender: Defending piece
     :param click: Cursor click location (x, y)
     """
+    if attacker.getType() == "Lke" or defender.getType() == "Lke":
+        return "lake!"
     print("COMBAT")
     print(f"attacker located at {attacker.getPosition()}, type: {attacker.getType()}, power: {attacker.getPower()}")
     print(f"defender located at {defender.getPosition()}, type: {defender.getType()}, power: {defender.getPower()}")
