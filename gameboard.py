@@ -17,18 +17,18 @@ p2_tester_piece3 = Piece.Piece("Gen", 9, 4, 9, 3)
 p2_tester_piece4 = Piece.Piece("Bom", 12, 6, 9, 2)
 p2_tester_piece5 = Piece.Piece("Flg", 0, 8, 9, 2)
 
-lake_piece_1 = Piece.Piece("Lke", 0, 4, 2, 3)
-lake_piece_2 = Piece.Piece("Lke", 0, 4, 3, 3)
-lake_piece_3 = Piece.Piece("Lke", 0, 5, 2, 3)
-lake_piece_4 = Piece.Piece("Lke", 0, 5, 3, 3)
+lake_piece_1 = Piece.Piece("Lke", 0, 2, 4, 3)
+lake_piece_2 = Piece.Piece("Lke", 0, 3, 4, 3)
+lake_piece_3 = Piece.Piece("Lke", 0, 2, 5, 3)
+lake_piece_4 = Piece.Piece("Lke", 0, 3, 5, 3)
 
-lake_piece_5 = Piece.Piece("Lke", 0, 4, 6, 3)
-lake_piece_6 = Piece.Piece("Lke", 0, 4, 7, 3)
-lake_piece_7 = Piece.Piece("Lke", 0, 5, 6, 3)
-lake_piece_8 = Piece.Piece("Lke", 0, 5, 7, 3)
+lake_piece_5 = Piece.Piece("Lke", 0, 6, 4, 3)
+lake_piece_6 = Piece.Piece("Lke", 0, 7, 4, 3)
+lake_piece_7 = Piece.Piece("Lke", 0, 6, 5, 3)
+lake_piece_8 = Piece.Piece("Lke", 0, 7, 5, 3)
 
-p1_pieces = [p1_tester_piece1, p1_tester_piece2, p1_tester_piece3, p1_tester_piece4, p1_tester_piece5]
-p2_pieces = [p2_tester_piece1, p2_tester_piece2, p2_tester_piece3, p2_tester_piece4, p2_tester_piece5]
+p1_pieces = [p1_tester_piece1, p1_tester_piece2, p1_tester_piece3, p1_tester_piece4, p1_tester_piece5, lake_piece_1, lake_piece_2, lake_piece_3, lake_piece_4, lake_piece_5, lake_piece_6, lake_piece_7, lake_piece_8]
+p2_pieces = [p2_tester_piece1, p2_tester_piece2, p2_tester_piece3, p2_tester_piece4, p2_tester_piece5, lake_piece_1, lake_piece_2, lake_piece_3, lake_piece_4, lake_piece_5, lake_piece_6, lake_piece_7, lake_piece_8]
 total_pieces = p1_pieces + p2_pieces
 
 
@@ -154,8 +154,6 @@ class Gameboard(arcade.View):
              draw_piece.draw_start(piece, 2, i)
              i = i+1
              
-
-
     def on_mouse_press(self, x, y, button, key_modifiers):
         # escape menu coordinates --> make constants
         if x>=798 and x<=882 and y<= 665 and y>= 615:
@@ -166,10 +164,13 @@ class Gameboard(arcade.View):
             click = (x,y)
             # we need to have an array of all the pieces on the board
             for piece in total_pieces:
-                if draw_piece.select_piece(piece, click) == True and Gameboard.selected == None:
-                    print(piece.getType() + " selected")
-                    Gameboard.selected = piece
-                    # draw_piece.show_available_moves(Gameboard.selected)
+                if draw_piece.select_piece(piece, click) == True:
+                    if Gameboard.selected != None:
+                        if Gameboard.selected.getPlayer() == piece.getPlayer():
+                            Gameboard.selected = piece
+                    else:
+                        print(piece.getType() + " selected")
+                        Gameboard.selected = piece
 
             if Gameboard.selected != None:
                 is_valid_move, cell_occupant = draw_piece.is_move_available(total_pieces, Gameboard.selected, click)

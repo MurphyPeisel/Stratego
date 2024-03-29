@@ -47,6 +47,11 @@ def draw_start(piece, army, index):
     elif piece.getType() == "Bom":
         arcade.draw_polygon_filled(point_list, arcade.color.RED)
 
+    if piece.getType() == "Lke":
+        arcade.draw_polygon_filled(point_list, arcade.color.BLACK)
+
+
+
 def draw(piece):
     x = piece.getPosition()[0]
     y = piece.getPosition()[1]
@@ -152,7 +157,7 @@ def select_piece(piece, click):
         x <= BOARD_RIGHT + BOARD_MARGIN * piece_x and
         y <= BOARD_TOP + BOARD_MARGIN * piece_y and 
         y >= BOARD_BOTTOM + BOARD_MARGIN * piece_y):
-        if piece.getType() == "Bom" or piece.getType() == "Flg":
+        if piece.getType() == "Bom" or piece.getType() == "Flg" or piece.getType() == "Lke":
             print(f"{piece.getType()} is not selectable. Select another piece.")
             return False
         else:
