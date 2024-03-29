@@ -152,8 +152,6 @@ class Gameboard(arcade.View):
              draw_piece.draw_start(piece, 2, i)
              i = i+1
              
-
-
     def on_mouse_press(self, x, y, button, key_modifiers):
         # escape menu coordinates --> make constants
         if x>=798 and x<=882 and y<= 665 and y>= 615:
@@ -164,10 +162,13 @@ class Gameboard(arcade.View):
             click = (x,y)
             # we need to have an array of all the pieces on the board
             for piece in total_pieces:
-                if draw_piece.select_piece(piece, click) == True and Gameboard.selected == None:
-                    print(piece.getType() + " selected")
-                    Gameboard.selected = piece
-                    # draw_piece.show_available_moves(Gameboard.selected)
+                if draw_piece.select_piece(piece, click) == True:
+                    if Gameboard.selected != None:
+                        if Gameboard.selected.getPlayer() == piece.getPlayer():
+                            Gameboard.selected = piece
+                    else:
+                        print(piece.getType() + " selected")
+                        Gameboard.selected = piece
 
             if Gameboard.selected != None:
                 is_valid_move, cell_occupant = draw_piece.is_move_available(total_pieces, Gameboard.selected, click)
