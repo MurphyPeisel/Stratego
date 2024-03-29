@@ -1,6 +1,7 @@
 import arcade
 import esc_menu
 import pass_turn
+import win
 
 # initialize formatting details
 SCREEN_WIDTH = 900
@@ -37,6 +38,7 @@ LAKE_TOP = 400
 class Gameboard(arcade.View):
     last_screen = "game_board"
     
+    player_turn = 2
     click_counter = 0
 
     def on_show_view(self):
@@ -119,7 +121,7 @@ class Gameboard(arcade.View):
            
     def on_mouse_press(self, x, y, button, key_modifiers):
         if x>=798 and x<=882 and y<= 665 and y>= 615:
-            board_view = esc_menu.Escape(self)
+            board_view = win.Win()
             self.window.show_view(board_view)
             esc_menu.Escape.last_screen = Gameboard.last_screen
         else:
@@ -127,6 +129,7 @@ class Gameboard(arcade.View):
             print(Gameboard.click_counter)
             if Gameboard.click_counter == 2:
                 Gameboard.click_counter = 0
+                Gameboard.player_ready()
                 view = pass_turn.Pass_Turn()
                 self.window.show_view(view)
     
@@ -135,6 +138,15 @@ class Gameboard(arcade.View):
             board_view = esc_menu.Escape(self)
             self.window.show_view(board_view)
             esc_menu.Escape.last_screen = Gameboard.last_screen
+
+    def player_ready():
+        if Gameboard.player_turn == 1:
+            Gameboard.player_turn = 2
+        else:
+            Gameboard.player_turn = 1
+    
+    def get_turn():
+        return Gameboard.player_turn
 
     @classmethod
     def get_last_screen(cls):
