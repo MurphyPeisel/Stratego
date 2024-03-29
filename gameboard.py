@@ -17,18 +17,18 @@ p2_tester_piece3 = Piece.Piece("Gen", 9, 4, 9, 3)
 p2_tester_piece4 = Piece.Piece("Bom", 12, 6, 9, 2)
 p2_tester_piece5 = Piece.Piece("Flg", 0, 8, 9, 2)
 
-lake_piece_1 = Piece.Piece("Lke", 0, 4, 2, 3)
-lake_piece_2 = Piece.Piece("Lke", 0, 4, 3, 3)
-lake_piece_3 = Piece.Piece("Lke", 0, 5, 2, 3)
-lake_piece_4 = Piece.Piece("Lke", 0, 5, 3, 3)
+lake_piece_1 = Piece.Piece("Lke", 0, 2, 4, 3)
+lake_piece_2 = Piece.Piece("Lke", 0, 3, 4, 3)
+lake_piece_3 = Piece.Piece("Lke", 0, 2, 5, 3)
+lake_piece_4 = Piece.Piece("Lke", 0, 3, 5, 3)
 
-lake_piece_5 = Piece.Piece("Lke", 0, 4, 6, 3)
-lake_piece_6 = Piece.Piece("Lke", 0, 4, 7, 3)
-lake_piece_7 = Piece.Piece("Lke", 0, 5, 6, 3)
-lake_piece_8 = Piece.Piece("Lke", 0, 5, 7, 3)
+lake_piece_5 = Piece.Piece("Lke", 0, 6, 4, 3)
+lake_piece_6 = Piece.Piece("Lke", 0, 7, 4, 3)
+lake_piece_7 = Piece.Piece("Lke", 0, 6, 5, 3)
+lake_piece_8 = Piece.Piece("Lke", 0, 7, 5, 3)
 
-p1_pieces = [p1_tester_piece1, p1_tester_piece2, p1_tester_piece3, p1_tester_piece4, p1_tester_piece5]
-p2_pieces = [p2_tester_piece1, p2_tester_piece2, p2_tester_piece3, p2_tester_piece4, p2_tester_piece5]
+p1_pieces = [p1_tester_piece1, p1_tester_piece2, p1_tester_piece3, p1_tester_piece4, p1_tester_piece5, lake_piece_1, lake_piece_2, lake_piece_3, lake_piece_4, lake_piece_5, lake_piece_6, lake_piece_7, lake_piece_8]
+p2_pieces = [p2_tester_piece1, p2_tester_piece2, p2_tester_piece3, p2_tester_piece4, p2_tester_piece5, lake_piece_1, lake_piece_2, lake_piece_3, lake_piece_4, lake_piece_5, lake_piece_6, lake_piece_7, lake_piece_8]
 total_pieces = p1_pieces + p2_pieces
 
 # graveyard1 = Piece.initPieces(1)
