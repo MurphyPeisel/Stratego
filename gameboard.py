@@ -23,11 +23,22 @@ tester_piece4 = Piece.Piece("Bom", 12, 6, 0)
 tester_piece5 = Piece.Piece("Flg", 0, 8, 0)
 total_pieces = [tester_piece1, tester_piece2, tester_piece3, tester_piece4, tester_piece5]
 
+enemy_tester_piece1 = Piece.Piece("Sct", 2, 0, 9)
+enemy_tester_piece2 = Piece.Piece("Msh", 2, 2, 9)
+enemy_tester_piece3 = Piece.Piece("Gen", 10, 4, 9)
+enemy_tester_piece4 = Piece.Piece("Bom", 12, 6, 9)
+enemy_tester_piece5 = Piece.Piece("Flg", 0, 8, 9)
+total_enemy_pieces = [enemy_tester_piece1, enemy_tester_piece2, enemy_tester_piece3, enemy_tester_piece4, enemy_tester_piece5]
+
 # The gameboard class is where the user will engage in gameplay. They can exit via the ESC key and button.  
 # To pass turn, the user must double click the board. 
 class Gameboard(arcade.View):
     last_screen = "game_board"
-    
+
+    total_pieces = [tester_piece1, tester_piece2, tester_piece3, tester_piece4, tester_piece5]
+    total_enemy_pieces = [enemy_tester_piece1, enemy_tester_piece2, enemy_tester_piece3, enemy_tester_piece4,
+                          enemy_tester_piece5]
+
     click_counter = 0
     selected = None
 
@@ -69,8 +80,10 @@ class Gameboard(arcade.View):
 
 
         #draw it
-        for piece in total_pieces:
+        for piece in Gameboard.total_pieces:
             draw_piece.draw(piece)
+        for enemy in Gameboard.total_enemy_pieces:
+            draw_piece.draw(enemy)
         if Gameboard.selected is not None:
             draw_piece.show_available_moves(Gameboard.selected, total_pieces)
 
@@ -82,16 +95,21 @@ class Gameboard(arcade.View):
         else:
             click = [x,y]
             # we need to have an array of all the pieces on the board
-            for piece in total_pieces:
+            for piece in Gameboard.total_pieces:
                 if draw_piece.select_piece(piece, click) == True:
                     print(piece.getType() + " selected")
                     Gameboard.selected = piece
                     # draw_piece.show_available_moves(Gameboard.selected)
 
             if Gameboard.selected != None:
-                if (draw_piece.is_move_available(total_pieces, Gameboard.selected, click)):
-                    draw_piece.select_move(Gameboard.selected, click)
-                    Gameboard.selected = None
+                if (draw_piece.is_move_available(Gameboard.total_pieces, Gameboard.selected, click)):
+                    if draw_piece.is_enemy(Gameboard.total_enemy_pieces, Gameboard.selected, click) == True:
+                        print("enemy")
+                        Gameboard.total_enemy_pieces = draw_piece.capture_enemy_piece(Gameboard.total_enemy_pieces, piece, click)
+                    else:
+                        draw_piece.select_move(Gameboard.selected, click)
+                        Gameboard.selected = None
+
 
             # Gameboard.click_counter = Gameboard.click_counter + 1
             # print(Gameboard.click_counter)

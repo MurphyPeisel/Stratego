@@ -26,6 +26,42 @@ def draw(piece):
         arcade.draw_polygon_filled(point_list, arcade.color.WHITE)
 
 
+def is_enemy(enemy_pieces, piece, click):
+    x = click[0]
+    y = click[1]
+    hit_piece = None
+    if is_piece(enemy_pieces, click):
+        for enemy_piece in enemy_pieces:
+            enemy_piecex = enemy_piece.getPosition()[0]
+            enemy_piecey = enemy_piece.getPosition()[1]
+            if x >= BOARD_LEFT + BOARD_MARGIN * enemy_piecex and x <= BOARD_RIGHT + BOARD_MARGIN * enemy_piecex and y <= BOARD_TOP + BOARD_MARGIN * enemy_piecey and y >= BOARD_BOTTOM + BOARD_MARGIN * enemy_piecey:
+                hit_piece = enemy_piece
+        if hit_piece != None and hit_piece.getPower() < piece.getPower():
+            print("enemy piece captured")
+            return True
+        elif hit_piece != None and hit_piece.getPower() >= piece.getPower():
+            print("not sure whats supposed to happen here so Im doing this temporarily")
+            return False
+        else:
+            return False
+
+
+def capture_enemy_piece(enemy_pieces, piece, click):
+    x = click[0]
+    y = click[1]
+    hit_piece = None
+    if is_piece(enemy_pieces, click):
+        for enemy_piece in enemy_pieces:
+            enemy_piecex = enemy_piece.getPosition()[0]
+            enemy_piecey = enemy_piece.getPosition()[1]
+            if x >= BOARD_LEFT + BOARD_MARGIN * enemy_piecex and x <= BOARD_RIGHT + BOARD_MARGIN * enemy_piecex and y <= BOARD_TOP + BOARD_MARGIN * enemy_piecey and y >= BOARD_BOTTOM + BOARD_MARGIN * enemy_piecey:
+                hit_piece = enemy_piece
+    print(hit_piece)
+    enemy_pieces = enemy_pieces.remove(hit_piece)
+    print(enemy_pieces)
+    return enemy_pieces
+
+
 # if given a piece and the location of a cursor click it will return true stating that you can select that piece.
 def is_piece(pieces, click):
     x = click[0]
