@@ -5,6 +5,8 @@ BOARD_MARGIN = 50
 BOARD_TOP = 150
 BOARD_RIGHT = 250
 BOARD_BOTTOM = 100
+
+
 def draw(piece):
     x = piece.getPosition()[0]
     y = piece.getPosition()[1]
@@ -23,7 +25,8 @@ def draw(piece):
     elif piece.getType() == "Flg":
         arcade.draw_polygon_filled(point_list, arcade.color.WHITE)
 
-#if given a piece and the location of a cursor click it will return true stating that you can select that piece.
+
+# if given a piece and the location of a cursor click it will return true stating that you can select that piece.
 def is_piece(pieces, click):
     x = click[0]
     y = click[1]
@@ -32,8 +35,6 @@ def is_piece(pieces, click):
         piecex = piece.getPosition()[0]
         piecey = piece.getPosition()[1]
         if x>=BOARD_LEFT + BOARD_MARGIN*piecex and x<=BOARD_RIGHT + BOARD_MARGIN*piecex and y<= BOARD_TOP + BOARD_MARGIN*piecey and y>= BOARD_BOTTOM + BOARD_MARGIN*piecey:
-            print("click x val is " + str(x) + " click y val is " + str(y))
-            print(piece.getType() + " Detected")
             return True
     return False
 
@@ -52,6 +53,7 @@ def select_piece(piece, click):
             return True
     else:
         return False
+
 
 def show_available_moves(piece, total_pieces):
     x = piece.getPosition()[0]
@@ -109,14 +111,14 @@ def is_move_available(pieces, piece, click):
             else:
                 x = (piece_loc_x * 50) + 225
                 y = (piece_loc_y * 50) + 125
-                print("x " + str(x) + " y " + str(y))
+                # print("x " + str(x) + " y " + str(y))
                 locx_tester = BOARD_LEFT + BOARD_MARGIN * locx
-                print(locx_tester)
+                # print(locx_tester)
                 locy_tester = BOARD_BOTTOM + BOARD_MARGIN * locy
-                print("locx_tester " + str(locx_tester) + " locy_tester " + str(locy_tester))
+                # print("locx_tester " + str(locx_tester) + " locy_tester " + str(locy_tester))
 
                 if x < locx_tester and locx != piece_loc_x:
-                    print("testing rightward movement")
+                    # print("testing rightward movement")
                     x = (piece_loc_x * 50) + 225
                     y = (piece_loc_y * 50) + 125
                     while x < locx_tester:
@@ -127,7 +129,7 @@ def is_move_available(pieces, piece, click):
                             print("for right movement jump detected at " + str(x) + ", " + str(y))
                             return False
                 elif x > locx_tester and locx != piece_loc_x:
-                    print("testing leftward movement")
+                    # print("testing leftward movement")
                     locx_tester = BOARD_RIGHT + BOARD_MARGIN * locx
                     x = (piece_loc_x * 50) + 225
                     y = (piece_loc_y * 50) + 125
@@ -139,7 +141,7 @@ def is_move_available(pieces, piece, click):
                             print("for left movement jump detected at " + str(x) + ", " + str(y))
                             return False
                 elif y < locy_tester and locy != piece_loc_y:
-                    print("testing upward movement")
+                    # print("testing upward movement")
                     x = (piece_loc_x * 50) + 225
                     y = (piece_loc_y * 50) + 125
                     while y < locy_tester:
@@ -151,7 +153,7 @@ def is_move_available(pieces, piece, click):
                             return False
 
                 elif y > locy_tester and locy != piece_loc_y:
-                    print("testing upward movement")
+                    # print("testing upward movement")
                     x = (piece_loc_x * 50) + 225
                     y = (piece_loc_y * 50) + 125
                     locy_tester = BOARD_TOP + BOARD_MARGIN * locy
