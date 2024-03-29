@@ -47,6 +47,11 @@ def draw_start(piece, army, index):
     elif piece.getType() == "Bom":
         arcade.draw_polygon_filled(point_list, arcade.color.RED)
 
+    if piece.getType() == "Lke":
+        arcade.draw_polygon_filled(point_list, arcade.color.BLACK)
+
+
+
 def draw(piece):
     x = piece.getPosition()[0]
     y = piece.getPosition()[1]
@@ -54,16 +59,30 @@ def draw(piece):
                     (BOARD_LEFT + BOARD_MARGIN*x, BOARD_BOTTOM + BOARD_MARGIN*y),
                     (BOARD_RIGHT + BOARD_MARGIN*x, BOARD_BOTTOM + BOARD_MARGIN*y),
                     (BOARD_RIGHT + BOARD_MARGIN*x, BOARD_TOP + BOARD_MARGIN*y))
-    if piece.getType() == "Sct":
-        arcade.draw_polygon_filled(point_list, arcade.color.BLUE)
-    elif piece.getType() == "Gen":
-        arcade.draw_polygon_filled(point_list, arcade.color.VIOLET)
-    elif piece.getType() == "Bom":
-        arcade.draw_polygon_filled(point_list, arcade.color.RED)
+    if piece.getType() == "Flg":
+        arcade.draw_polygon_filled(point_list, arcade.color.WHITE)
     elif piece.getType() == "Msh":
         arcade.draw_polygon_filled(point_list, arcade.color.BROWN)
-    elif piece.getType() == "Flg":
-        arcade.draw_polygon_filled(point_list, arcade.color.WHITE)
+    elif piece.getType() == "Gen":
+        arcade.draw_polygon_filled(point_list, arcade.color.VIOLET)
+    if piece.getType() == "Col":
+        arcade.draw_polygon_filled(point_list, arcade.color.PINK)
+    if piece.getType() == "Maj":
+        arcade.draw_polygon_filled(point_list, arcade.color.YELLOW)
+    if piece.getType() == "Cap":
+        arcade.draw_polygon_filled(point_list, arcade.color.MAGENTA)
+    if piece.getType() == "Ltn":
+        arcade.draw_polygon_filled(point_list, arcade.color.TANGERINE)
+    if piece.getType() == "Sgt":
+        arcade.draw_polygon_filled(point_list, arcade.color.BABY_BLUE)
+    if piece.getType() == "Min":
+        arcade.draw_polygon_filled(point_list, arcade.color.RASPBERRY)
+    elif piece.getType() == "Sct":
+        arcade.draw_polygon_filled(point_list, arcade.color.BLUE)
+    elif piece.getType() == "Spy":
+        arcade.draw_polygon_filled(point_list, arcade.color.BLACK)
+    elif piece.getType() == "Bom":
+        arcade.draw_polygon_filled(point_list, arcade.color.RED)
 
 
 # def is_enemy(enemy_pieces, piece, click):
@@ -138,7 +157,7 @@ def select_piece(piece, click):
         x <= BOARD_RIGHT + BOARD_MARGIN * piece_x and
         y <= BOARD_TOP + BOARD_MARGIN * piece_y and 
         y >= BOARD_BOTTOM + BOARD_MARGIN * piece_y):
-        if piece.getType() == "Bom" or piece.getType() == "Flg":
+        if piece.getType() == "Bom" or piece.getType() == "Flg" or piece.getType() == "Lke":
             print(f"{piece.getType()} is not selectable. Select another piece.")
             return False
         else:
@@ -494,6 +513,12 @@ def select_move(piece, click):
         return move_piece(piece, locx, locy)
     else:
         return None
+def move_to_graveyard(army,piece, graveyard):
+    piece.setPosition(-1,-1)
+    army.remove(piece)
+    graveyard.append(piece)
+    print(graveyard[0])
+    
 
 def move_piece(piece, click):
     """ 
@@ -508,26 +533,47 @@ def move_piece(piece, click):
     else:
         piece.setPosition(loc_x, loc_y)
 
-def combat(attacker, defender, click):
+def combat(attacker, defender, click, graveyard1, graveyard2, army1, army2):
     """ 
     Combat between two pieces. If the attacking piece 
     :param attacker: Attacking piece
     :param defender: Defending piece
     :param click: Cursor click location (x, y)
     """
+    if attacker.getType() == "Lke" or defender.getType() == "Lke":
+        return "lake!"
     print("COMBAT")
     print(f"attacker located at {attacker.getPosition()}, type: {attacker.getType()}, power: {attacker.getPower()}")
     print(f"defender located at {defender.getPosition()}, type: {defender.getType()}, power: {defender.getPower()}")
     if attacker.getPower() > defender.getPower():
         print("attacker wins")
         defender.defeated = True
+        defender.setPosition(-1,-1)
+        if defender.getPlayer() == 1:
+            move_to_graveyard(army1, defender, graveyard1)
+        else:
+            move_to_graveyard(army2, defender, graveyard2)
+
+
         move_piece(attacker, click)
     elif attacker.getPower() < defender.getPower():
         print("defender wins")
         attacker.defeated = True
         move_piece(defender, click)
+        if attacker.getPlayer() == 1:
+            move_to_graveyard(army1, attacker, graveyard1)
+        else:
+            move_to_graveyard(army2, attacker, graveyard2)
     else:
         print("attacker and defender defeated")
         attacker.defeated = True
         defender.defeated = True
+        if attacker.getPlayer() == 1:
+            move_to_graveyard(army1, attacker, graveyard1)
+        else:
+            move_to_graveyard(army2, attacker, graveyard2)
+        if defender.getPlayer() == 1:
+            move_to_graveyard(army1, defender, graveyard1)
+        else:
+            move_to_graveyard(army2, defender, graveyard2)
 
