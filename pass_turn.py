@@ -49,11 +49,11 @@ class Pass_Turn(arcade.View):
     # outside the buttons / manager so that the users are given context for what they are doing.
     def on_draw(self):
         self.clear()
-        arcade.start_render()
         self.manager.draw()
         start_x = 0
         start_y = SCREEN_HEIGHT - DEFAULT_LINE_HEIGHT * 1.5
-        arcade.draw_text("Player " + str(gameboard.Gameboard.get_turn()) + "\nReady?",
+        player_turn = gameboard.Gameboard.get_turn()
+        arcade.draw_text("Player " + str(player_turn) + "\nReady?",
                          start_x,
                          start_y - (SCREEN_HEIGHT * .1),
                          arcade.color.BLACK,

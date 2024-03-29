@@ -32,6 +32,8 @@ army2 = []
 class Gameboard(arcade.View):
     last_screen = "game_board"
 
+    player_turn = 2
+
     click_counter = 0
     selected = None
 
@@ -146,7 +148,7 @@ class Gameboard(arcade.View):
     def on_mouse_press(self, x, y, button, key_modifiers):
         # escape menu coordinates --> make constants
         if x>=798 and x<=882 and y<= 665 and y>= 615:
-            board_view = esc_menu.Escape()
+            board_view = esc_menu.Escape(self)
             self.window.show_view(board_view)
             esc_menu.Escape.last_screen = Gameboard.last_screen
         else:
@@ -163,20 +165,14 @@ class Gameboard(arcade.View):
                 if is_valid_move and cell_occupant == None:
                     draw_piece.move_piece(Gameboard.selected, click)
                     Gameboard.selected = None
+                    Gameboard.player_ready(self)
                 if is_valid_move and cell_occupant != None:
                     if Piece.check_orthogonal(Gameboard.selected, cell_occupant):
                         draw_piece.combat(Gameboard.selected, cell_occupant, click)
+                        Gameboard.player_ready(self)
                     Gameboard.selected = None
             else:
                 Gameboard.selected = None
-
-
-            # Gameboard.click_counter = Gameboard.click_counter + 1
-            # print(Gameboard.click_counter)
-            # if Gameboard.click_counter == 2:
-            #     Gameboard.click_counter = 0
-            #     view = pass_turn.Pass_Turn()
-            #     self.window.show_view(view)
     
     def on_key_press(self, key, key_modifiers):
         if (key == arcade.key.ESCAPE):
@@ -184,11 +180,13 @@ class Gameboard(arcade.View):
             self.window.show_view(board_view)
             esc_menu.Escape.last_screen = Gameboard.last_screen
 
-    def player_ready():
+    def player_ready(self):
         if Gameboard.player_turn == 1:
             Gameboard.player_turn = 2
         else:
             Gameboard.player_turn = 1
+        view = pass_turn.Pass_Turn()
+        self.window.show_view(view)
     
     def get_turn():
         return Gameboard.player_turn
