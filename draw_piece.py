@@ -508,6 +508,12 @@ def select_move(piece, click):
         return move_piece(piece, locx, locy)
     else:
         return None
+def move_to_graveyard(army,piece, graveyard):
+    piece.setPosition(-1,-1)
+    army.remove(piece)
+    graveyard.append(piece)
+    print(graveyard[0])
+    
 
 def move_piece(piece, click):
     """ 
@@ -522,7 +528,7 @@ def move_piece(piece, click):
     else:
         piece.setPosition(loc_x, loc_y)
 
-def combat(attacker, defender, click):
+def combat(attacker, defender, click, graveyard1, graveyard2, army1, army2):
     """ 
     Combat between two pieces. If the attacking piece 
     :param attacker: Attacking piece
@@ -535,13 +541,32 @@ def combat(attacker, defender, click):
     if attacker.getPower() > defender.getPower():
         print("attacker wins")
         defender.defeated = True
+        defender.setPosition(-1,-1)
+        if defender.getPlayer() == 1:
+            move_to_graveyard(army1, defender, graveyard1)
+        else:
+            move_to_graveyard(army2, defender, graveyard2)
+
+
         move_piece(attacker, click)
     elif attacker.getPower() < defender.getPower():
         print("defender wins")
         attacker.defeated = True
         move_piece(defender, click)
+        if attacker.getPlayer() == 1:
+            move_to_graveyard(army1, attacker, graveyard1)
+        else:
+            move_to_graveyard(army2, attacker, graveyard2)
     else:
         print("attacker and defender defeated")
         attacker.defeated = True
         defender.defeated = True
+        if attacker.getPlayer() == 1:
+            move_to_graveyard(army1, attacker, graveyard1)
+        else:
+            move_to_graveyard(army2, attacker, graveyard2)
+        if defender.getPlayer() == 1:
+            move_to_graveyard(army1, defender, graveyard1)
+        else:
+            move_to_graveyard(army2, defender, graveyard2)
 

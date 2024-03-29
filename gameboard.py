@@ -5,7 +5,7 @@ import Piece
 import draw_piece
 from constants import *
 
-p1_tester_piece1 = Piece.Piece("Min", 2, 0, 0, 1)
+p1_tester_piece1 = Piece.Piece("Min", 3, 0, 0, 1)
 p1_tester_piece2 = Piece.Piece("Msh", 10, 2, 0, 1)
 p1_tester_piece3 = Piece.Piece("Gen", 9, 4, 0, 1)
 p1_tester_piece4 = Piece.Piece("Bom", 12, 6, 0, 1)
@@ -21,8 +21,11 @@ p1_pieces = [p1_tester_piece1, p1_tester_piece2, p1_tester_piece3, p1_tester_pie
 p2_pieces = [p2_tester_piece1, p2_tester_piece2, p2_tester_piece3, p2_tester_piece4, p2_tester_piece5]
 total_pieces = p1_pieces + p2_pieces
 
-graveyard1 = Piece.initPieces(1)
-graveyard2 = Piece.initPieces(2)
+# graveyard1 = Piece.initPieces(1)
+# graveyard2 = Piece.initPieces(2)
+
+graveyard1 = []
+graveyard2 = []
 
 army1 = []
 army2 = []
@@ -84,8 +87,6 @@ class Gameboard(arcade.View):
 
 
         #draw it
-        
-    
         if Gameboard.selected is not None:
             draw_piece.show_available_moves(Gameboard.selected, total_pieces)
         
@@ -122,9 +123,9 @@ class Gameboard(arcade.View):
         for piece in total_pieces:
             if piece.defeated != True:
                 draw_piece.draw(piece)
-            else:
+            #else:
                 # piece is defeated --> draw it, but in the graveyard
-                pass
+                
                 
 
     #ADD COMMENTS?
@@ -146,7 +147,7 @@ class Gameboard(arcade.View):
     def on_mouse_press(self, x, y, button, key_modifiers):
         # escape menu coordinates --> make constants
         if x>=798 and x<=882 and y<= 665 and y>= 615:
-            board_view = esc_menu.Escape()
+            board_view = esc_menu.Escape(self)
             self.window.show_view(board_view)
             esc_menu.Escape.last_screen = Gameboard.last_screen
         else:
@@ -165,7 +166,7 @@ class Gameboard(arcade.View):
                     Gameboard.selected = None
                 if is_valid_move and cell_occupant != None:
                     if Piece.check_orthogonal(Gameboard.selected, cell_occupant):
-                        draw_piece.combat(Gameboard.selected, cell_occupant, click)
+                        draw_piece.combat(Gameboard.selected, cell_occupant, click, graveyard1, graveyard2, p1_pieces, p2_pieces) #p1_pieces, p2_pieces = TEMP VARIABLES
                     Gameboard.selected = None
             else:
                 Gameboard.selected = None
