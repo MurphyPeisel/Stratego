@@ -3,6 +3,7 @@ import arcade.gui
 import gameboard
 import menu
 import rules
+import win
 
 # initialize formatting details
 SCREEN_WIDTH = 900
@@ -36,12 +37,17 @@ class Escape(arcade.View):
         self.v_box.add(rules_button.with_space_around(bottom=20))
         back_to_menu_button = arcade.gui.UIFlatButton(text="Return to Menu", width=200)
         self.v_box.add(back_to_menu_button.with_space_around(bottom=20))
+        resign_button = arcade.gui.UIFlatButton(text="Resign", width=200)
+        self.v_box.add(resign_button.with_space_around(bottom=20))
         exit_button = arcade.gui.UIFlatButton(text="Exit Program", width=200)
         self.v_box.add(exit_button.with_space_around(bottom=20))
         
         resume_button.on_click = self.on_click_resume
         rules_button.on_click = self.on_click_rules
         back_to_menu_button.on_click = self.on_click_back
+        resign_button.on_click = self.on_click_resign
+
+        
         exit_button.on_click = self.on_click_exit
 
         self.manager.add(
@@ -83,6 +89,16 @@ class Escape(arcade.View):
         self.manager.disable()
         board_view = menu.Menu()
         self.window.show_view(board_view)
+    
+    def on_click_resign(self, event):
+        win_view = win.Win()
+        if gameboard.Gameboard.player_turn == 1:
+            gameboard.Gameboard.player_turn = 2
+        else: 
+            gameboard.Gameboard.player_turn = 1
+
+        self.window.show_view(win_view)            
+            
 
     # This function closes the program when the user hits the exit button
     def on_click_exit(self, event):

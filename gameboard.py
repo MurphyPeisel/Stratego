@@ -31,6 +31,7 @@ p1_pieces = [p1_tester_piece1, p1_tester_piece2, p1_tester_piece3, p1_tester_pie
 p2_pieces = [p2_tester_piece1, p2_tester_piece2, p2_tester_piece3, p2_tester_piece4, p2_tester_piece5]
 total_pieces = p1_pieces + p2_pieces
 
+
 # graveyard1 = Piece.initPieces(1)
 # graveyard2 = Piece.initPieces(2)
 
@@ -44,6 +45,7 @@ army2 = []
 # To pass turn, the user must double click the board. 
 class Gameboard(arcade.View):
     last_screen = "game_board"
+    player_turn = 2
 
     click_counter = 0
     selected = None
