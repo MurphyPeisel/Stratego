@@ -3,75 +3,34 @@ import esc_menu
 import pass_turn
 import Piece
 import draw_piece
-import win
+from constants import *
 
-# initialize formatting details
-SCREEN_WIDTH = 900
-SCREEN_HEIGHT = 700
-DEFAULT_LINE_HEIGHT = 45
-DEFAULT_FONT_SIZE = 20
+p1_tester_piece1 = Piece.Piece("Sct", 2, 0, 0, 1)
+p1_tester_piece2 = Piece.Piece("Msh", 10, 2, 0, 1)
+p1_tester_piece3 = Piece.Piece("Gen", 9, 4, 0, 1)
+p1_tester_piece4 = Piece.Piece("Bom", 12, 6, 0, 1)
+p1_tester_piece5 = Piece.Piece("Flg", 0, 8, 0, 1)
 
-# BOARD CONSTANTS
-ROW_COUNT = 10
-COLUMN_COUNT = 10
-BOARD_RIGHT = 250
-BOARD_LEFT = 200
-BOARD_BOTTOM = 100
-BOARD_TOP = 150
-BOARD_MARGIN = 50
+p2_tester_piece1 = Piece.Piece("Sct", 2, 0, 9, 2)
+p2_tester_piece2 = Piece.Piece("Msh", 10, 2, 9, 2)
+p2_tester_piece3 = Piece.Piece("Gen", 9, 4, 9, 3)
+p2_tester_piece4 = Piece.Piece("Bom", 12, 6, 9, 2)
+p2_tester_piece5 = Piece.Piece("Flg", 0, 8, 9, 2)
 
-# GRID CONSTANTS
-GRID_LEFT = 200
-GRID_RIGHT = 700
-GRID_BOTTOM = 100
-GRID_TOP = 600
-CELL_WIDTH = 50
+p1_pieces = [p1_tester_piece1, p1_tester_piece2, p1_tester_piece3, p1_tester_piece4, p1_tester_piece5]
+p2_pieces = [p2_tester_piece1, p2_tester_piece2, p2_tester_piece3, p2_tester_piece4, p2_tester_piece5]
+total_pieces = p1_pieces + p2_pieces
 
-# GRAVEYARD CONSTANTS
-GRAVEYARD_1_LEFT = 0
-GRAVEYARD_1_RIGHT = 200
-GRAVEYARD_2_LEFT = 700
-GRAVEYARD_2_RIGHT = 900
-GRAVEYARD_BOTTOM = 100
-GRAVEYARD_TOP = 600
-
-#LAKE FORMATTING
-LAKE2_LEFT = 500
-LAKE2_RIGHT = 600
-LAKE1_LEFT = 300
-LAKE1_RIGHT = 400
-LAKE_BOTTOM = 300
-LAKE_TOP = 400
-
-graveyard1 = Piece.initPieces()
-graveyard2 = Piece.initPieces()
+graveyard1 = Piece.initPieces(1)
+graveyard2 = Piece.initPieces(2)
 
 army1 = []
 army2 = []
-
-
-tester_piece1 = Piece.Piece("Sct", 2, 0, 0)
-tester_piece2 = Piece.Piece("Msh", 2, 2, 0)
-tester_piece3 = Piece.Piece("Gen", 10, 4, 0)
-tester_piece4 = Piece.Piece("Bom", 12, 6, 0)
-tester_piece5 = Piece.Piece("Flg", 0, 8, 0)
-total_pieces = [tester_piece1, tester_piece2, tester_piece3, tester_piece4, tester_piece5]
-
-enemy_tester_piece1 = Piece.Piece("Sct", 2, 0, 9)
-enemy_tester_piece2 = Piece.Piece("Msh", 2, 2, 9)
-enemy_tester_piece3 = Piece.Piece("Gen", 10, 4, 9)
-enemy_tester_piece4 = Piece.Piece("Bom", 12, 6, 9)
-enemy_tester_piece5 = Piece.Piece("Flg", 0, 8, 9)
-total_enemy_pieces = [enemy_tester_piece1, enemy_tester_piece2, enemy_tester_piece3, enemy_tester_piece4, enemy_tester_piece5]
 
 # The gameboard class is where the user will engage in gameplay. They can exit via the ESC key and button.  
 # To pass turn, the user must double click the board. 
 class Gameboard(arcade.View):
     last_screen = "game_board"
-
-    total_pieces = [tester_piece1, tester_piece2, tester_piece3, tester_piece4, tester_piece5]
-    total_enemy_pieces = [enemy_tester_piece1, enemy_tester_piece2, enemy_tester_piece3, enemy_tester_piece4,
-                          enemy_tester_piece5]
 
     click_counter = 0
     selected = None
@@ -125,10 +84,8 @@ class Gameboard(arcade.View):
 
 
         #draw it
-        for piece in Gameboard.total_pieces:
-            draw_piece.draw(piece)
-        for enemy in Gameboard.total_enemy_pieces:
-            draw_piece.draw(enemy)
+        
+    
         if Gameboard.selected is not None:
             draw_piece.show_available_moves(Gameboard.selected, total_pieces)
         
@@ -161,6 +118,14 @@ class Gameboard(arcade.View):
         arcade.draw_polygon_filled(yard2, arcade.color.DARK_TAUPE)
         arcade.draw_polygon_outline(yard2, arcade.color.BLACK,8)
 
+        # draw pieces
+        for piece in total_pieces:
+            if piece.defeated != True:
+                draw_piece.draw(piece)
+            else:
+                # piece is defeated --> draw it, but in the graveyard
+                pass
+                
 
     #ADD COMMENTS?
            
@@ -179,52 +144,31 @@ class Gameboard(arcade.View):
 
 
     def on_mouse_press(self, x, y, button, key_modifiers):
+        # escape menu coordinates --> make constants
         if x>=798 and x<=882 and y<= 665 and y>= 615:
             board_view = esc_menu.Escape()
             self.window.show_view(board_view)
             esc_menu.Escape.last_screen = Gameboard.last_screen
         else:
-            # get gameboard grid coordinates from mouse click      
-            if x >= GRID_LEFT and x <= GRID_RIGHT and y >= GRID_BOTTOM and y <= GRID_TOP:   
-                row = int((abs(GRID_TOP - y)) // (CELL_WIDTH)) + 1 # add 1 to make 1-index
-                column = int((abs(x - GRID_LEFT)) // (CELL_WIDTH)) + 1 # add 1 to make 1-index
-                print(f"Click coordinates: ({x}, {y}). Grid coordinates: ({row}, {column})")
-            # get graveyard 1 grid coordinates from mouse click  
-            if x >= GRAVEYARD_1_LEFT and x <= GRAVEYARD_1_RIGHT and y >= GRAVEYARD_BOTTOM and y <= GRAVEYARD_TOP:
-                row = int((abs(GRAVEYARD_TOP - y)) // (CELL_WIDTH)) + 1 # add 1 to make 1-index
-                column = int((abs(x - GRAVEYARD_1_LEFT)) // (CELL_WIDTH)) + 1 # add 1 to make 1-index
-                print(f"Click coordinates: ({x}, {y}). Graveyard1 coordinates: ({row}, {column})")
-            # get graveyard 2 grid coordinates from mouse click     
-            if x >= GRAVEYARD_2_LEFT and x <= GRAVEYARD_2_RIGHT and y >= GRAVEYARD_BOTTOM and y <= GRAVEYARD_TOP:
-                row = int((abs(GRAVEYARD_TOP - y)) // (CELL_WIDTH)) + 1 # add 1 to make 1-index
-                column = int((abs(x - GRAVEYARD_2_LEFT)) // (CELL_WIDTH)) + 1 # add 1 to make 1-index
-                print(f"Click coordinates: ({x}, {y}). Graveyard2 coordinates: ({row}, {column})")     
-
-            # Gameboard.click_counter = Gameboard.click_counter + 1
-            # print(Gameboard.click_counter)
-            # if Gameboard.click_counter == 2:
-            #     Gameboard.click_counter = 0
-            #      Gameboard.player_ready()
-
-            #     view = pass_turn.Pass_Turn()
-            #     self.window.show_view(view)
-                
-            click = [x,y]
+            click = (x,y)
             # we need to have an array of all the pieces on the board
-            for piece in Gameboard.total_pieces:
-                if draw_piece.select_piece(piece, click) == True:
+            for piece in total_pieces:
+                if draw_piece.select_piece(piece, click) == True and Gameboard.selected == None:
                     print(piece.getType() + " selected")
                     Gameboard.selected = piece
                     # draw_piece.show_available_moves(Gameboard.selected)
 
             if Gameboard.selected != None:
-                if (draw_piece.is_move_available(Gameboard.total_pieces, Gameboard.selected, click)):
-                    if draw_piece.is_enemy(Gameboard.total_enemy_pieces, Gameboard.selected, click) == True:
-                        print("enemy")
-                        Gameboard.total_enemy_pieces = draw_piece.capture_enemy_piece(Gameboard.total_enemy_pieces, piece, click)
-                    else:
-                        draw_piece.select_move(Gameboard.selected, click)
-                        Gameboard.selected = None
+                is_valid_move, cell_occupant = draw_piece.is_move_available(total_pieces, Gameboard.selected, click)
+                if is_valid_move and cell_occupant == None:
+                    draw_piece.move_piece(Gameboard.selected, click)
+                    Gameboard.selected = None
+                if is_valid_move and cell_occupant != None:
+                    if Piece.check_orthogonal(Gameboard.selected, cell_occupant):
+                        draw_piece.combat(Gameboard.selected, cell_occupant, click)
+                    Gameboard.selected = None
+            else:
+                Gameboard.selected = None
 
 
             # Gameboard.click_counter = Gameboard.click_counter + 1
