@@ -71,6 +71,8 @@ class Gameboard(arcade.View):
         #draw it
         for piece in total_pieces:
             draw_piece.draw(piece)
+        if Gameboard.selected is not None:
+            draw_piece.show_available_moves(Gameboard.selected, total_pieces)
 
     def on_mouse_press(self, x, y, button, key_modifiers):
         if x>=798 and x<=882 and y<= 665 and y>= 615:
