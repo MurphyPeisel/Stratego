@@ -10,6 +10,7 @@ GRAVEYARD_BOTTOM = 105
 GRAVEYARD_TOP = 595
 YARD_MARGIN = 50
 
+
 def draw_start(piece, army, index):
     yard_left = 0
     if army == 1:
@@ -51,7 +52,6 @@ def draw_start(piece, army, index):
         arcade.draw_polygon_filled(point_list, arcade.color.BLACK)
 
 
-
 def draw(piece):
     x = piece.getPosition()[0]
     y = piece.getPosition()[1]
@@ -85,7 +85,6 @@ def draw(piece):
         arcade.draw_polygon_filled(point_list, arcade.color.RED)
 
 
-# if given a piece and the location of a cursor click it will return true stating that you can select that piece.
 def is_piece(pieces, click):
     """ 
     Checks if there is a piece at the location of a cursor click.
@@ -103,10 +102,18 @@ def is_piece(pieces, click):
             y>= BOARD_BOTTOM + BOARD_MARGIN * piece_y):
             return (True, piece)
     return (False, None)
-def is_piece_scan(pieces, click):
-    x = click[0]
-    y = click[1]
-    # print("checking for piece at " + str(x) + str(y))
+
+
+def is_piece_scan(pieces, loc):
+    """
+    Checks if there is a piece at the location of a provided coordinate set, this is to be used inside the show
+    available moves function so that it only returns the necessary values.
+    :param pieces: List of all pieces
+    :param loc: location to check for a piece (x, y)
+    :return boolean value: This value represents whether there is a piece at the given location
+    """
+    x = loc[0]
+    y = loc[1]
     for piece in pieces:
         piecex = piece.getPosition()[0]
         piecey = piece.getPosition()[1]
@@ -115,6 +122,13 @@ def is_piece_scan(pieces, click):
     return False
 
 def select_piece(piece, click):
+    """
+    This function checks if a piece is at the given click coordinates and is one selectable / can be moved. Pieces like
+    bombs, flags or lakes cannot be moved or "played with"
+    :param piece: the piece clicked on and the location of the click
+    :param click: location of the users click
+    :return boolean value: This value represents whether the piece selected is one that can be moved by the user
+    """
     x, y = click
     piece_x, piece_y = piece.getPosition()
     if (x >= BOARD_LEFT + BOARD_MARGIN * piece_x and 
@@ -125,15 +139,26 @@ def select_piece(piece, click):
             print(f"{piece.getType()} is not selectable. Select another piece.")
             return False
         else:
-            #show_available_moves(piece, total_pieces)
             return True
     else:
         return False
 
 
 def show_available_moves(piece, total_pieces):
+    """
+    This function takes in the selected piece and a list of all the total pieces in play. The function identifies if
+    the piece has a unique movement type (scout) or is standard. It then draws a circle on every part of the game-board
+    where the piece can move to. It will not draw a circle if there is a piece occupying that space or if the move in
+    question moves the piece outside the game-board
+    :param piece: the piece selected to be moved. this provides the location for all available moves to be drawn from
+    :param total_pieces: location of all the pieces in the game
+    :return: This function returns no values
+    """
     x = piece.getPosition()[0]
     y = piece.getPosition()[1]
+    # This portion of the function draws circles to the left, right, above, and below a selected piece if the piece is
+    # not a scout and there is no piece occupying the space in question and the piece itself is not at the edge of the
+    # board
     if piece.getType() != "Sct":
         if (is_piece_scan(total_pieces, [BOARD_RIGHT + 25 + BOARD_MARGIN * x, BOARD_BOTTOM + 25 + BOARD_MARGIN * y]) == False and BOARD_RIGHT + 25 + BOARD_MARGIN * x < 700):
             arcade.draw_arc_filled(BOARD_RIGHT + 25 + BOARD_MARGIN * x, BOARD_BOTTOM + 25 + BOARD_MARGIN * y, 10, 10,
@@ -147,6 +172,10 @@ def show_available_moves(piece, total_pieces):
         if (is_piece_scan(total_pieces, [BOARD_LEFT - 25 + BOARD_MARGIN * x, BOARD_BOTTOM + 25 + BOARD_MARGIN * y]) == False and BOARD_LEFT - 25 + BOARD_MARGIN * x > 200):
             arcade.draw_arc_filled(BOARD_LEFT - 25 + BOARD_MARGIN * x, BOARD_BOTTOM + 25 + BOARD_MARGIN * y, 10, 10,
                                    arcade.color.BLACK, 0, 360)
+    # if the piece is a scout then this portion of the function scans through all the spaces directly to the left,
+    # right, above, and below. This portion of the function draws a circle at every space so long as it is not beyond
+    # the board space and there is no other piece in the way. The scan will halt any time it detects the edge of the
+    # board or another piece, this way the available moves do not imply the ability to jump over other pieces
     if piece.getType() == "Sct":
         next_i = 1
         while (is_piece_scan(total_pieces, [BOARD_RIGHT + 25 * next_i + BOARD_MARGIN * x, BOARD_BOTTOM + 25 + BOARD_MARGIN * y]) == False and BOARD_RIGHT + 25 * next_i + BOARD_MARGIN * x < 700):
@@ -194,57 +223,66 @@ def is_move_available(pieces, piece, click):
                 return (False, None)
         else:
             if piece.getType() == "Sct":
+                # This checks to make sure that the user isn't attempting to move the piece diagonally
                 if loc_x != piece_loc_x and loc_y != piece_loc_y:
                     print("invalid please try again")
                     return (False, None)
                 else:
+                    # this converts the location of the piece from the game-board coordinates to the coordinates of the
+                    # window
                     x = (piece_loc_x * 50) + 225
                     y = (piece_loc_y * 50) + 125
-                    # print("x " + str(x) + " y " + str(y))
+                    # This converts the coordinates of the users click to coordinates of the game-board
                     locx_tester = BOARD_LEFT + BOARD_MARGIN * loc_x
-                    # print(locx_tester)
                     locy_tester = BOARD_BOTTOM + BOARD_MARGIN * loc_y
-                    # print("locx_tester " + str(locx_tester) + " locy_tester " + str(locy_tester))
 
+                    # This tests for if the user attempts rightward movement of the piece
                     if x < locx_tester and loc_x != piece_loc_x:
-                        # print("testing rightward movement")
                         x = (piece_loc_x * 50) + 225
                         y = (piece_loc_y * 50) + 125
                         while x < locx_tester:
+                            # Moves the x coordinate over to the next piece over to scan
                             x = x + 50
                             if is_piece_scan(pieces, [x, y]) == False:
                                 print("for right movement check x " + str(x) + " check y " + str(y))
                             else:
                                 print("for right movement jump detected at " + str(x) + ", " + str(y))
                                 return (False, None)
+                    # This tests for if the user attempts leftward movement of the piece
                     elif x > locx_tester and loc_x != piece_loc_x:
-                        # print("testing leftward movement")
+                        # This re-assigns the location of the tester value so that scanning attempts from this point
+                        # can work without overlapping between two possible piece coordinates
                         locx_tester = BOARD_RIGHT + BOARD_MARGIN * loc_x
                         x = (piece_loc_x * 50) + 225
                         y = (piece_loc_y * 50) + 125
                         while x > locx_tester:
+                            # This moves the location of the point in which the scanner scans for a piece to the left
+                            # for each loop through
                             x = x - 50
                             if is_piece_scan(pieces, [x, y]) == False:
                                 print("for left movement check x " + str(x) + " check y " + str(y))
                             else:
                                 print("for left movement jump detected at " + str(x) + ", " + str(y))
                                 return (False, None)
+                    # This section of the function tests for upward movement of the piece selected
                     elif y < locy_tester and loc_y != piece_loc_y:
-                        # print("testing upward movement")
                         x = (piece_loc_x * 50) + 225
                         y = (piece_loc_y * 50) + 125
                         while y < locy_tester:
+                            # This moves the location in which the scanner scans the piece to the next location above
+                            # the selected piece
                             y = y + 50
                             if is_piece_scan(pieces, [x, y]) == False:
                                 print("for up movement check x " + str(x) + " check y " + str(y))
                             else:
                                 print("for up movement jump detected at " + str(x) + ", " + str(y))
                                 return (False, None)
-
+                    # This section of the function tests for downward movement of the selected piece
                     elif y > locy_tester and loc_y != piece_loc_y:
-                        # print("testing upward movement")
                         x = (piece_loc_x * 50) + 225
                         y = (piece_loc_y * 50) + 125
+                        # This re-assigns the location of th y value tester so that the distance moved for the scanner
+                        # is accommodated and doesn't overlap across different piece spaces
                         locy_tester = BOARD_TOP + BOARD_MARGIN * loc_y
                         while y > locy_tester:
                             y = y - 50
@@ -298,19 +336,7 @@ def get_coordinates(click):
     #     pass
     else:
         return None
-    
-def select_move(piece, click):
-    x = click[0]
-    y = click[1]
 
-    loc = get_coordinates(click)
-    locx = loc[0]
-    locy = loc[1]
-
-    if locx != None and locy != None:
-        return move_piece(piece, locx, locy)
-    else:
-        return None
     
 def move_to_graveyard(army,piece, graveyard):
     piece.setPosition(-1,-1)

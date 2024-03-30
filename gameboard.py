@@ -164,12 +164,13 @@ class Gameboard(arcade.View):
             esc_menu.Escape.last_screen = Gameboard.last_screen
         else:
             click = (x,y)
-            # we need to have an array of all the pieces on the board
             for piece in total_pieces:
+                # if the user has clicked any piece in the list of total pieces enter the if statement
                 if draw_piece.select_piece(piece, click) == True:
+                    # if there is no selected piece assign it to the one clicked by the user
                     if Gameboard.selected != None:
                         if Gameboard.selected.getPlayer() == piece.getPlayer():
-                            # player reselects one of their other pieces
+                            # player re-selects one of their other pieces
                             Gameboard.selected = piece
                     else:
                         print(piece.getType() + " selected")
