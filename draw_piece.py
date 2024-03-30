@@ -85,42 +85,6 @@ def draw(piece):
         arcade.draw_polygon_filled(point_list, arcade.color.RED)
 
 
-# def is_enemy(enemy_pieces, piece, click):
-#     x = click[0]
-#     y = click[1]
-#     hit_piece = None
-#     if is_piece(enemy_pieces, click):
-#         for enemy_piece in enemy_pieces:
-#             enemy_piecex = enemy_piece.getPosition()[0]
-#             enemy_piecey = enemy_piece.getPosition()[1]
-#             if x >= BOARD_LEFT + BOARD_MARGIN * enemy_piecex and x <= BOARD_RIGHT + BOARD_MARGIN * enemy_piecex and y <= BOARD_TOP + BOARD_MARGIN * enemy_piecey and y >= BOARD_BOTTOM + BOARD_MARGIN * enemy_piecey:
-#                 hit_piece = enemy_piece
-#         if hit_piece != None and hit_piece.getPower() < piece.getPower():
-#             print("enemy piece captured")
-#             return True
-#         elif hit_piece != None and hit_piece.getPower() >= piece.getPower():
-#             print("not sure whats supposed to happen here so Im doing this temporarily")
-#             return False
-#         else:
-#             return False
-
-
-# def capture_enemy_piece(enemy_pieces, piece, click):
-#     x = click[0]
-#     y = click[1]
-#     hit_piece = None
-#     if is_piece(enemy_pieces, click):
-#         for enemy_piece in enemy_pieces:
-#             enemy_piecex = enemy_piece.getPosition()[0]
-#             enemy_piecey = enemy_piece.getPosition()[1]
-#             if x >= BOARD_LEFT + BOARD_MARGIN * enemy_piecex and x <= BOARD_RIGHT + BOARD_MARGIN * enemy_piecex and y <= BOARD_TOP + BOARD_MARGIN * enemy_piecey and y >= BOARD_BOTTOM + BOARD_MARGIN * enemy_piecey:
-#                 hit_piece = enemy_piece
-#     print(hit_piece)
-#     enemy_pieces = enemy_pieces.remove(hit_piece)
-#     print(enemy_pieces)
-#     return enemy_pieces
-
-
 # if given a piece and the location of a cursor click it will return true stating that you can select that piece.
 def is_piece(pieces, click):
     """ 
@@ -224,6 +188,7 @@ def is_move_available(pieces, piece, click):
         piece_exists, selected_piece = is_piece(pieces, click)
         if piece_exists:
             if selected_piece.getPlayer() != piece.getPlayer():
+                # player has selected an opposing piece
                 return (True, selected_piece)
             else:
                 return (False, None)
@@ -309,174 +274,6 @@ def is_move_available(pieces, piece, click):
                     return (False, None)
                 else:
                     return (True, None)
-# def is_move_available(pieces, piece, click):
-#     """ 
-#     Checks if a piece's move is valid.
-#     :param pieces: List of all pieces
-#     :param piece: Selected piece
-#     :param click: Cursor click location (x, y)
-#     :return: Tuple containing bool of if the move is available and the piece at that location if so 
-#     :rtype: (bool, Piece)
-#     """
-#     try:
-#         locx, locy = get_coordinates(click)
-#     except TypeError:
-#         print("Invalid move. Cannot convert out-of-bound click to x,y coordinates.")
-#         return (False, None)
-#     else:
-#         piece_loc_x, piece_loc_y = piece.getPosition()
-#         if piece.getType() == "Sct":
-#             if locx != piece_loc_x and locy != piece_loc_y:
-#                 print("invalid please try again")
-#                 return False
-#             else:
-#                 x = (piece_loc_x * 50) + 225
-#                 y = (piece_loc_y * 50) + 125
-#                 # print("x " + str(x) + " y " + str(y))
-#                 locx_tester = BOARD_LEFT + BOARD_MARGIN * locx
-#                 # print(locx_tester)
-#                 locy_tester = BOARD_BOTTOM + BOARD_MARGIN * locy
-#                 # print("locx_tester " + str(locx_tester) + " locy_tester " + str(locy_tester))
-
-#                 if x < locx_tester and locx != piece_loc_x:
-#                     # print("testing rightward movement")
-#                     x = (piece_loc_x * 50) + 225
-#                     y = (piece_loc_y * 50) + 125
-#                     while x < locx_tester:
-#                         x = x + 50
-#                         if is_piece(pieces, [x, y]) == False:
-#                             print("for right movement check x " + str(x) + " check y " + str(y))
-#                         else:
-#                             print("for right movement jump detected at " + str(x) + ", " + str(y))
-#                             return False
-#                 elif x > locx_tester and locx != piece_loc_x:
-#                     # print("testing leftward movement")
-#                     locx_tester = BOARD_RIGHT + BOARD_MARGIN * locx
-#                     x = (piece_loc_x * 50) + 225
-#                     y = (piece_loc_y * 50) + 125
-#                     while x > locx_tester:
-#                         x = x - 50
-#                         if is_piece(pieces, [x, y]) == False:
-#                             print("for left movement check x " + str(x) + " check y " + str(y))
-#                         else:
-#                             print("for left movement jump detected at " + str(x) + ", " + str(y))
-#                             return False
-#                 elif y < locy_tester and locy != piece_loc_y:
-#                     # print("testing upward movement")
-#                     x = (piece_loc_x * 50) + 225
-#                     y = (piece_loc_y * 50) + 125
-#                     while y < locy_tester:
-#                         y = y + 50
-#                         if is_piece(pieces, [x, y]) == False:
-#                             print("for up movement check x " + str(x) + " check y " + str(y))
-#                         else:
-#                             print("for up movement jump detected at " + str(x) + ", " + str(y))
-#                             return False
-
-#                 elif y > locy_tester and locy != piece_loc_y:
-#                     # print("testing upward movement")
-#                     x = (piece_loc_x * 50) + 225
-#                     y = (piece_loc_y * 50) + 125
-#                     locy_tester = BOARD_TOP + BOARD_MARGIN * locy
-#                     while y > locy_tester:
-#                         y = y - 50
-#                         if is_piece(pieces, [x, y]) == False:
-#                             print("for up movement check x " + str(x) + " check y " + str(y))
-#                         else:
-#                             print("for up movement jump detected at " + str(x) + ", " + str(y))
-#                             return False
-
-#                 return True
-#         else:
-#             if locx != piece_loc_x and locy != piece_loc_y:
-#                 print("invalid please try again")
-#                 return False
-#             if locx > piece_loc_x + 1:
-#                 print("invalid please try again")
-#                 return False
-#             if locx < piece_loc_x - 1:
-#                 print("invalid please try again")
-#                 return False
-#             if locy > piece_loc_y + 1:
-#                 print("invalid please try again")
-#                 return False
-#             if locy < piece_loc_y - 1:
-#                 print("invalid please try again")
-#                 return False
-#             else:
-#                 return True
-
-# def select_coordinate(click):
-#     x = click[0]
-#     y = click[1]
-#     if y > 100 and y < 150 and x > 200 and x < 700:
-#         # print("move the y coordinate to 0")
-#         locy = 0
-#     elif y > 150 and y < 200 and x > 200 and x < 700:
-#         # print("move the y coordinate to 1")
-#         locy = 1
-#     elif y > 200 and y < 250 and x > 200 and x < 700:
-#         # print("move the y coordinate to 2")
-#         locy = 2
-#     elif y > 250 and y < 300 and x > 200 and x < 700:
-#         # print("move the y coordinate to 3")
-#         locy = 3
-#     elif y > 300 and y < 350 and x > 200 and x < 700:
-#         # print("move the y coordinate to 4")
-#         locy = 4
-#     elif y > 350 and y < 400 and x > 200 and x < 700:
-#         # print("move the y coordinate to 5")
-#         locy = 5
-#     elif y > 400 and y < 450 and x > 200 and x < 700:
-#         # print("move the y coordinate to 6")
-#         locy = 6
-#     elif y > 450 and y < 500 and x > 200 and x < 700:
-#         # print("move the y coordinate to 7")
-#         locy = 7
-#     elif y > 500 and y < 550 and x > 200 and x < 700:
-#         # print("move the y coordinate to 8")
-#         locy = 8
-#     elif y > 550 and y < 600 and x > 200 and x < 700:
-#         # print("move the y coordinate to 9")
-#         locy = 9
-#     else:
-#         locy = None
-
-#     if x > 200 and x < 250 and y > 100 and y < 600:
-#         # print("move x coordinate to 0")
-#         locx = 0
-#     elif x > 250 and x < 300 and y > 100 and y < 600:
-#         # print("move x coordinate to 1")
-#         locx = 1
-#     elif x > 300 and x < 350 and y > 100 and y < 600:
-#         # print("move x coordinate to 2")
-#         locx = 2
-#     elif x > 350 and x < 400 and y > 100 and y < 600:
-#         # print("move x coordinate to 3")
-#         locx = 3
-#     elif x > 400 and x < 450 and y > 100 and y < 600:
-#         # print("move x coordinate to 4")
-#         locx = 4
-#     elif x > 450 and x < 500 and y > 100 and y < 600:
-#         # print("move x coordinate to 5")
-#         locx = 5
-#     elif x > 500 and x < 550 and y > 100 and y < 600:
-#         # print("move x coordinate to 6")
-#         locx = 6
-#     elif x > 550 and x < 600 and y > 100 and y < 600:
-#         # print("move x coordinate to 7")
-#         locx = 7
-#     elif x > 600 and x < 650 and y > 100 and y < 600:
-#         # print("move x coordinate to 8")
-#         locx = 8
-#     elif x > 650 and x < 700 and y > 100 and y < 600:
-#         # print("move x coordinate to 9")
-#         locx = 9
-#     else:
-#         locx = None
-
-#     coordinate = [locx, locy]
-#     return coordinate
 
 def get_coordinates(click):
     """ 
@@ -501,6 +298,7 @@ def get_coordinates(click):
     #     pass
     else:
         return None
+    
 def select_move(piece, click):
     x = click[0]
     y = click[1]
@@ -513,6 +311,7 @@ def select_move(piece, click):
         return move_piece(piece, locx, locy)
     else:
         return None
+    
 def move_to_graveyard(army,piece, graveyard):
     piece.setPosition(-1,-1)
     army.remove(piece)
@@ -541,11 +340,16 @@ def combat(attacker, defender, click, graveyard1, graveyard2, army1, army2):
     :param click: Cursor click location (x, y)
     """
     if attacker.getType() == "Lke" or defender.getType() == "Lke":
+        # player attempting to move on to lake, do nothing
         return "lake!"
+    
+    # temp debug code
     print("COMBAT")
     print(f"attacker located at {attacker.getPosition()}, type: {attacker.getType()}, power: {attacker.getPower()}")
     print(f"defender located at {defender.getPosition()}, type: {defender.getType()}, power: {defender.getPower()}")
+
     if attacker.getPower() > defender.getPower():
+        # attacking piece wins and takes defending piece's place
         print("attacker wins")
         defender.defeated = True
         defender.setPosition(-1,-1)
@@ -553,10 +357,9 @@ def combat(attacker, defender, click, graveyard1, graveyard2, army1, army2):
             move_to_graveyard(army1, defender, graveyard1)
         else:
             move_to_graveyard(army2, defender, graveyard2)
-
-
         move_piece(attacker, click)
     elif attacker.getPower() < defender.getPower():
+        # defending piece wins
         print("defender wins")
         attacker.defeated = True
         move_piece(defender, click)
@@ -565,6 +368,7 @@ def combat(attacker, defender, click, graveyard1, graveyard2, army1, army2):
         else:
             move_to_graveyard(army2, attacker, graveyard2)
     else:
+        # attacker and defender have same power, both sent to graveyards
         print("attacker and defender defeated")
         attacker.defeated = True
         defender.defeated = True

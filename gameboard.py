@@ -169,6 +169,7 @@ class Gameboard(arcade.View):
                 if draw_piece.select_piece(piece, click) == True:
                     if Gameboard.selected != None:
                         if Gameboard.selected.getPlayer() == piece.getPlayer():
+                            # player reselects one of their other pieces
                             Gameboard.selected = piece
                     else:
                         print(piece.getType() + " selected")
@@ -177,13 +178,19 @@ class Gameboard(arcade.View):
             if Gameboard.selected != None:
                 is_valid_move, cell_occupant = draw_piece.is_move_available(total_pieces, Gameboard.selected, click)
                 if is_valid_move and cell_occupant == None:
+                    # move piece to open space
                     draw_piece.move_piece(Gameboard.selected, click)
                     Gameboard.selected = None
                     Gameboard.player_ready(self)
                 if is_valid_move and cell_occupant != None:
+                    # player clicked opposing piece: check combat conditions
                     if Piece.check_orthogonal(Gameboard.selected, cell_occupant):
-                        draw_piece.combat(Gameboard.selected, cell_occupant, click)
-                        Gameboard.player_ready(self)
+                        lake_status = draw_piece.combat(Gameboard.selected, cell_occupant, click, graveyard1, graveyard2, army1, army2)
+                        if lake_status != None:
+                            # player clicked lake, do nothing
+                            pass
+                        else:
+                            Gameboard.player_ready(self)
                     Gameboard.selected = None
             else:
                 Gameboard.selected = None
@@ -204,12 +211,6 @@ class Gameboard(arcade.View):
     
     def get_turn():
         return Gameboard.player_turn
-
-    def draw_cell(x, y):
-        arcade.draw_lrtb_rectangle_filled(200+50*(x-1), 200+100*(x-1), 600-50*(y-1), 600-100*(y-1), arcade.color.BLUE)
-        arcade.draw_lrtb_rectangle_outline(200+50*(x-1), 200+100*(x-1), 600-50*(y-1), 600-100*(y-1), arcade.color.BLACK, 4)
-        
-
 
     @classmethod
     def get_last_screen(cls):
