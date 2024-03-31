@@ -91,12 +91,8 @@ class Escape(arcade.View):
         self.window.show_view(board_view)
     
     def on_click_resign(self, event):
+        gameboard.Gameboard.change_turn()
         win_view = win.Win()
-        if gameboard.Gameboard.player_turn == 1:
-            gameboard.Gameboard.player_turn = 2
-        else: 
-            gameboard.Gameboard.player_turn = 1
-
         self.window.show_view(win_view)            
             
 

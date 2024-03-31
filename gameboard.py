@@ -3,6 +3,7 @@ import esc_menu
 import pass_turn
 import Piece
 import draw_piece
+import win
 from constants import *
 
 p1_tester_piece1 = Piece.Piece("Min", 3, 0, 0, 1)
@@ -46,7 +47,7 @@ army2 = []
 class Gameboard(arcade.View):
     last_screen = "game_board"
 
-    player_turn = 2
+    player_turn = 1
 
     click_counter = 0
     selected = None
@@ -182,7 +183,7 @@ class Gameboard(arcade.View):
                     # move piece to open space
                     draw_piece.move_piece(Gameboard.selected, click)
                     Gameboard.selected = None
-                    Gameboard.player_ready(self)
+                    Gameboard.turn_screen(self)
                 if is_valid_move and cell_occupant != None:
                     # player clicked opposing piece: check combat conditions
                     if Piece.check_orthogonal(Gameboard.selected, cell_occupant):
@@ -190,8 +191,12 @@ class Gameboard(arcade.View):
                         if lake_status != None:
                             # player clicked lake, do nothing
                             pass
+                        elif cell_occupant.draw_piece.getType() == "Flg":
+                            #draw_piece.Piece.get_type()
+                            view = win.Win()
+                            self.window.show_view(view)
                         else:
-                            Gameboard.player_ready(self)
+                            Gameboard.turn_screen(self)
                     Gameboard.selected = None
             else:
                 Gameboard.selected = None
@@ -202,11 +207,14 @@ class Gameboard(arcade.View):
             self.window.show_view(board_view)
             esc_menu.Escape.last_screen = Gameboard.last_screen
 
-    def player_ready(self):
+    def change_turn():
         if Gameboard.player_turn == 1:
             Gameboard.player_turn = 2
         else:
             Gameboard.player_turn = 1
+
+    def turn_screen(self):
+        Gameboard.change_turn()
         view = pass_turn.Pass_Turn()
         self.window.show_view(view)
     
