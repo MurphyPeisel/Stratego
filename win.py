@@ -13,8 +13,8 @@ DEFAULT_LINE_HEIGHT = 45
 DEFAULT_FONT_SIZE = 20
 
 
-# Creates a class to define the look for when the game is switching between each player. This way in two player mode,
-# each player cannot see the others board by accident
+# Creates a win screen that identifies the user that won the round and provides three options to move forward
+# The options are to replay with the same settings, return to game settings menu and to return to main menu
 class Win(arcade.View):
 
     # This function Defines what the window will look like when called
@@ -48,8 +48,7 @@ class Win(arcade.View):
                 child=self.v_box)
         )
 
-    # This function adds the functionality to the switch player button so that it returns to the board when the user
-    # presses the button
+    # These functions add the functionality to the three button options
     def on_replay_click(self, event):
         self.manager.disable()
         board_view = gameboard.Gameboard()
@@ -66,8 +65,7 @@ class Win(arcade.View):
         self.window.show_view(board_view)
     
 
-    # This function draws all that is defined in show view to allow the window to appear. it also adds text that exists
-    # outside the buttons / manager so that the users are given context for what they are doing.
+    # This function draws all that is defined in show view to allow the window to appear. The text will show who won
     def on_draw(self):
         self.clear()
         arcade.start_render()
@@ -82,12 +80,3 @@ class Win(arcade.View):
                          width=SCREEN_WIDTH,
                          align="center",
                          font_name="Kenney Future")
-def main():
-    """ Main function """
-    window = arcade.Window(SCREEN_WIDTH, SCREEN_HEIGHT, "title")
-    menu_view = Win()
-    window.show_view(menu_view)
-    arcade.run()
-
-if __name__ == "__main__":
-    main()
