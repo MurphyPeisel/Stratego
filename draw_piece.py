@@ -2,6 +2,7 @@ import arcade
 from Piece import Piece
 from constants import *
 
+#Constants for Graveyards
 GRAVEYARD_1_LEFT = 5
 GRAVEYARD_1_RIGHT = 195
 GRAVEYARD_2_LEFT = 705
@@ -10,14 +11,21 @@ GRAVEYARD_BOTTOM = 105
 GRAVEYARD_TOP = 595
 YARD_MARGIN = 50
 
+#Function To Draw Pieces in Initial Graveyard Positions
 def draw_start(piece, army, index):
+    
     yard_left = 0
+    
+    #ARMY 1 on the Left, Army 2 on the right
     if army == 1:
         yard_left = GRAVEYARD_1_LEFT
     else:
         yard_left = GRAVEYARD_2_LEFT
-   
+    
+    #4 Pieces per Row
     row = index // 4
+    
+    
     point_list = ((yard_left+YARD_MARGIN*(index - 4*row),GRAVEYARD_TOP - YARD_MARGIN*row), 
                   (yard_left+YARD_MARGIN*(index - 4*row), (GRAVEYARD_TOP- YARD_MARGIN*row) - 40),
                   (yard_left+(YARD_MARGIN * (index-4*row)) + 40, (GRAVEYARD_TOP - YARD_MARGIN*row)-40),
