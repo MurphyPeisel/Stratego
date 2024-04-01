@@ -403,4 +403,3 @@ def combat(attacker, defender, click, graveyard1, graveyard2, army1, army2):
             move_to_graveyard(army1, defender, graveyard1)
         else:
             move_to_graveyard(army2, defender, graveyard2)
-
