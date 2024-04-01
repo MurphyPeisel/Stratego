@@ -61,28 +61,41 @@ def draw(piece):
                     (BOARD_RIGHT + BOARD_MARGIN*x, BOARD_TOP + BOARD_MARGIN*y))
     if piece.getType() == "Flg":
         arcade.draw_polygon_filled(point_list, arcade.color.WHITE)
+        arcade.draw_polygon_outline(point_list, arcade.color.BLACK, 2)
     elif piece.getType() == "Msh":
         arcade.draw_polygon_filled(point_list, arcade.color.BROWN)
+        arcade.draw_polygon_outline(point_list, arcade.color.BLACK, 2)
+
     elif piece.getType() == "Gen":
         arcade.draw_polygon_filled(point_list, arcade.color.VIOLET)
+        arcade.draw_polygon_outline(point_list, arcade.color.BLACK, 2)
     if piece.getType() == "Col":
         arcade.draw_polygon_filled(point_list, arcade.color.PINK)
+        arcade.draw_polygon_outline(point_list, arcade.color.BLACK, 2)
     if piece.getType() == "Maj":
         arcade.draw_polygon_filled(point_list, arcade.color.YELLOW)
+        arcade.draw_polygon_outline(point_list, arcade.color.BLACK, 2)
     if piece.getType() == "Cap":
         arcade.draw_polygon_filled(point_list, arcade.color.MAGENTA)
+        arcade.draw_polygon_outline(point_list, arcade.color.BLACK, 2)
     if piece.getType() == "Ltn":
         arcade.draw_polygon_filled(point_list, arcade.color.TANGERINE)
+        arcade.draw_polygon_outline(point_list, arcade.color.BLACK, 2)
     if piece.getType() == "Sgt":
         arcade.draw_polygon_filled(point_list, arcade.color.BABY_BLUE)
+        arcade.draw_polygon_outline(point_list, arcade.color.BLACK, 2)
     if piece.getType() == "Min":
         arcade.draw_polygon_filled(point_list, arcade.color.RASPBERRY)
+        arcade.draw_polygon_outline(point_list, arcade.color.BLACK, 2)
     elif piece.getType() == "Sct":
         arcade.draw_polygon_filled(point_list, arcade.color.BLUE)
+        arcade.draw_polygon_outline(point_list, arcade.color.BLACK, 2)
     elif piece.getType() == "Spy":
         arcade.draw_polygon_filled(point_list, arcade.color.BLACK)
+        arcade.draw_polygon_outline(point_list, arcade.color.BLACK, 2)
     elif piece.getType() == "Bom":
         arcade.draw_polygon_filled(point_list, arcade.color.RED)
+        arcade.draw_polygon_outline(point_list, arcade.color.BLACK, 2)
 
 
 def is_piece(pieces, click):
@@ -120,6 +133,18 @@ def is_piece_scan(pieces, loc):
         if x>=BOARD_LEFT + BOARD_MARGIN*piecex and x<=BOARD_RIGHT + BOARD_MARGIN*piecex and y<= BOARD_TOP + BOARD_MARGIN*piecey and y>= BOARD_BOTTOM + BOARD_MARGIN*piecey:
             return True
     return False
+def select_yard_piece(piece, army, click, index):
+    yard_left = 0
+    if army == 1:
+        yard_left = GRAVEYARD_1_LEFT
+    else:
+        yard_left = GRAVEYARD_2_LEFT    
+    
+    row = index // 4
+
+    x, y = click
+    
+    
 
 def select_piece(piece, click):
     """
@@ -143,6 +168,39 @@ def select_piece(piece, click):
     else:
         return False
 
+def show_available_placements(total_pieces, player):
+    loc = [0,0]
+    
+    next_i = 5
+    y=0
+    if player == 1:
+        while (y < 4):
+                x = 0
+                while (x < 10):
+                    
+                    arcade.draw_arc_filled(center_x= BOARD_LEFT+25+50*x, center_y=BOARD_BOTTOM+25 + y*50, width=10, height=10, color=arcade.color.WHITE, start_angle=0, end_angle=360)
+                    arcade.draw_arc_outline(center_x= BOARD_LEFT+25+50*x, center_y=BOARD_BOTTOM+25 + y*50, width=10, height=10, color=arcade.color.BLACK, start_angle=0, end_angle=360, border_width=3)
+                    x = x + 1
+                y = y + 1
+    else:
+        while (y < 4):
+                x = 0
+                while (x < 10):
+                    arcade.draw_arc_filled(center_x= BOARD_LEFT+25+50*x, center_y=BOARD_TOP*4-(25 + y*50), width=10, height=10, color=arcade.color.WHITE, start_angle=0, end_angle=360)
+                    arcade.draw_arc_outline(center_x= BOARD_LEFT+25+50*x, center_y=BOARD_TOP*4-(25 + y*50), width=10, height=10, color=arcade.color.BLACK, start_angle=0, end_angle=360, border_width=3)
+                    x = x + 1
+                y = y + 1
+    #while (is_piece_scan(total_pieces, [BOARD_RIGHT + 25 * next_i + BOARD_MARGIN, BOARD_BOTTOM + 25 + BOARD_MARGIN]) == False and BOARD_RIGHT + 25 * next_i + BOARD_MARGIN < 700):
+        
+    
+def place_piece(piece, click,graveyard,army):
+    coords = get_coordinates(click)
+    if is_piece_scan(army, click) == False:
+        piece.setPosition(coords[0], coords[1])
+        army.append(piece)
+        graveyard.remove(piece)
+        draw(army[0])
+    
 
 def show_available_moves(piece, total_pieces):
     """

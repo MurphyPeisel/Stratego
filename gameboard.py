@@ -6,7 +6,7 @@ import draw_piece
 import win
 from constants import *
 
-GAME_STATE = "setup"
+game_state = "setup"
 
 
 graveyard1 = Piece.initPieces(1)
@@ -26,7 +26,7 @@ total_pieces = army1 + army2
 class Gameboard(arcade.View):
     last_screen = "game_board"
 
-    player_turn = 1
+    player_turn = 2
 
     click_counter = 0
     selected = None
@@ -129,18 +129,55 @@ class Gameboard(arcade.View):
         for piece in graveyard2:
              draw_piece.draw_start(piece, 2, i)
              i = i+1
+        for piece in army1:
+                    draw_piece.draw(piece)
+        for piece in army2:
+                    draw_piece.draw(piece)
+        
+        global game_state  
+        if game_state == "setup":
+            if Gameboard.player_turn == 1 and len(graveyard1) !=0:
+                Gameboard.player_turn = 1
+                draw_piece.show_available_placements(total_pieces, 1)
+                
+
+
+            else:
+                Gameboard.player_turn = 2
+            if Gameboard.player_turn == 2 and len(graveyard2) !=0:
+                Gameboard.player_turn = 2
+                draw_piece.show_available_placements(total_pieces, 2)
+                
+
+            else:
+                Gameboard.player_turn = 1
+            if len(graveyard1) == 0 and len(graveyard2) == 0:
+                game_state = "play"
+                print(game_state)
+                
     
-    if GAME_STATE == "setup":
-        if player_turn == 1:
-            draw_piece.show_available_placements()
+   
              
     def on_mouse_press(self, x, y, button, key_modifiers):
         # escape menu coordinates --> make constants
+        click = (x,y)
         if x>=798 and x<=882 and y<= 665 and y>= 615:
             board_view = esc_menu.Escape(self)
             board_view = esc_menu.Escape(self)
             self.window.show_view(board_view)
             esc_menu.Escape.last_screen = Gameboard.last_screen
+
+        # if game_state == "setup":
+        #     if Gameboard.player_turn == 1:
+        #         if x >= 200 and x <= 700 and y>=100 and y<=300:
+        #             draw_piece.place_piece(graveyard1[0], click, graveyard1, army1)
+        #     if Gameboard.player_turn == 2:
+        #         if x>= 200 and x <= 700 and y<=600 and y>=400:
+        #             draw_piece.place_piece(graveyard2[0], click, graveyard2, army2)
+            
+
+                    
+        
         else:
             click = (x,y)
             for piece in total_pieces:
@@ -199,3 +236,12 @@ class Gameboard(arcade.View):
     @classmethod
     def get_last_screen(cls):
         return cls.last_screen
+    
+def main():
+    """ Main function """
+    window = arcade.Window(SCREEN_WIDTH, SCREEN_HEIGHT, "title")
+    menu_view = Gameboard()
+    window.show_view(menu_view)
+    arcade.run()
+
+main()
