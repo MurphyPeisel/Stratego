@@ -365,9 +365,6 @@ def combat(attacker, defender, click, graveyard1, graveyard2, army1, army2):
     :param defender: Defending piece
     :param click: Cursor click location (x, y)
     """
-    if attacker.getType() == "Lke" or defender.getType() == "Lke":
-        # player attempting to move on to lake, do nothing
-        return "lake!"
     
     # temp debug code
     print("COMBAT")

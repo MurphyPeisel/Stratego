@@ -138,12 +138,7 @@ class Gameboard(arcade.View):
             if piece.defeated != True:
                 draw_piece.draw(piece)
             #else:
-                # piece is defeated --> draw it, but in the graveyard
-                
-                
-
-    #ADD COMMENTS?
-           
+                # piece is defeated --> draw it, but in the graveyary           
 
         #draw army 1
         i = 0
@@ -186,17 +181,14 @@ class Gameboard(arcade.View):
                     Gameboard.turn_screen(self)
                 if is_valid_move and cell_occupant != None:
                     # player clicked opposing piece: check combat conditions
-                    if Piece.check_orthogonal(Gameboard.selected, cell_occupant):
-                        lake_status = draw_piece.combat(Gameboard.selected, cell_occupant, click, graveyard1, graveyard2, army1, army2)
-                        if lake_status != None:
-                            # player clicked lake, do nothing
-                            pass
-                        elif cell_occupant.draw_piece.getType() == "Flg":
-                            #draw_piece.Piece.get_type()
-                            view = win.Win()
-                            self.window.show_view(view)
-                        else:
-                            Gameboard.turn_screen(self)
+                    if cell_occupant.getType() != "Lke":
+                        if Piece.check_orthogonal(Gameboard.selected, cell_occupant):
+                            if cell_occupant.getType() == "Flg":
+                                view = win.Win()
+                                self.window.show_view(view)
+                            else:
+                                draw_piece.combat(Gameboard.selected, cell_occupant, click, graveyard1, graveyard2, army1, army2)
+                                Gameboard.turn_screen(self)
                     Gameboard.selected = None
             else:
                 Gameboard.selected = None
@@ -224,13 +216,3 @@ class Gameboard(arcade.View):
     @classmethod
     def get_last_screen(cls):
         return cls.last_screen
-    
-def main():
-    """ Main function """
-    window = arcade.Window(SCREEN_WIDTH, SCREEN_HEIGHT, "title")
-    menu_view = Gameboard()
-    window.show_view(menu_view)
-    arcade.run()
-
-if __name__ == "__main__":
-    main()
