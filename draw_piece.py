@@ -352,10 +352,12 @@ def move_to_graveyard(army,piece, graveyard):
     :param piece: piece Object; What piece is being moved
     :param graveyard: the graveyard array that the peice is being placed in
     """
-    piece.setPosition(-1,-1)
-    army.remove(piece)
-    graveyard.append(piece)
-    print(graveyard[0])
+    for item in army:
+        if piece.getPosition() == item.getPosition():
+            army.remove(item)
+            graveyard.append(item)
+            piece.setPosition(-1,-1)
+            print(graveyard[0])
     
 
 def move_piece(piece, click):
