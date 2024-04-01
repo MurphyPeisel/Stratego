@@ -167,13 +167,13 @@ class Gameboard(arcade.View):
             self.window.show_view(board_view)
             esc_menu.Escape.last_screen = Gameboard.last_screen
 
-        # if game_state == "setup":
-        #     if Gameboard.player_turn == 1:
-        #         if x >= 200 and x <= 700 and y>=100 and y<=300:
-        #             draw_piece.place_piece(graveyard1[0], click, graveyard1, army1)
-        #     if Gameboard.player_turn == 2:
-        #         if x>= 200 and x <= 700 and y<=600 and y>=400:
-        #             draw_piece.place_piece(graveyard2[0], click, graveyard2, army2)
+        if game_state == "setup":
+            if Gameboard.player_turn == 1:
+                if x >= 200 and x <= 700 and y>=100 and y<=300:
+                    draw_piece.place_piece(graveyard1[0], click, graveyard1, army1)
+            if Gameboard.player_turn == 2:
+                if x>= 200 and x <= 700 and y<=600 and y>=400:
+                    draw_piece.place_piece(graveyard2[0], click, graveyard2, army2)
             
 
                     
