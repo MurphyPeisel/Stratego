@@ -3,9 +3,9 @@ import esc_menu
 import pass_turn
 import Piece
 import draw_piece
-import win
 from constants import *
 
+#Create tester pieces
 p1_tester_piece1 = Piece.Piece("Min", 3, 0, 0, 1)
 p1_tester_piece2 = Piece.Piece("Msh", 10, 2, 0, 1)
 p1_tester_piece3 = Piece.Piece("Gen", 9, 4, 0, 1)
@@ -18,18 +18,18 @@ p2_tester_piece3 = Piece.Piece("Gen", 9, 4, 9, 3)
 p2_tester_piece4 = Piece.Piece("Bom", 12, 6, 9, 2)
 p2_tester_piece5 = Piece.Piece("Flg", 0, 8, 9, 2)
 
-lake_piece_1 = Piece.Piece("Lke", 0, 2, 4, 3)
-lake_piece_2 = Piece.Piece("Lke", 0, 3, 4, 3)
-lake_piece_3 = Piece.Piece("Lke", 0, 2, 5, 3)
-lake_piece_4 = Piece.Piece("Lke", 0, 3, 5, 3)
+lake_piece_1 = Piece.Piece("Lke", 0, 4, 2, 3)
+lake_piece_2 = Piece.Piece("Lke", 0, 4, 3, 3)
+lake_piece_3 = Piece.Piece("Lke", 0, 5, 2, 3)
+lake_piece_4 = Piece.Piece("Lke", 0, 5, 3, 3)
 
-lake_piece_5 = Piece.Piece("Lke", 0, 6, 4, 3)
-lake_piece_6 = Piece.Piece("Lke", 0, 7, 4, 3)
-lake_piece_7 = Piece.Piece("Lke", 0, 6, 5, 3)
-lake_piece_8 = Piece.Piece("Lke", 0, 7, 5, 3)
+lake_piece_5 = Piece.Piece("Lke", 0, 4, 6, 3)
+lake_piece_6 = Piece.Piece("Lke", 0, 4, 7, 3)
+lake_piece_7 = Piece.Piece("Lke", 0, 5, 6, 3)
+lake_piece_8 = Piece.Piece("Lke", 0, 5, 7, 3)
 
-p1_pieces = [p1_tester_piece1, p1_tester_piece2, p1_tester_piece3, p1_tester_piece4, p1_tester_piece5, lake_piece_1, lake_piece_2, lake_piece_3, lake_piece_4, lake_piece_5, lake_piece_6, lake_piece_7, lake_piece_8]
-p2_pieces = [p2_tester_piece1, p2_tester_piece2, p2_tester_piece3, p2_tester_piece4, p2_tester_piece5, lake_piece_1, lake_piece_2, lake_piece_3, lake_piece_4, lake_piece_5, lake_piece_6, lake_piece_7, lake_piece_8]
+p1_pieces = [p1_tester_piece1, p1_tester_piece2, p1_tester_piece3, p1_tester_piece4, p1_tester_piece5]
+p2_pieces = [p2_tester_piece1, p2_tester_piece2, p2_tester_piece3, p2_tester_piece4, p2_tester_piece5]
 total_pieces = p1_pieces + p2_pieces
 
 
@@ -46,7 +46,6 @@ army2 = []
 # To pass turn, the user must double click the board. 
 class Gameboard(arcade.View):
     last_screen = "game_board"
-
     player_turn = 1
 
     click_counter = 0
@@ -118,14 +117,14 @@ class Gameboard(arcade.View):
                  (LAKE2_LEFT, LAKE_TOP),)
         arcade.draw_polygon_filled(Lake2, arcade.color.BLUEBERRY)
         arcade.draw_polygon_outline(Lake2, arcade.color.BLACK,4)
-        
+        #DRAW LEFT GRAVEYARD
         yard1 = ((GRAVEYARD_1_LEFT, GRAVEYARD_BOTTOM),
                  (GRAVEYARD_1_RIGHT, GRAVEYARD_BOTTOM),
                  (GRAVEYARD_1_RIGHT, GRAVEYARD_TOP),
                  (GRAVEYARD_1_LEFT, GRAVEYARD_TOP),)
         arcade.draw_polygon_filled(yard1, arcade.color.DARK_TAUPE)
         arcade.draw_polygon_outline(yard1, arcade.color.BLACK,8)
-        
+        #DRAW RIGHT GRAVEYARD
         yard2 = ((GRAVEYARD_2_LEFT, GRAVEYARD_BOTTOM),
                  (GRAVEYARD_2_RIGHT, GRAVEYARD_BOTTOM),
                  (GRAVEYARD_2_RIGHT, GRAVEYARD_TOP),
@@ -137,8 +136,6 @@ class Gameboard(arcade.View):
         for piece in total_pieces:
             if piece.defeated != True:
                 draw_piece.draw(piece)
-            #else:
-                # piece is defeated --> draw it, but in the graveyard
                 
                 
 
@@ -156,50 +153,42 @@ class Gameboard(arcade.View):
              draw_piece.draw_start(piece, 2, i)
              i = i+1
              
+
+
     def on_mouse_press(self, x, y, button, key_modifiers):
         # escape menu coordinates --> make constants
         if x>=798 and x<=882 and y<= 665 and y>= 615:
-            board_view = esc_menu.Escape(self)
             board_view = esc_menu.Escape(self)
             self.window.show_view(board_view)
             esc_menu.Escape.last_screen = Gameboard.last_screen
         else:
             click = (x,y)
+            # we need to have an array of all the pieces on the board
             for piece in total_pieces:
-                # if the user has clicked any piece in the list of total pieces enter the if statement
-                if draw_piece.select_piece(piece, click) == True:
-                    # if there is no selected piece assign it to the one clicked by the user
-                    if Gameboard.selected != None:
-                        if Gameboard.selected.getPlayer() == piece.getPlayer():
-                            # player re-selects one of their other pieces
-                            Gameboard.selected = piece
-                    else:
-                        print(piece.getType() + " selected")
-                        Gameboard.selected = piece
+                if draw_piece.select_piece(piece, click) == True and Gameboard.selected == None:
+                    print(piece.getType() + " selected")
+                    Gameboard.selected = piece
+                    # draw_piece.show_available_moves(Gameboard.selected)
 
             if Gameboard.selected != None:
                 is_valid_move, cell_occupant = draw_piece.is_move_available(total_pieces, Gameboard.selected, click)
                 if is_valid_move and cell_occupant == None:
-                    # move piece to open space
                     draw_piece.move_piece(Gameboard.selected, click)
                     Gameboard.selected = None
-                    Gameboard.turn_screen(self)
                 if is_valid_move and cell_occupant != None:
-                    # player clicked opposing piece: check combat conditions
                     if Piece.check_orthogonal(Gameboard.selected, cell_occupant):
-                        lake_status = draw_piece.combat(Gameboard.selected, cell_occupant, click, graveyard1, graveyard2, army1, army2)
-                        if lake_status != None:
-                            # player clicked lake, do nothing
-                            pass
-                        elif cell_occupant.draw_piece.getType() == "Flg":
-                            #draw_piece.Piece.get_type()
-                            view = win.Win()
-                            self.window.show_view(view)
-                        else:
-                            Gameboard.turn_screen(self)
+                        draw_piece.combat(Gameboard.selected, cell_occupant, click, graveyard1, graveyard2, p1_pieces, p2_pieces) #p1_pieces, p2_pieces = TEMP VARIABLES
                     Gameboard.selected = None
             else:
                 Gameboard.selected = None
+
+
+            # Gameboard.click_counter = Gameboard.click_counter + 1
+            # print(Gameboard.click_counter)
+            # if Gameboard.click_counter == 2:
+            #     Gameboard.click_counter = 0
+            #     view = pass_turn.Pass_Turn()
+            #     self.window.show_view(view)
     
     def on_key_press(self, key, key_modifiers):
         if (key == arcade.key.ESCAPE):
@@ -207,19 +196,20 @@ class Gameboard(arcade.View):
             self.window.show_view(board_view)
             esc_menu.Escape.last_screen = Gameboard.last_screen
 
-    def change_turn():
+    def player_ready():
         if Gameboard.player_turn == 1:
             Gameboard.player_turn = 2
         else:
             Gameboard.player_turn = 1
-
-    def turn_screen(self):
-        Gameboard.change_turn()
-        view = pass_turn.Pass_Turn()
-        self.window.show_view(view)
     
     def get_turn():
         return Gameboard.player_turn
+
+    def draw_cell(x, y):
+        arcade.draw_lrtb_rectangle_filled(200+50*(x-1), 200+100*(x-1), 600-50*(y-1), 600-100*(y-1), arcade.color.BLUE)
+        arcade.draw_lrtb_rectangle_outline(200+50*(x-1), 200+100*(x-1), 600-50*(y-1), 600-100*(y-1), arcade.color.BLACK, 4)
+        
+
 
     @classmethod
     def get_last_screen(cls):
