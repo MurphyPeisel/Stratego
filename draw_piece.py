@@ -2,7 +2,6 @@ import arcade
 from Piece import Piece
 from constants import *
 
-#Graveyard Constants
 GRAVEYARD_1_LEFT = 5
 GRAVEYARD_1_RIGHT = 195
 GRAVEYARD_2_LEFT = 705
@@ -13,12 +12,6 @@ YARD_MARGIN = 50
 
 
 def draw_start(piece, army, index):
-    """
-    Initializes peices to graveyards
-    :param piece: Piece object 
-    :param army: which player the piece belongs to 
-    :param index: where to place piece in graveyard. 
-    """
     yard_left = 0
     if army == 1:
         yard_left = GRAVEYARD_1_LEFT
@@ -346,18 +339,10 @@ def get_coordinates(click):
 
     
 def move_to_graveyard(army,piece, graveyard):
-    """
-    Moves piece from board to graveyard: removes from army array and places in graveyard array.
-    :param army: the army array the piece is being removed from
-    :param piece: piece Object; What piece is being moved
-    :param graveyard: the graveyard array that the peice is being placed in
-    """
-    for item in army:
-        if piece.getPosition() == item.getPosition():
-            army.remove(item)
-            graveyard.append(item)
-            piece.setPosition(-1,-1)
-            print(graveyard[0])
+    piece.setPosition(-1,-1)
+    army.remove(piece)
+    graveyard.append(piece)
+    print(graveyard[0])
     
 
 def move_piece(piece, click):
@@ -380,9 +365,6 @@ def combat(attacker, defender, click, graveyard1, graveyard2, army1, army2):
     :param defender: Defending piece
     :param click: Cursor click location (x, y)
     """
-    if attacker.getType() == "Lke" or defender.getType() == "Lke":
-        # player attempting to move on to lake, do nothing
-        return "lake!"
     
     # temp debug code
     print("COMBAT")
@@ -421,4 +403,3 @@ def combat(attacker, defender, click, graveyard1, graveyard2, army1, army2):
             move_to_graveyard(army1, defender, graveyard1)
         else:
             move_to_graveyard(army2, defender, graveyard2)
-
