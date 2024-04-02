@@ -222,6 +222,7 @@ def show_available_moves(piece, total_pieces):
                 Gameboard.Gameboard.setAttack(Gameboard, "right", BOARD_RIGHT + 25 * next_i + BOARD_MARGIN * x, BOARD_BOTTOM + 25 + BOARD_MARGIN * y, 5, arcade.color.RED)
 
         next_j = 1
+        # continue work here
         while (is_piece_scan(total_pieces, [BOARD_RIGHT - 25 + BOARD_MARGIN * x, BOARD_TOP + 25 * next_j + BOARD_MARGIN * y]) == False and BOARD_TOP + 25 * next_j + BOARD_MARGIN * y < 600):
             arcade.draw_arc_filled(BOARD_RIGHT - 25 + BOARD_MARGIN * x, BOARD_TOP + 25 * next_j + BOARD_MARGIN * y, 10, 10,
                                    arcade.color.BLACK, 0, 360)
