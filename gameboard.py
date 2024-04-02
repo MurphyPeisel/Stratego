@@ -52,6 +52,11 @@ class Gameboard(arcade.View):
     click_counter = 0
     selected = None
 
+    AttackRight = None
+    AttackLeft = None
+    AttackAbove = None
+    AttackBelow = None
+
     def on_show_view(self):
         arcade.set_background_color(arcade.color.AVOCADO)
         #AVOCADO
@@ -150,6 +155,20 @@ class Gameboard(arcade.View):
         for piece in graveyard2:
              draw_piece.draw_start(piece, 2, i)
              i = i+1
+
+        if Gameboard.AttackRight != None:
+            arcade.draw_circle_filled(Gameboard.AttackRight[0], Gameboard.AttackRight[1], Gameboard.AttackRight[2], Gameboard.AttackRight[3])
+
+        if Gameboard.AttackLeft != None:
+            arcade.draw_circle_filled(Gameboard.AttackLeft[0], Gameboard.AttackLeft[1], Gameboard.AttackLeft[2],
+                                      Gameboard.AttackLeft[3])
+        if Gameboard.AttackAbove != None:
+            arcade.draw_circle_filled(Gameboard.AttackAbove[0], Gameboard.AttackAbove[1], Gameboard.AttackAbove[2],
+                                      Gameboard.AttackAbove[3])
+        if Gameboard.AttackBelow != None:
+            arcade.draw_circle_filled(Gameboard.AttackBelow[0], Gameboard.AttackBelow[1], Gameboard.AttackBelow[2],
+                                      Gameboard.AttackBelow[3])
+
              
     def on_mouse_press(self, x, y, button, key_modifiers):
         # escape menu coordinates --> make constants
@@ -192,6 +211,22 @@ class Gameboard(arcade.View):
                     Gameboard.selected = None
             else:
                 Gameboard.selected = None
+
+    def setAttack(self, loc, x, y, num, color):
+        if loc == "right":
+            Gameboard.AttackRight = [x, y, num, color]
+        elif loc == "left":
+            Gameboard.AttackLeft = [x, y, num, color]
+        elif loc == "up":
+            Gameboard.AttackAbove = [x, y, num, color]
+        elif loc == "down":
+            Gameboard.AttackBelow = [x, y, num, color]
+
+    def resetAttack(self):
+        Gameboard.AttackRight = None
+        Gameboard.AttackLeft = None
+        Gameboard.AttackAbove = None
+        Gameboard.AttackBelow = None
     
     def on_key_press(self, key, key_modifiers):
         if (key == arcade.key.ESCAPE):

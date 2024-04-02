@@ -1,6 +1,7 @@
 import arcade
 from Piece import Piece
 from constants import *
+import gameboard as Gameboard
 
 GRAVEYARD_1_LEFT = 5
 GRAVEYARD_1_RIGHT = 195
@@ -51,6 +52,11 @@ def draw_start(piece, army, index):
     if piece.getType() == "Lke":
         arcade.draw_polygon_filled(point_list, arcade.color.BLACK)
 
+def is_enemy(piece, player_turn):
+    if piece.getPlayer() != player_turn:
+        return True
+    else:
+        return False
 
 def draw(piece):
     x = piece.getPosition()[0]
@@ -160,18 +166,47 @@ def show_available_moves(piece, total_pieces):
     # not a scout and there is no piece occupying the space in question and the piece itself is not at the edge of the
     # board
     if piece.getType() != "Sct":
+
+        # Right scan
         if (is_piece_scan(total_pieces, [BOARD_RIGHT + 25 + BOARD_MARGIN * x, BOARD_BOTTOM + 25 + BOARD_MARGIN * y]) == False and BOARD_RIGHT + 25 + BOARD_MARGIN * x < 700):
             arcade.draw_arc_filled(BOARD_RIGHT + 25 + BOARD_MARGIN * x, BOARD_BOTTOM + 25 + BOARD_MARGIN * y, 10, 10,
                                    arcade.color.BLACK, 0, 360)
+
+        if (is_piece_scan(total_pieces, [BOARD_RIGHT + 25 + BOARD_MARGIN * x, BOARD_BOTTOM + 25 + BOARD_MARGIN * y]) == True and BOARD_RIGHT + 25 + BOARD_MARGIN * x < 700):
+            if is_enemy(is_piece(total_pieces, [BOARD_RIGHT + 25 + BOARD_MARGIN * x, BOARD_BOTTOM + 25 + BOARD_MARGIN * y])[1], piece.getPlayer()) and is_piece(total_pieces, [BOARD_RIGHT + 25 + BOARD_MARGIN * x, BOARD_BOTTOM + 25 + BOARD_MARGIN * y])[1].getType() != "Lke":
+                Gameboard.Gameboard.setAttack(Gameboard, "right", BOARD_RIGHT + 25 + BOARD_MARGIN * x, BOARD_BOTTOM + 25 + BOARD_MARGIN * y, 5, arcade.color.RED)
+
+
+        # up scan
         if (is_piece_scan(total_pieces, [BOARD_RIGHT - 25 + BOARD_MARGIN * x, BOARD_TOP + 25 + BOARD_MARGIN * y]) == False and BOARD_TOP + 25 + BOARD_MARGIN * y < 600):
             arcade.draw_arc_filled(BOARD_RIGHT - 25 + BOARD_MARGIN * x, BOARD_TOP + 25 + BOARD_MARGIN * y, 10, 10,
                                    arcade.color.BLACK, 0, 360)
+
+        if (is_piece_scan(total_pieces, [BOARD_RIGHT - 25 + BOARD_MARGIN * x, BOARD_TOP + 25 + BOARD_MARGIN * y]) == True and BOARD_TOP + 25 + BOARD_MARGIN * y < 600):
+            if is_enemy(is_piece(total_pieces, [BOARD_RIGHT - 25 + BOARD_MARGIN * x, BOARD_TOP + 25 + BOARD_MARGIN * y])[1], piece.getPlayer()) and is_piece(total_pieces, [BOARD_RIGHT - 25 + BOARD_MARGIN * x, BOARD_TOP + 25 + BOARD_MARGIN * y])[1].getType() != "Lke":
+                Gameboard.Gameboard.setAttack(Gameboard, "up", BOARD_RIGHT - 25 + BOARD_MARGIN * x, BOARD_TOP + 25 + BOARD_MARGIN * y, 5, arcade.color.RED)
+
+
+        # down scan
         if (is_piece_scan(total_pieces, [BOARD_LEFT + 25 + BOARD_MARGIN * x, BOARD_BOTTOM - 25 + BOARD_MARGIN * y]) == False and BOARD_BOTTOM - 25 + BOARD_MARGIN * y > 100):
             arcade.draw_arc_filled(BOARD_LEFT + 25 + BOARD_MARGIN * x, BOARD_BOTTOM - 25 + BOARD_MARGIN * y, 10, 10,
                                    arcade.color.BLACK, 0, 360)
+
+        if (is_piece_scan(total_pieces, [BOARD_LEFT + 25 + BOARD_MARGIN * x,
+                                         BOARD_BOTTOM - 25 + BOARD_MARGIN * y]) == True and BOARD_BOTTOM - 25 + BOARD_MARGIN * y > 100):
+            if is_enemy(is_piece(total_pieces, [BOARD_LEFT + 25 + BOARD_MARGIN * x, BOARD_BOTTOM - 25 + BOARD_MARGIN * y])[1], piece.getPlayer()) and is_piece(total_pieces, [BOARD_LEFT + 25 + BOARD_MARGIN * x, BOARD_BOTTOM - 25 + BOARD_MARGIN * y])[1].getType() != "Lke":
+                Gameboard.Gameboard.setAttack(Gameboard, "down", BOARD_LEFT + 25 + BOARD_MARGIN * x, BOARD_BOTTOM - 25 + BOARD_MARGIN * y, 5, arcade.color.RED)
+
+        # left scan
         if (is_piece_scan(total_pieces, [BOARD_LEFT - 25 + BOARD_MARGIN * x, BOARD_BOTTOM + 25 + BOARD_MARGIN * y]) == False and BOARD_LEFT - 25 + BOARD_MARGIN * x > 200):
             arcade.draw_arc_filled(BOARD_LEFT - 25 + BOARD_MARGIN * x, BOARD_BOTTOM + 25 + BOARD_MARGIN * y, 10, 10,
                                    arcade.color.BLACK, 0, 360)
+
+        if (is_piece_scan(total_pieces, [BOARD_LEFT - 25 + BOARD_MARGIN * x, BOARD_BOTTOM + 25 + BOARD_MARGIN * y]) == True and BOARD_LEFT - 25 + BOARD_MARGIN * x > 200):
+            if is_enemy(is_piece(total_pieces, [BOARD_LEFT - 25 + BOARD_MARGIN * x, BOARD_BOTTOM + 25 + BOARD_MARGIN * y])[1], piece.getPlayer()) and is_piece(total_pieces, [BOARD_LEFT - 25 + BOARD_MARGIN * x, BOARD_BOTTOM + 25 + BOARD_MARGIN * y])[1].getType() != "Lke":
+                Gameboard.Gameboard.setAttack(Gameboard, "left", BOARD_LEFT - 25 + BOARD_MARGIN * x, BOARD_BOTTOM + 25 + BOARD_MARGIN * y, 5, arcade.color.RED)
+
+
     # if the piece is a scout then this portion of the function scans through all the spaces directly to the left,
     # right, above, and below. This portion of the function draws a circle at every space so long as it is not beyond
     # the board space and there is no other piece in the way. The scan will halt any time it detects the edge of the
@@ -182,6 +217,10 @@ def show_available_moves(piece, total_pieces):
             arcade.draw_arc_filled(BOARD_RIGHT + 25 * next_i + BOARD_MARGIN * x, BOARD_BOTTOM + 25 + BOARD_MARGIN * y, 10, 10,
                                    arcade.color.BLACK, 0, 360)
             next_i = next_i + 2
+        if is_piece_scan(total_pieces, [BOARD_RIGHT + 25 * next_i + BOARD_MARGIN * x, BOARD_BOTTOM + 25 + BOARD_MARGIN * y]) == True and BOARD_RIGHT + 25 * next_i + BOARD_MARGIN * x < 700:
+            if is_enemy(is_piece(total_pieces, [BOARD_RIGHT + 25 * next_i + BOARD_MARGIN * x, BOARD_BOTTOM + 25 + BOARD_MARGIN * y])[1], piece.getPlayer()) and is_piece(total_pieces, [BOARD_RIGHT + 25 * next_i + BOARD_MARGIN * x, BOARD_BOTTOM + 25 + BOARD_MARGIN * y])[1].getType() != "Lke":
+                Gameboard.Gameboard.setAttack(Gameboard, "right", BOARD_RIGHT + 25 * next_i + BOARD_MARGIN * x, BOARD_BOTTOM + 25 + BOARD_MARGIN * y, 5, arcade.color.RED)
+
         next_j = 1
         while (is_piece_scan(total_pieces, [BOARD_RIGHT - 25 + BOARD_MARGIN * x, BOARD_TOP + 25 * next_j + BOARD_MARGIN * y]) == False and BOARD_TOP + 25 * next_j + BOARD_MARGIN * y < 600):
             arcade.draw_arc_filled(BOARD_RIGHT - 25 + BOARD_MARGIN * x, BOARD_TOP + 25 * next_j + BOARD_MARGIN * y, 10, 10,
@@ -357,6 +396,7 @@ def move_piece(piece, click):
         print("Invalid move. Cannot convert out-of-bound click to x,y coordinates.")
     else:
         piece.setPosition(loc_x, loc_y)
+        Gameboard.Gameboard.resetAttack(Gameboard)
 
 def combat(attacker, defender, click, graveyard1, graveyard2, army1, army2):
     """ 
