@@ -213,6 +213,7 @@ def show_available_moves(piece, total_pieces):
     # board or another piece, this way the available moves do not imply the ability to jump over other pieces
     if piece.getType() == "Sct":
         next_i = 1
+        # Right
         while (is_piece_scan(total_pieces, [BOARD_RIGHT + 25 * next_i + BOARD_MARGIN * x, BOARD_BOTTOM + 25 + BOARD_MARGIN * y]) == False and BOARD_RIGHT + 25 * next_i + BOARD_MARGIN * x < 700):
             arcade.draw_arc_filled(BOARD_RIGHT + 25 * next_i + BOARD_MARGIN * x, BOARD_BOTTOM + 25 + BOARD_MARGIN * y, 10, 10,
                                    arcade.color.BLACK, 0, 360)
@@ -222,21 +223,31 @@ def show_available_moves(piece, total_pieces):
                 Gameboard.Gameboard.setAttack(Gameboard, "right", BOARD_RIGHT + 25 * next_i + BOARD_MARGIN * x, BOARD_BOTTOM + 25 + BOARD_MARGIN * y, 5, arcade.color.RED)
 
         next_j = 1
-        # continue work here
+        # up
         while (is_piece_scan(total_pieces, [BOARD_RIGHT - 25 + BOARD_MARGIN * x, BOARD_TOP + 25 * next_j + BOARD_MARGIN * y]) == False and BOARD_TOP + 25 * next_j + BOARD_MARGIN * y < 600):
             arcade.draw_arc_filled(BOARD_RIGHT - 25 + BOARD_MARGIN * x, BOARD_TOP + 25 * next_j + BOARD_MARGIN * y, 10, 10,
                                    arcade.color.BLACK, 0, 360)
             next_j = next_j + 2
+        if (is_piece_scan(total_pieces, [BOARD_RIGHT - 25 + BOARD_MARGIN * x, BOARD_TOP + 25 * next_j + BOARD_MARGIN * y]) == True and BOARD_TOP + 25 * next_j + BOARD_MARGIN * y < 600):
+            if is_enemy(is_piece(total_pieces, [BOARD_RIGHT - 25 + BOARD_MARGIN * x, BOARD_TOP + 25 * next_j + BOARD_MARGIN * y])[1], piece.getPlayer()) and is_piece(total_pieces, [BOARD_RIGHT - 25 + BOARD_MARGIN * x, BOARD_TOP + 25 * next_j + BOARD_MARGIN * y])[1].getType() !="Lke":
+                Gameboard.Gameboard.setAttack(Gameboard, "up", BOARD_RIGHT - 25 + BOARD_MARGIN * x, BOARD_TOP + 25 * next_j + BOARD_MARGIN * y, 5, arcade.color.RED)
         next_j = 1
+        # down
         while (is_piece_scan(total_pieces, [BOARD_LEFT + 25 + BOARD_MARGIN * x, BOARD_BOTTOM - 25 * next_j + BOARD_MARGIN * y]) == False and BOARD_BOTTOM - 25 * next_j + BOARD_MARGIN * y > 100):
             arcade.draw_arc_filled(BOARD_LEFT + 25 + BOARD_MARGIN * x, BOARD_BOTTOM - 25 * next_j + BOARD_MARGIN * y, 10, 10,
                                    arcade.color.BLACK, 0, 360)
             next_j = next_j + 2
+        if (is_piece_scan(total_pieces, [BOARD_LEFT + 25 + BOARD_MARGIN * x, BOARD_BOTTOM - 25 * next_j + BOARD_MARGIN * y]) == True and BOARD_BOTTOM - 25 * next_j + BOARD_MARGIN * y > 100):
+            if is_enemy(is_piece(total_pieces, [BOARD_LEFT + 25 + BOARD_MARGIN * x, BOARD_BOTTOM - 25 * next_j + BOARD_MARGIN * y])[1], piece.getPlayer()) and is_piece(total_pieces, [BOARD_LEFT + 25 + BOARD_MARGIN * x, BOARD_BOTTOM - 25 * next_j + BOARD_MARGIN * y])[1].getType() !="Lke":
+                Gameboard.Gameboard.setAttack(Gameboard, "down", BOARD_LEFT + 25 + BOARD_MARGIN * x, BOARD_BOTTOM - 25 * next_j + BOARD_MARGIN * y, 5, arcade.color.RED)
         next_i = 1
         while (is_piece_scan(total_pieces, [BOARD_LEFT - 25 * next_i + BOARD_MARGIN * x, BOARD_BOTTOM + 25 + BOARD_MARGIN * y]) == False and BOARD_LEFT - 25 * next_i + BOARD_MARGIN * x > 200):
             arcade.draw_arc_filled(BOARD_LEFT - 25 * next_i + BOARD_MARGIN * x, BOARD_BOTTOM + 25 + BOARD_MARGIN * y, 10, 10,
                                    arcade.color.BLACK, 0, 360)
             next_i = next_i + 2
+        if (is_piece_scan(total_pieces, [BOARD_LEFT - 25 * next_i + BOARD_MARGIN * x, BOARD_BOTTOM + 25 + BOARD_MARGIN * y]) == True and BOARD_LEFT - 25 * next_i + BOARD_MARGIN * x > 200):
+            if is_enemy(is_piece(total_pieces, [BOARD_LEFT - 25 * next_i + BOARD_MARGIN * x, BOARD_BOTTOM + 25 + BOARD_MARGIN * y])[1], piece.getPlayer()) and is_piece(total_pieces, [BOARD_LEFT - 25 * next_i + BOARD_MARGIN * x, BOARD_BOTTOM + 25 + BOARD_MARGIN * y])[1].getType() !="Lke":
+                Gameboard.Gameboard.setAttack(Gameboard, "left", BOARD_LEFT - 25 * next_i + BOARD_MARGIN * x, BOARD_BOTTOM + 25 + BOARD_MARGIN * y, 5, arcade.color.RED)
 
 def is_move_available(pieces, piece, click):
     """ 
