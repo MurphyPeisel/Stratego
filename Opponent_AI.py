@@ -6,13 +6,17 @@ from constants import *
 import gameboard
 import random
 
-def generateBot():
+allAI = 0
+
+def generateBot(ai):
     print("generate")
-    gameboard.Gameboard.changeAI(1)
+    allAI = ai
+    gameboard.Gameboard.changeAI(ai)
 
 class bot():
 
     selected = None
+    ai = allAI
 
     def select_piece(self, bot_pieces):
         bot.selected = None
@@ -77,7 +81,12 @@ class bot():
                 upMovement = False
             if piece.getPosition()[0] == x and piece.getPosition()[1] == y - 1 or y - 1 < 0:
                 downMovement = False
-        movement = [leftMovement, rightMovement, upMovement, downMovement]
+        if bot.ai == 1:
+            movement = [leftMovement, rightMovement, upMovement, downMovement]
+        elif bot.ai == 2:
+            movement = [leftMovement, rightMovement, upMovement, downMovement, downMovement]
+        else:
+            movement = [leftMovement, rightMovement, upMovement, downMovement, downMovement, downMovement]
 
         possibleCaptureRight = False
         possibleCaptureLeft = False
@@ -116,7 +125,6 @@ class bot():
                               [BOARD_RIGHT - 25 + BOARD_MARGIN * j.getPosition()[0], BOARD_TOP + 25 + BOARD_MARGIN * j.getPosition()[1]],
                               gameboard.graveyard1, gameboard.graveyard2, gameboard.p1_pieces, gameboard.p2_pieces)
 
-
         else:
             bot_move = random.randint(0, len(movement) - 1)
             print(bot_move)
@@ -125,22 +133,15 @@ class bot():
                 print(bot_move)
             if bot_move == 0:
                 move = "left"
+                bot.selected.setPosition(x - 1, y)
             if bot_move == 1:
                 move = "right"
+                bot.selected.setPosition(x + 1, y)
             if bot_move == 2:
                 move = "up"
-            if bot_move == 3:
-                move = "down"
-            print("moving to the", move)
-            if move == "left":
-                bot.selected.setPosition(x - 1, y)
-                print("left")
-            if move == "right":
-                bot.selected.setPosition(x + 1, y)
-                print("right")
-            if move == "up":
                 bot.selected.setPosition(x, y + 1)
-                print("up")
-            if move == "down":
+            if bot_move >= 3:
+                move = "down"
                 bot.selected.setPosition(x, y - 1)
-                print("down")
+            print("moving", move)
+

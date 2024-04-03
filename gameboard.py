@@ -215,7 +215,7 @@ class Gameboard(arcade.View):
             else:
                 Gameboard.selected = None
 
-        elif Gameboard.AI == 1 and Gameboard.player_turn == 1:
+        elif Gameboard.AI == 1 or Gameboard.AI == 2 or Gameboard.AI == 3 and Gameboard.player_turn == 1:
             click = (x, y)
             for piece in total_pieces:
                 # if the user has clicked any piece in the list of total pieces enter the if statement
@@ -289,6 +289,9 @@ class Gameboard(arcade.View):
     
     def get_turn():
         return Gameboard.player_turn
+
+    def get_ai():
+        return Gameboard.AI
 
     def changeAI(ai):
         Gameboard.AI = ai
