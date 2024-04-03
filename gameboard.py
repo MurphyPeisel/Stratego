@@ -182,7 +182,11 @@ class Gameboard(arcade.View):
                 if is_valid_move and cell_occupant != None:
                     # player clicked opposing piece: check combat conditions
                     if cell_occupant.getType() != "Lke":
-                        if Piece.check_orthogonal(Gameboard.selected, cell_occupant):
+                        is_orthogonal = Piece.check_orthogonal(Gameboard.selected, cell_occupant)
+                        if Gameboard.selected.getType() == "Sct":
+                            draw_piece.combat(Gameboard.selected, cell_occupant, click, graveyard1, graveyard2, p1_pieces, p2_pieces) #p1_pieces/p2_pieces = Temp Variables
+                            Gameboard.turn_screen(self)
+                        elif is_orthogonal:
                             if cell_occupant.getType() == "Flg":
                                 view = win.Win()
                                 self.window.show_view(view)
