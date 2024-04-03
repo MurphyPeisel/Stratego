@@ -1,6 +1,7 @@
 import arcade
 import arcade.gui
 import gameboard
+import Opponent_AI
 
 # initialize formatting details
 SCREEN_WIDTH = 300
@@ -40,7 +41,7 @@ class Opponent(arcade.View):
     #Takes user to Difficulty screen
     def on_click_bot(self, event):
         #SET MODE TO PLAY AGAINST COMPUTER (FUTURE)
-
+        Opponent_AI.generateBot()
         self.manager.disable()
         self.window.show_view(Difficulty())
     

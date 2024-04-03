@@ -5,6 +5,7 @@ import Piece
 import draw_piece
 import win
 from constants import *
+import Opponent_AI
 
 p1_tester_piece1 = Piece.Piece("Min", 3, 0, 0, 1)
 p1_tester_piece2 = Piece.Piece("Msh", 10, 2, 0, 1)
@@ -14,7 +15,7 @@ p1_tester_piece5 = Piece.Piece("Flg", 0, 8, 0, 1)
 
 p2_tester_piece1 = Piece.Piece("Sct", 2, 0, 9, 2)
 p2_tester_piece2 = Piece.Piece("Msh", 10, 2, 9, 2)
-p2_tester_piece3 = Piece.Piece("Gen", 9, 4, 9, 2)
+p2_tester_piece3 = Piece.Piece("Gen", 9, 3, 9, 2)
 p2_tester_piece4 = Piece.Piece("Bom", 12, 6, 9, 2)
 p2_tester_piece5 = Piece.Piece("Flg", 0, 8, 9, 2)
 
@@ -48,6 +49,8 @@ class Gameboard(arcade.View):
     last_screen = "game_board"
 
     player_turn = 1
+
+    AI = 0
 
     click_counter = 0
     selected = None
@@ -177,7 +180,7 @@ class Gameboard(arcade.View):
             board_view = esc_menu.Escape(self)
             self.window.show_view(board_view)
             esc_menu.Escape.last_screen = Gameboard.last_screen
-        else:
+        elif Gameboard.AI == 0:
             click = (x,y)
             for piece in total_pieces:
                 # if the user has clicked any piece in the list of total pieces enter the if statement
@@ -207,6 +210,45 @@ class Gameboard(arcade.View):
                                 self.window.show_view(view)
                             else:
                                 draw_piece.combat(Gameboard.selected, cell_occupant, click, graveyard1, graveyard2, p1_pieces, p2_pieces) #p1_pieces/p2_pieces = Temp Variables
+                                Gameboard.turn_screen(self)
+                    Gameboard.selected = None
+            else:
+                Gameboard.selected = None
+
+        elif Gameboard.AI == 1 and Gameboard.player_turn == 1:
+            click = (x, y)
+            for piece in total_pieces:
+                # if the user has clicked any piece in the list of total pieces enter the if statement
+                if draw_piece.select_piece(piece, click, Gameboard.player_turn) == True:
+                    # if there is no selected piece assign it to the one clicked by the user
+                    if Gameboard.selected != None:
+                        if Gameboard.selected.getPlayer() == piece.getPlayer():
+                            # player re-selects one of their other pieces
+                            Gameboard.selected = piece
+                    else:
+                        print(piece.getType() + " selected")
+                        Gameboard.selected = piece
+
+            if Gameboard.selected != None:
+                is_valid_move, cell_occupant = draw_piece.is_move_available(total_pieces, Gameboard.selected, click)
+                if is_valid_move and cell_occupant == None:
+                    # move piece to open space
+                    draw_piece.move_piece(Gameboard.selected, click)
+                    Gameboard.selected = None
+
+                    #make AI move here
+                    Opponent_AI.bot.select_piece(Opponent_AI.bot, p2_pieces)
+
+                if is_valid_move and cell_occupant != None:
+                    # player clicked opposing piece: check combat conditions
+                    if cell_occupant.getType() != "Lke":
+                        if Piece.check_orthogonal(Gameboard.selected, cell_occupant):
+                            if cell_occupant.getType() == "Flg":
+                                view = win.Win()
+                                self.window.show_view(view)
+                            else:
+                                draw_piece.combat(Gameboard.selected, cell_occupant, click, graveyard1, graveyard2,
+                                                  p1_pieces, p2_pieces)  # p1_pieces/p2_pieces = Temp Variables
                                 Gameboard.turn_screen(self)
                     Gameboard.selected = None
             else:
@@ -247,6 +289,10 @@ class Gameboard(arcade.View):
     
     def get_turn():
         return Gameboard.player_turn
+
+    def changeAI(ai):
+        Gameboard.AI = ai
+
 
     @classmethod
     def get_last_screen(cls):
