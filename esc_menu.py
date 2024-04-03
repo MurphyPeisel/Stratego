@@ -1,9 +1,9 @@
 import arcade
 import arcade.gui
-import gameboard
-import menu
 import rules
+import gameboard
 import win
+import menu as mn
 
 # initialize formatting details
 SCREEN_WIDTH = 900
@@ -14,6 +14,8 @@ DEFAULT_FONT_SIZE = 20
 # A class to define the view and buttons for the escape menu which is pulled up whenever a user presses the escape
 # button
 class Escape(arcade.View):
+    win_view = "view"
+    gameboard_view = "view"
     last_screen = "esc_menu"
     
     def __init__(self, menu_instance):
@@ -65,7 +67,7 @@ class Escape(arcade.View):
         self.manager.disable()
         last_screen = self.menu_instance.get_last_screen()
         if last_screen == "menu":
-            board_view = menu.Menu()
+            board_view = mn.Menu()
             self.window.show_view(board_view)
         elif last_screen == "game_board":
             board_view = gameboard.Gameboard()
@@ -87,14 +89,16 @@ class Escape(arcade.View):
     # Functionality for when the user presses the back to menu button to change the screen back to the menu screen
     def on_click_back(self, event):
         self.manager.disable()
-        board_view = menu.Menu()
+        board_view = mn.Menu()
         self.window.show_view(board_view)
     
     def on_click_resign(self, event):
-        gameboard.Gameboard.change_turn()
+        if gameboard.Gameboard.player_turn == 1:
+            gameboard.Gameboard.player_turn = 2
+        else:
+            gameboard.Gameboard.player_turn = 1
         win_view = win.Win()
         self.window.show_view(win_view)            
-            
 
     # This function closes the program when the user hits the exit button
     def on_click_exit(self, event):

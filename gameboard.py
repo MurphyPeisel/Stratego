@@ -13,7 +13,7 @@ graveyard1 = Piece.initPieces(1)
 graveyard2 = Piece.initPieces(2)
 army1 = []
 army2 = []
-total_pieces = army1 + army2
+
 
 
 
@@ -24,7 +24,13 @@ total_pieces = army1 + army2
 # The gameboard class is where the user will engage in gameplay. They can exit via the ESC key and button.  
 # To pass turn, the user must double click the board. 
 class Gameboard(arcade.View):
+    highlight_index = 0
     last_screen = "game_board"
+    total_pieces = army1 + army2
+    last_placement = []
+
+    
+    hover = []
 
     player_turn = 2
 
@@ -81,7 +87,7 @@ class Gameboard(arcade.View):
 
         #draw it
         if Gameboard.selected is not None:
-            draw_piece.show_available_moves(Gameboard.selected, total_pieces)
+            draw_piece.show_available_moves(Gameboard.selected, Gameboard.total_pieces)
         
         #DRAW LEFT LAKE
         Lake1 = ((LAKE1_LEFT, LAKE_BOTTOM),
@@ -113,7 +119,7 @@ class Gameboard(arcade.View):
         arcade.draw_polygon_outline(yard2, arcade.color.BLACK,8)
 
         # draw pieces
-        for piece in total_pieces:
+        for piece in Gameboard.total_pieces:
             if piece.defeated != True:
                 draw_piece.draw(piece)
             #else:
@@ -133,12 +139,19 @@ class Gameboard(arcade.View):
                     draw_piece.draw(piece)
         for piece in army2:
                     draw_piece.draw(piece)
+                    
+        Gameboard.total_pieces = army1 + army2
+
         
         global game_state  
         if game_state == "setup":
             if Gameboard.player_turn == 1 and len(graveyard1) !=0:
                 Gameboard.player_turn = 1
-                draw_piece.show_available_placements(total_pieces, 1)
+                draw_piece.show_available_placements(Gameboard.total_pieces, 1)
+                draw_piece.add_highlight(1, Gameboard.highlight_index)
+                if Gameboard.highlight_index >= len(graveyard1):
+                    Gameboard.highlight_index = Gameboard.highlight_index-1 
+
                 
 
 
@@ -146,7 +159,11 @@ class Gameboard(arcade.View):
                 Gameboard.player_turn = 2
             if Gameboard.player_turn == 2 and len(graveyard2) !=0:
                 Gameboard.player_turn = 2
-                draw_piece.show_available_placements(total_pieces, 2)
+                draw_piece.show_available_placements(Gameboard.total_pieces, 2)
+                draw_piece.add_highlight(2, Gameboard.highlight_index)
+                if Gameboard.highlight_index >= len(graveyard2):
+                    Gameboard.highlight_index = Gameboard.highlight_index-1 
+
                 
 
             else:
@@ -163,26 +180,35 @@ class Gameboard(arcade.View):
         click = (x,y)
         if x>=798 and x<=882 and y<= 665 and y>= 615:
             board_view = esc_menu.Escape(self)
-            board_view = esc_menu.Escape(self)
             self.window.show_view(board_view)
             esc_menu.Escape.last_screen = Gameboard.last_screen
 
         if game_state == "setup":
+            click = (x,y)
             if Gameboard.player_turn == 1:
                 if x >= 200 and x <= 700 and y>=100 and y<=300:
-                    draw_piece.place_piece(graveyard1[0], click, graveyard1, army1)
+                    
+                    draw_piece.place_piece(graveyard1[Gameboard.highlight_index], click, graveyard1, army1)
             if Gameboard.player_turn == 2:
                 if x>= 200 and x <= 700 and y<=600 and y>=400:
-                    draw_piece.place_piece(graveyard2[0], click, graveyard2, army2)
+                    draw_piece.place_piece(graveyard2[Gameboard.highlight_index], click, graveyard2, army2)
             
 
                     
         
-        else:
+        if game_state == "play":
             click = (x,y)
-            for piece in total_pieces:
+            print(click)
+            print("working")
+
+            print(len(Gameboard.total_pieces))
+            for piece in Gameboard.total_pieces:
+
+
                 # if the user has clicked any piece in the list of total pieces enter the if statement
+                
                 if draw_piece.select_piece(piece, click) == True:
+
                     # if there is no selected piece assign it to the one clicked by the user
                     if Gameboard.selected != None:
                         if Gameboard.selected.getPlayer() == piece.getPlayer():
@@ -191,9 +217,11 @@ class Gameboard(arcade.View):
                     else:
                         print(piece.getType() + " selected")
                         Gameboard.selected = piece
+                else:
+                    print (draw_piece.select_piece(piece, click))
 
             if Gameboard.selected != None:
-                is_valid_move, cell_occupant = draw_piece.is_move_available(total_pieces, Gameboard.selected, click)
+                is_valid_move, cell_occupant = draw_piece.is_move_available(Gameboard.total_pieces, Gameboard.selected, click)
                 if is_valid_move and cell_occupant == None:
                     # move piece to open space
                     draw_piece.move_piece(Gameboard.selected, click)
@@ -205,19 +233,57 @@ class Gameboard(arcade.View):
                         if Piece.check_orthogonal(Gameboard.selected, cell_occupant):
                             if cell_occupant.getType() == "Flg":
                                 view = win.Win()
-                                self.window.show_view(view)
+                                self.window.show_view(view, False)
                             else:
                                 draw_piece.combat(Gameboard.selected, cell_occupant, click, graveyard1, graveyard2, army1, army2) #p1_pieces/p2_pieces = Temp Variables
                                 Gameboard.turn_screen(self)
                     Gameboard.selected = None
             else:
                 Gameboard.selected = None
+    def on_mouse_motion(self, x, y, dx, dy):
+        """ Handle Mouse Motion """
+        Gameboard.hover = x,y
+        # Move the player sprite to place its center on the mouse x, y
+        
     
-    def on_key_press(self, key, key_modifiers):
+    def on_key_press(self, key, key_modifiers ):
         if (key == arcade.key.ESCAPE):
             board_view = esc_menu.Escape(self)
             self.window.show_view(board_view)
             esc_menu.Escape.last_screen = Gameboard.last_screen
+        if (game_state == "setup"):
+            if Gameboard.player_turn == 1:
+                yard = graveyard1
+            else:
+                yard = graveyard2
+            if (key == arcade.key.LEFT):
+                    if Gameboard.highlight_index != 0:
+                        Gameboard.highlight_index = Gameboard.highlight_index -1
+            if (key == arcade.key.RIGHT):
+                if Gameboard.highlight_index+1 < len(yard): 
+                    Gameboard.highlight_index = Gameboard.highlight_index + 1
+            if (key == arcade.key.DOWN):
+                if Gameboard.highlight_index + 4 < len(yard):
+                    Gameboard.highlight_index = Gameboard.highlight_index + 4
+            if (key == arcade.key.UP):
+                if Gameboard.highlight_index>=4:
+                    Gameboard.highlight_index = Gameboard.highlight_index - 4
+        if key == arcade.key.Y:
+            if game_state == "setup":
+                x = Gameboard.hover[0]
+                y = Gameboard.hover[1]
+                if Gameboard.player_turn == 1:
+                    if x >= 200 and x <= 700 and y>=100 and y<=300:
+                        draw_piece.place_piece(graveyard1[Gameboard.highlight_index], Gameboard.hover, graveyard1, army1)
+                if Gameboard.player_turn == 2:
+                    if x>= 200 and x <= 700 and y<=600 and y>=400:
+                        draw_piece.place_piece(graveyard2[Gameboard.highlight_index], Gameboard.hover, graveyard2, army2)
+            
+
+                    
+
+                
+                    
 
     def change_turn():
         if Gameboard.player_turn == 1:
@@ -237,11 +303,3 @@ class Gameboard(arcade.View):
     def get_last_screen(cls):
         return cls.last_screen
     
-def main():
-    """ Main function """
-    window = arcade.Window(SCREEN_WIDTH, SCREEN_HEIGHT, "title")
-    menu_view = Gameboard()
-    window.show_view(menu_view)
-    arcade.run()
-
-main()

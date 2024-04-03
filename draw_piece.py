@@ -50,15 +50,32 @@ def draw_start(piece, army, index):
 
     if piece.getType() == "Lke":
         arcade.draw_polygon_filled(point_list, arcade.color.BLACK)
+        
+def add_highlight(army, index):
+    if army == 1:
+        yard_left = GRAVEYARD_1_LEFT
+    else:
+        yard_left = GRAVEYARD_2_LEFT
+    
+    row = index //4
+    
+    point_list = ((yard_left+YARD_MARGIN*(index - 4*row),GRAVEYARD_TOP - YARD_MARGIN*row), 
+                  (yard_left+YARD_MARGIN*(index - 4*row), (GRAVEYARD_TOP- YARD_MARGIN*row) - 40),
+                  (yard_left+(YARD_MARGIN * (index-4*row)) + 40, (GRAVEYARD_TOP - YARD_MARGIN*row)-40),
+                  (yard_left+(YARD_MARGIN * (index-4*row)) + 40, GRAVEYARD_TOP - YARD_MARGIN*row))
+    arcade.draw_polygon_outline(point_list, arcade.color.GREEN, 4)
+
+    
+    
 
 
 def draw(piece):
     x = piece.getPosition()[0]
     y = piece.getPosition()[1]
-    point_list = ((BOARD_LEFT + BOARD_MARGIN*x, BOARD_TOP + BOARD_MARGIN*y),
-                    (BOARD_LEFT + BOARD_MARGIN*x, BOARD_BOTTOM + BOARD_MARGIN*y),
-                    (BOARD_RIGHT + BOARD_MARGIN*x, BOARD_BOTTOM + BOARD_MARGIN*y),
-                    (BOARD_RIGHT + BOARD_MARGIN*x, BOARD_TOP + BOARD_MARGIN*y))
+    point_list = (((BOARD_LEFT+10) + YARD_MARGIN*x, (BOARD_TOP-10) + YARD_MARGIN*y),
+                    ((BOARD_LEFT+10) + YARD_MARGIN*x, (BOARD_BOTTOM+10) + YARD_MARGIN*y),
+                    ((BOARD_RIGHT-10) + YARD_MARGIN*x, (BOARD_BOTTOM+10) + YARD_MARGIN*y),
+                    ((BOARD_RIGHT-10) + YARD_MARGIN*x, (BOARD_TOP-10) + YARD_MARGIN*y))
     if piece.getType() == "Flg":
         arcade.draw_polygon_filled(point_list, arcade.color.WHITE)
         arcade.draw_polygon_outline(point_list, arcade.color.BLACK, 2)
@@ -133,6 +150,7 @@ def is_piece_scan(pieces, loc):
         if x>=BOARD_LEFT + BOARD_MARGIN*piecex and x<=BOARD_RIGHT + BOARD_MARGIN*piecex and y<= BOARD_TOP + BOARD_MARGIN*piecey and y>= BOARD_BOTTOM + BOARD_MARGIN*piecey:
             return True
     return False
+
 def select_yard_piece(piece, army, click, index):
     yard_left = 0
     if army == 1:
@@ -154,12 +172,9 @@ def select_piece(piece, click):
     :param click: location of the users click
     :return boolean value: This value represents whether the piece selected is one that can be moved by the user
     """
-    x, y = click
-    piece_x, piece_y = piece.getPosition()
-    if (x >= BOARD_LEFT + BOARD_MARGIN * piece_x and 
-        x <= BOARD_RIGHT + BOARD_MARGIN * piece_x and
-        y <= BOARD_TOP + BOARD_MARGIN * piece_y and 
-        y >= BOARD_BOTTOM + BOARD_MARGIN * piece_y):
+    hold = piece.getPosition()
+    coords = get_coordinates(click)
+    if (coords == hold):
         if piece.getType() == "Bom" or piece.getType() == "Flg" or piece.getType() == "Lke":
             print(f"{piece.getType()} is not selectable. Select another piece.")
             return False
@@ -199,7 +214,13 @@ def place_piece(piece, click,graveyard,army):
         piece.setPosition(coords[0], coords[1])
         army.append(piece)
         graveyard.remove(piece)
-        draw(army[0])
+        print(piece.getPosition())
+    else:
+        for piece in army:
+            if piece.getPosition()[0] == coords[0] and piece.getPosition()[1] == coords[1]:
+                graveyard.append(piece)
+                army.remove(piece)
+        
     
 
 def show_available_moves(piece, total_pieces):
