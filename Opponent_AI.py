@@ -84,7 +84,9 @@ class bot():
         possibleCaptureUp = False
         possibleCaptureDown = False
 
-        for j in lakelessUserPieces:
+        k = 0
+        while possibleCaptureLeft == False and possibleCaptureUp == False and possibleCaptureDown == False and possibleCaptureRight == False and k < len(lakelessUserPieces) - 1:
+            j = lakelessUserPieces[k]
             if j.getPosition()[0] == x + 1 and j.getPosition()[1] == y:
                 print("possible capture right")
                 possibleCaptureRight = True
@@ -97,18 +99,21 @@ class bot():
             if j.getPosition()[0] == x and j.getPosition()[1] == y - 1:
                 print("possible capture down")
                 possibleCaptureDown = True
+            if possibleCaptureLeft == False and possibleCaptureUp == False and possibleCaptureDown == False and possibleCaptureRight == False:
+                k = k + 1
+
 
         if possibleCaptureRight:
-            draw_piece.combat(bot.selected, j, [BOARD_RIGHT + 25 + BOARD_MARGIN * (x+1), BOARD_BOTTOM + 25 + BOARD_MARGIN * y], gameboard.graveyard1, gameboard.graveyard2, gameboard.p1_pieces, gameboard.p2_pieces)
+            draw_piece.combat(bot.selected, j, [BOARD_RIGHT + 25 + BOARD_MARGIN * j.getPosition()[0], BOARD_BOTTOM + 25 + BOARD_MARGIN * j.getPosition()[1]], gameboard.graveyard1, gameboard.graveyard2, gameboard.p1_pieces, gameboard.p2_pieces)
         elif possibleCaptureLeft:
-            draw_piece.combat(bot.selected, j, [BOARD_LEFT - 25 + BOARD_MARGIN * (x-1), BOARD_BOTTOM + 25 + BOARD_MARGIN * y], gameboard.graveyard1, gameboard.graveyard2, gameboard.p1_pieces, gameboard.p2_pieces)
+            draw_piece.combat(bot.selected, j, [BOARD_LEFT - 25 + BOARD_MARGIN * j.getPosition()[0], BOARD_BOTTOM + 25 + BOARD_MARGIN * j.getPosition()[1]], gameboard.graveyard1, gameboard.graveyard2, gameboard.p1_pieces, gameboard.p2_pieces)
         elif possibleCaptureDown:
             draw_piece.combat(bot.selected, j,
-                              [BOARD_LEFT + 25 + BOARD_MARGIN * x, BOARD_BOTTOM - 25 + BOARD_MARGIN * (y-1)],
+                              [BOARD_LEFT + 25 + BOARD_MARGIN * j.getPosition()[0], BOARD_BOTTOM - 25 + BOARD_MARGIN * j.getPosition()[1]],
                               gameboard.graveyard1, gameboard.graveyard2, gameboard.p1_pieces, gameboard.p2_pieces)
         elif possibleCaptureUp:
             draw_piece.combat(bot.selected, j,
-                              [BOARD_RIGHT - 25 + BOARD_MARGIN * x, BOARD_TOP + 25 + BOARD_MARGIN * (y+1)],
+                              [BOARD_RIGHT - 25 + BOARD_MARGIN * j.getPosition()[0], BOARD_TOP + 25 + BOARD_MARGIN * j.getPosition()[1]],
                               gameboard.graveyard1, gameboard.graveyard2, gameboard.p1_pieces, gameboard.p2_pieces)
 
 
