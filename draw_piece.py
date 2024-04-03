@@ -342,7 +342,7 @@ def move_to_graveyard(army,piece, graveyard):
     piece.setPosition(-1,-1)
     army.remove(piece)
     graveyard.append(piece)
-    print(graveyard[0])
+    print(f"{graveyard[0].getType()} moved to graveyard")
     
 
 def move_piece(piece, click):
@@ -373,7 +373,28 @@ def combat(attacker, defender, click, graveyard1, graveyard2, army1, army2):
 
     # SPECIAL CASE: Miner vs. Bomb
     if attacker.getType() == "Min" and defender.getType() == "Bom":
-        print("bomb defused")
+        print("Miner defuses bomb")
+        defender.defeated = True
+        defender.setPosition(-1,-1)
+        if defender.getPlayer() == 1:
+            move_to_graveyard(army1, defender, graveyard1)
+        else:
+            move_to_graveyard(army2, defender, graveyard2)
+        move_piece(attacker, click)
+    
+    # SPECIAL CASE: Non-miner attacks bomb
+    elif defender.getType() == "Bom":
+        print("Bomb explodes")
+        attacker.defeated = True
+        move_piece(defender, click)
+        if attacker.getPlayer() == 1:
+            move_to_graveyard(army1, attacker, graveyard1)
+        else:
+            move_to_graveyard(army2, attacker, graveyard2)
+
+    # SPECIAL CASE: Spy is attacking
+    elif attacker.getType() == "Spy":
+        print("SPY wins -- attacking")
         defender.defeated = True
         defender.setPosition(-1,-1)
         if defender.getPlayer() == 1:
@@ -382,7 +403,25 @@ def combat(attacker, defender, click, graveyard1, graveyard2, army1, army2):
             move_to_graveyard(army2, defender, graveyard2)
         move_piece(attacker, click)
 
-    # SPECIAL CASE: Spy
+    # SPECIAL CASE: Spy is defending
+    elif defender.getType() == "Spy":
+        if attacker.getType() == "Msh":
+            print("SPY loses -- defending")
+            defender.defeated = True
+            defender.setPosition(-1,-1)
+            if defender.getPlayer() == 1:
+                move_to_graveyard(army1, defender, graveyard1)
+            else:
+                move_to_graveyard(army2, defender, graveyard2)
+            move_piece(attacker, click)
+        else:      
+            print("SPY wins -- defending")
+            attacker.defeated = True
+            move_piece(defender, click)
+            if attacker.getPlayer() == 1:
+                move_to_graveyard(army1, attacker, graveyard1)
+            else:
+                move_to_graveyard(army2, attacker, graveyard2)
 
     elif attacker.getPower() > defender.getPower():
         # attacking piece wins and takes defending piece's place
@@ -394,6 +433,7 @@ def combat(attacker, defender, click, graveyard1, graveyard2, army1, army2):
         else:
             move_to_graveyard(army2, defender, graveyard2)
         move_piece(attacker, click)
+
     elif attacker.getPower() < defender.getPower():
         # defending piece wins
         print("defender wins")
