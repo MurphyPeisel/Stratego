@@ -249,7 +249,7 @@ class Gameboard(arcade.View):
                             else:
                                 draw_piece.combat(Gameboard.selected, cell_occupant, click, graveyard1, graveyard2,
                                                   p1_pieces, p2_pieces)  # p1_pieces/p2_pieces = Temp Variables
-                                Gameboard.turn_screen(self)
+                                # Gameboard.turn_screen(self)
                     Gameboard.selected = None
             else:
                 Gameboard.selected = None
