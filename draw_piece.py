@@ -371,7 +371,20 @@ def combat(attacker, defender, click, graveyard1, graveyard2, army1, army2):
     print(f"attacker located at {attacker.getPosition()}, type: {attacker.getType()}, power: {attacker.getPower()}")
     print(f"defender located at {defender.getPosition()}, type: {defender.getType()}, power: {defender.getPower()}")
 
-    if attacker.getPower() > defender.getPower():
+    # SPECIAL CASE: Miner vs. Bomb
+    if attacker.getType() == "Min" and defender.getType() == "Bom":
+        print("bomb defused")
+        defender.defeated = True
+        defender.setPosition(-1,-1)
+        if defender.getPlayer() == 1:
+            move_to_graveyard(army1, defender, graveyard1)
+        else:
+            move_to_graveyard(army2, defender, graveyard2)
+        move_piece(attacker, click)
+
+    # SPECIAL CASE: Spy
+
+    elif attacker.getPower() > defender.getPower():
         # attacking piece wins and takes defending piece's place
         print("attacker wins")
         defender.defeated = True
