@@ -52,11 +52,13 @@ def draw_start(piece, army, index):
     if piece.getType() == "Lke":
         arcade.draw_polygon_filled(point_list, arcade.color.BLACK)
 
+
 def is_enemy(piece, player_turn):
     if piece.getPlayer() != player_turn:
         return True
     else:
         return False
+
 
 def draw(piece, playerTurn):
     x = piece.getPosition()[0]
@@ -94,7 +96,6 @@ def draw(piece, playerTurn):
         arcade.draw_polygon_filled(point_list, arcade.color.BLACK)
 
 
-
 def is_piece(pieces, click):
     """ 
     Checks if there is a piece at the location of a cursor click.
@@ -130,6 +131,7 @@ def is_piece_scan(pieces, loc):
         if x>=BOARD_LEFT + BOARD_MARGIN*piecex and x<=BOARD_RIGHT + BOARD_MARGIN*piecex and y<= BOARD_TOP + BOARD_MARGIN*piecey and y>= BOARD_BOTTOM + BOARD_MARGIN*piecey:
             return True
     return False
+
 
 def select_piece(piece, click, playerTurn):
     """
@@ -253,6 +255,7 @@ def show_available_moves(piece, total_pieces):
             if is_enemy(is_piece(total_pieces, [BOARD_LEFT - 25 * next_i + BOARD_MARGIN * x, BOARD_BOTTOM + 25 + BOARD_MARGIN * y])[1], piece.getPlayer()) and is_piece(total_pieces, [BOARD_LEFT - 25 * next_i + BOARD_MARGIN * x, BOARD_BOTTOM + 25 + BOARD_MARGIN * y])[1].getType() !="Lke":
                 Gameboard.Gameboard.setAttack(Gameboard, "left", BOARD_LEFT - 25 * next_i + BOARD_MARGIN * x, BOARD_BOTTOM + 25 + BOARD_MARGIN * y, 5, arcade.color.RED)
 
+
 def is_move_available(pieces, piece, click):
     """ 
     Checks if a piece's move is valid.
@@ -368,6 +371,7 @@ def is_move_available(pieces, piece, click):
                 else:
                     return (True, None)
 
+
 def get_coordinates(click):
     """ 
     Converts cursor click to coordinates on grid
@@ -413,6 +417,7 @@ def move_piece(piece, click):
     else:
         piece.setPosition(loc_x, loc_y)
         Gameboard.Gameboard.resetAttack(Gameboard)
+
 
 def combat(attacker, defender, click, graveyard1, graveyard2, army1, army2):
     """ 

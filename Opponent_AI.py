@@ -35,7 +35,7 @@ class bot():
                 if bot.are_moves_available(self, bot.selected, bot_pieces) == False:
                     bot.selected = None
         print(bot.selected.getType())
-        bot.make_move(self, bot_pieces)
+        bot.make_move(self, bot_pieces, gameboard.p1_pieces)
     def are_moves_available(self, selected_piece, bot_pieces):
         x = selected_piece.getPosition()[0]
         y = selected_piece.getPosition()[1]
@@ -45,22 +45,23 @@ class bot():
         downMovement = True
         for piece in bot_pieces:
             if piece.getPosition()[0] == x + 1 and piece.getPosition()[1] == y or x + 1 > 9:
-                print("no right word movement")
                 rightMovement = False
             if piece.getPosition()[0] == x - 1 and piece.getPosition()[1] == y or x - 1 < 0:
-                print("no left word movement")
                 leftMovement = False
             if piece.getPosition()[0] == x and piece.getPosition()[1] == y + 1 or y + 1 > 9:
-                print("no up word movement")
                 upMovement = False
             if piece.getPosition()[0] == x and piece.getPosition()[1] == y - 1 or y - 1 < 0:
-                print("no down word movement")
                 downMovement = False
         if leftMovement == False and rightMovement == False and upMovement == False and downMovement == False:
             return False
         else:
             return True
-    def make_move(self, bot_pieces):
+    def make_move(self, bot_pieces, user_pieces):
+        lakelessUserPieces = []
+        for i in user_pieces:
+            if i.getType() != "Lke":
+                lakelessUserPieces.append(i)
+
         x = bot.selected.getPosition()[0]
         y = bot.selected.getPosition()[1]
         leftMovement = True
@@ -69,41 +70,72 @@ class bot():
         downMovement = True
         for piece in bot_pieces:
             if piece.getPosition()[0] == x + 1 and piece.getPosition()[1] == y or x + 1 > 9:
-                print("no right word movement")
                 rightMovement = False
             if piece.getPosition()[0] == x - 1 and piece.getPosition()[1] == y or x - 1 < 0:
-                print("no left word movement")
                 leftMovement = False
             if piece.getPosition()[0] == x and piece.getPosition()[1] == y + 1 or y + 1 > 9:
-                print("no up word movement")
                 upMovement = False
             if piece.getPosition()[0] == x and piece.getPosition()[1] == y - 1 or y - 1 < 0:
-                print("no down word movement")
                 downMovement = False
         movement = [leftMovement, rightMovement, upMovement, downMovement]
-        bot_move = random.randint(0, len(movement) - 1)
-        print(bot_move)
-        while movement[bot_move] == False:
+
+        possibleCaptureRight = False
+        possibleCaptureLeft = False
+        possibleCaptureUp = False
+        possibleCaptureDown = False
+
+        for j in lakelessUserPieces:
+            if j.getPosition()[0] == x + 1 and j.getPosition()[1] == y:
+                print("possible capture right")
+                possibleCaptureRight = True
+            if j.getPosition()[0] == x - 1 and j.getPosition()[1] == y:
+                print("possible capture left")
+                possibleCaptureLeft = True
+            if j.getPosition()[0] == x and j.getPosition()[1] == y + 1:
+                print("possible capture up")
+                possibleCaptureUp = True
+            if j.getPosition()[0] == x and j.getPosition()[1] == y - 1:
+                print("possible capture down")
+                possibleCaptureDown = True
+
+        if possibleCaptureRight:
+            draw_piece.combat(bot.selected, j, [BOARD_RIGHT + 25 + BOARD_MARGIN * (x+1), BOARD_BOTTOM + 25 + BOARD_MARGIN * y], gameboard.graveyard1, gameboard.graveyard2, gameboard.p1_pieces, gameboard.p2_pieces)
+        elif possibleCaptureLeft:
+            draw_piece.combat(bot.selected, j, [BOARD_LEFT - 25 + BOARD_MARGIN * (x-1), BOARD_BOTTOM + 25 + BOARD_MARGIN * y], gameboard.graveyard1, gameboard.graveyard2, gameboard.p1_pieces, gameboard.p2_pieces)
+        elif possibleCaptureDown:
+            draw_piece.combat(bot.selected, j,
+                              [BOARD_LEFT + 25 + BOARD_MARGIN * x, BOARD_BOTTOM - 25 + BOARD_MARGIN * (y-1)],
+                              gameboard.graveyard1, gameboard.graveyard2, gameboard.p1_pieces, gameboard.p2_pieces)
+        elif possibleCaptureUp:
+            draw_piece.combat(bot.selected, j,
+                              [BOARD_RIGHT - 25 + BOARD_MARGIN * x, BOARD_TOP + 25 + BOARD_MARGIN * (y+1)],
+                              gameboard.graveyard1, gameboard.graveyard2, gameboard.p1_pieces, gameboard.p2_pieces)
+
+
+        else:
             bot_move = random.randint(0, len(movement) - 1)
             print(bot_move)
-        if bot_move == 0:
-            move = "left"
-        if bot_move == 1:
-            move = "right"
-        if bot_move == 2:
-            move = "up"
-        if bot_move == 3:
-            move = "down"
-        print("moving to the", move)
-        if move == "left":
-            bot.selected.setPosition(x - 1, y)
-            print("left")
-        if move == "right":
-            bot.selected.setPosition(x + 1, y)
-            print("right")
-        if move == "up":
-            bot.selected.setPosition(x, y + 1)
-            print("up")
-        if move == "down":
-            bot.selected.setPosition(x, y - 1)
-            print("down")
+            while movement[bot_move] == False:
+                bot_move = random.randint(0, len(movement) - 1)
+                print(bot_move)
+            if bot_move == 0:
+                move = "left"
+            if bot_move == 1:
+                move = "right"
+            if bot_move == 2:
+                move = "up"
+            if bot_move == 3:
+                move = "down"
+            print("moving to the", move)
+            if move == "left":
+                bot.selected.setPosition(x - 1, y)
+                print("left")
+            if move == "right":
+                bot.selected.setPosition(x + 1, y)
+                print("right")
+            if move == "up":
+                bot.selected.setPosition(x, y + 1)
+                print("up")
+            if move == "down":
+                bot.selected.setPosition(x, y - 1)
+                print("down")
