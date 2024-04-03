@@ -14,7 +14,7 @@ p1_tester_piece5 = Piece.Piece("Flg", 0, 8, 0, 1)
 
 p2_tester_piece1 = Piece.Piece("Sct", 2, 0, 9, 2)
 p2_tester_piece2 = Piece.Piece("Msh", 10, 2, 9, 2)
-p2_tester_piece3 = Piece.Piece("Gen", 9, 4, 9, 3)
+p2_tester_piece3 = Piece.Piece("Gen", 9, 4, 9, 2)
 p2_tester_piece4 = Piece.Piece("Bom", 12, 6, 9, 2)
 p2_tester_piece5 = Piece.Piece("Flg", 0, 8, 9, 2)
 
@@ -141,7 +141,7 @@ class Gameboard(arcade.View):
         # draw pieces
         for piece in total_pieces:
             if piece.defeated != True:
-                draw_piece.draw(piece)
+                draw_piece.draw(piece, Gameboard.player_turn)
             #else:
                 # piece is defeated --> draw it, but in the graveyary           
 
