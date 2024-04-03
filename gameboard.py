@@ -181,7 +181,7 @@ class Gameboard(arcade.View):
             click = (x,y)
             for piece in total_pieces:
                 # if the user has clicked any piece in the list of total pieces enter the if statement
-                if draw_piece.select_piece(piece, click) == True:
+                if draw_piece.select_piece(piece, click, Gameboard.player_turn) == True:
                     # if there is no selected piece assign it to the one clicked by the user
                     if Gameboard.selected != None:
                         if Gameboard.selected.getPlayer() == piece.getPlayer():

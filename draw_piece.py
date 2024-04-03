@@ -131,7 +131,7 @@ def is_piece_scan(pieces, loc):
             return True
     return False
 
-def select_piece(piece, click):
+def select_piece(piece, click, playerTurn):
     """
     This function checks if a piece is at the given click coordinates and is one selectable / can be moved. Pieces like
     bombs, flags or lakes cannot be moved or "played with"
@@ -145,7 +145,7 @@ def select_piece(piece, click):
         x <= BOARD_RIGHT + BOARD_MARGIN * piece_x and
         y <= BOARD_TOP + BOARD_MARGIN * piece_y and 
         y >= BOARD_BOTTOM + BOARD_MARGIN * piece_y):
-        if piece.getType() == "Bom" or piece.getType() == "Flg" or piece.getType() == "Lke":
+        if piece.getType() == "Bom" or piece.getType() == "Flg" or piece.getType() == "Lke" or piece.getPlayer() != playerTurn:
             print(f"{piece.getType()} is not selectable. Select another piece.")
             return False
         else:
