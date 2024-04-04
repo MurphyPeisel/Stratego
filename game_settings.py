@@ -91,21 +91,21 @@ class Difficulty(arcade.View):
     #Called when easy_button is clicked
     def on_click_easy(self, event):
         #SET DIFFICULTY OF BOT TO EASY (FOR FUTURE)
-        Opponent_AI.generateBot(1)
+        Opponent_AI.bot.generateBot(1)
         #CHANGE WINDOWS
         self.window.show_view(Gameplay())
     
     #Called when medium_button is clicked    
     def on_click_medium(self, event):
         #SET DIFFICULTY OF BOT TO MEDIUM (FOR FUTURE)
-        Opponent_AI.generateBot(2)
+        Opponent_AI.bot.generateBot(2)
         #CHANGE WINDOWS
         self.window.show_view(Gameplay())
     
     #Called when hard_button is clicked 
     def on_click_hard(self, event):
         #SET DIFFICULTY OF BOT TO HARD (FOR FUTURE)
-        Opponent_AI.generateBot(3)
+        Opponent_AI.bot.generateBot(3)
         #CHANGE WINDOWS
         self.window.show_view(Gameplay())
 
