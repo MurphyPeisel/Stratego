@@ -213,7 +213,10 @@ def show_available_placements(total_pieces, player):
 def place_piece(piece, click,graveyard,army):
     coords = get_coordinates(click)
     if is_piece_scan(army, click) == False:
-        piece.setPosition(coords[0], coords[1])
+        try:
+            piece.setPosition(coords[0], coords[1])
+        except Exception:
+            print(click)
         print(f"piece placed at {coords[0], coords[1]}")
         army.append(piece)
         graveyard.remove(piece)
@@ -417,7 +420,7 @@ def get_coordinates(click):
     # elif:
     #     pass
     else:
-        return None
+        return click
 
     
 def move_to_graveyard(army,piece, graveyard):

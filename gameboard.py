@@ -254,8 +254,10 @@ class Gameboard(arcade.View):
         if (game_state == "setup"):
             if Gameboard.player_turn == 1:
                 yard = graveyard1
+                army = army1
             else:
                 yard = graveyard2
+                army = army2
             if (key == arcade.key.LEFT):
                     if Gameboard.highlight_index != 0:
                         Gameboard.highlight_index = Gameboard.highlight_index -1
@@ -268,8 +270,21 @@ class Gameboard(arcade.View):
             if (key == arcade.key.UP):
                 if Gameboard.highlight_index>=4:
                     Gameboard.highlight_index = Gameboard.highlight_index - 4
+            if (key == arcade.key.R):
+                index = 0
+                print(len(yard))
+                if Gameboard.player_turn == 1:
+                    for i in range(4):
+                        for x in range (10):
+                            draw_piece.place_piece(yard[0], (x,i), yard, army)
+                else:
+                    for i in range(4):
+                        for x in range(10):
+                            draw_piece.place_piece(yard[0], (x,9-i), yard, army)
+
+                            
         if key == arcade.key.Y:
-            if game_state == "setup":
+            if game_state == "setup": 
                 x = Gameboard.hover[0]
                 y = Gameboard.hover[1]
                 if Gameboard.player_turn == 1:
