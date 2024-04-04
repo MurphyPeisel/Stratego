@@ -174,13 +174,15 @@ def select_piece(piece, click):
     """
     hold = piece.getPosition()
     coords = get_coordinates(click)
-    if (coords == hold):
+    if (coords[0] == hold[0] and coords[1] == hold[1]):
         if piece.getType() == "Bom" or piece.getType() == "Flg" or piece.getType() == "Lke":
             print(f"{piece.getType()} is not selectable. Select another piece.")
             return False
         else:
             return True
     else:
+        print(hold)
+        print(coords)
         return False
 
 def show_available_placements(total_pieces, player):
@@ -212,6 +214,7 @@ def place_piece(piece, click,graveyard,army):
     coords = get_coordinates(click)
     if is_piece_scan(army, click) == False:
         piece.setPosition(coords[0], coords[1])
+        print(f"piece placed at {coords[0], coords[1]}")
         army.append(piece)
         graveyard.remove(piece)
         print(piece.getPosition())

@@ -233,7 +233,7 @@ class Gameboard(arcade.View):
                         if Piece.check_orthogonal(Gameboard.selected, cell_occupant):
                             if cell_occupant.getType() == "Flg":
                                 view = win.Win()
-                                self.window.show_view(view, False)
+                                self.window.show_view(view)
                             else:
                                 draw_piece.combat(Gameboard.selected, cell_occupant, click, graveyard1, graveyard2, army1, army2) #p1_pieces/p2_pieces = Temp Variables
                                 Gameboard.turn_screen(self)
