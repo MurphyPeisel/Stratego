@@ -1,7 +1,6 @@
 import arcade
 
 import draw_piece
-from Piece import Piece
 from constants import *
 import gameboard
 import random
@@ -122,16 +121,16 @@ class bot():
 
 
         if possibleCaptureRight:
-            draw_piece.combat(bot.selected, j, [BOARD_RIGHT + 25 + BOARD_MARGIN * j.getPosition()[0], BOARD_BOTTOM + 25 + BOARD_MARGIN * j.getPosition()[1]], gameboard.graveyard1, gameboard.graveyard2, gameboard.p1_pieces, gameboard.p2_pieces)
+            draw_piece.combat(bot.selected, j, [BOARD_RIGHT + BOARD_MARGIN * j.getPosition()[0], BOARD_BOTTOM + BOARD_MARGIN * j.getPosition()[1]], gameboard.graveyard1, gameboard.graveyard2, gameboard.p1_pieces, gameboard.p2_pieces)
         elif possibleCaptureLeft:
-            draw_piece.combat(bot.selected, j, [BOARD_LEFT - 25 + BOARD_MARGIN * j.getPosition()[0], BOARD_BOTTOM + 25 + BOARD_MARGIN * j.getPosition()[1]], gameboard.graveyard1, gameboard.graveyard2, gameboard.p1_pieces, gameboard.p2_pieces)
+            draw_piece.combat(bot.selected, j, [BOARD_LEFT + BOARD_MARGIN * j.getPosition()[0], BOARD_BOTTOM + BOARD_MARGIN * j.getPosition()[1]], gameboard.graveyard1, gameboard.graveyard2, gameboard.p1_pieces, gameboard.p2_pieces)
         elif possibleCaptureDown:
             draw_piece.combat(bot.selected, j,
-                              [BOARD_LEFT + 25 + BOARD_MARGIN * j.getPosition()[0], BOARD_BOTTOM - 25 + BOARD_MARGIN * j.getPosition()[1]],
+                              [BOARD_LEFT + BOARD_MARGIN * j.getPosition()[0], BOARD_BOTTOM + BOARD_MARGIN * j.getPosition()[1]],
                               gameboard.graveyard1, gameboard.graveyard2, gameboard.p1_pieces, gameboard.p2_pieces)
         elif possibleCaptureUp:
             draw_piece.combat(bot.selected, j,
-                              [BOARD_RIGHT - 25 + BOARD_MARGIN * j.getPosition()[0], BOARD_TOP + 25 + BOARD_MARGIN * j.getPosition()[1]],
+                              [BOARD_RIGHT + BOARD_MARGIN * j.getPosition()[0], BOARD_TOP + BOARD_MARGIN * j.getPosition()[1]],
                               gameboard.graveyard1, gameboard.graveyard2, gameboard.p1_pieces, gameboard.p2_pieces)
 
         else:
@@ -202,5 +201,5 @@ class bot():
                 if bot_move == 7:
                     move = "down"
                     bot.selected.setPosition(x, y - 1)
-            print("moving", move)
+                print("moving", move)
 
