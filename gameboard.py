@@ -3,6 +3,7 @@ import esc_menu
 import pass_turn
 import Piece
 import draw_piece
+import time
 import win
 from constants import *
 
@@ -46,8 +47,6 @@ army2 = []
 # To pass turn, the user must double click the board. 
 class Gameboard(arcade.View):
     last_screen = "game_board"
-
-    player_turn = 1
 
     click_counter = 0
     selected = None
@@ -136,7 +135,11 @@ class Gameboard(arcade.View):
         # draw pieces
         for piece in total_pieces:
             if piece.defeated != True:
-                draw_piece.draw(piece)
+                draw_piece.draw(piece)  
+            if pass_turn.Pass_Turn.turn_pause != 0:
+                if time.time() - pass_turn.Pass_Turn.turn_pause > .4:
+                    pass_turn.Pass_Turn.turn_pause = 0
+                    pass_turn.Pass_Turn.turn_screen(self)
             #else:
                 # piece is defeated --> draw it, but in the graveyary           
 
@@ -171,14 +174,14 @@ class Gameboard(arcade.View):
                     else:
                         print(piece.getType() + " selected")
                         Gameboard.selected = piece
-
             if Gameboard.selected != None:
                 is_valid_move, cell_occupant = draw_piece.is_move_available(total_pieces, Gameboard.selected, click)
                 if is_valid_move and cell_occupant == None:
                     # move piece to open space
                     draw_piece.move_piece(Gameboard.selected, click)
                     Gameboard.selected = None
-                    Gameboard.turn_screen(self)
+                    # set time of move, this is used as a marker for a timer for the delay to see your piece move before the screen changes
+                    pass_turn.Pass_Turn.turn_pause = time.time()
                 if is_valid_move and cell_occupant != None:
                     # player clicked opposing piece: check combat conditions
                     if cell_occupant.getType() != "Lke":
@@ -188,7 +191,8 @@ class Gameboard(arcade.View):
                                 self.window.show_view(view)
                             else:
                                 draw_piece.combat(Gameboard.selected, cell_occupant, click, graveyard1, graveyard2, p1_pieces, p2_pieces) #p1_pieces/p2_pieces = Temp Variables
-                                Gameboard.turn_screen(self)
+                                # set time of move, this is used as a marker for a timer for the delay to see your piece move before the screen changes
+                                pass_turn.Pass_Turn.turn_pause = time.time()
                     Gameboard.selected = None
             else:
                 Gameboard.selected = None
@@ -198,20 +202,6 @@ class Gameboard(arcade.View):
             board_view = esc_menu.Escape(self)
             self.window.show_view(board_view)
             esc_menu.Escape.last_screen = Gameboard.last_screen
-
-    def change_turn():
-        if Gameboard.player_turn == 1:
-            Gameboard.player_turn = 2
-        else:
-            Gameboard.player_turn = 1
-
-    def turn_screen(self):
-        Gameboard.change_turn()
-        view = pass_turn.Pass_Turn()
-        self.window.show_view(view)
-    
-    def get_turn():
-        return Gameboard.player_turn
 
     @classmethod
     def get_last_screen(cls):

@@ -1,6 +1,7 @@
 import arcade
 import arcade.gui
 import gameboard
+import pass_turn
 import menu
 import rules
 import win
@@ -46,8 +47,6 @@ class Escape(arcade.View):
         rules_button.on_click = self.on_click_rules
         back_to_menu_button.on_click = self.on_click_back
         resign_button.on_click = self.on_click_resign
-
-        
         exit_button.on_click = self.on_click_exit
 
         self.manager.add(
@@ -91,7 +90,7 @@ class Escape(arcade.View):
         self.window.show_view(board_view)
     
     def on_click_resign(self, event):
-        gameboard.Gameboard.change_turn()
+        pass_turn.Pass_Turn.change_turn()
         win_view = win.Win()
         self.window.show_view(win_view)            
             
