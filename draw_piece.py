@@ -1,4 +1,6 @@
 import arcade
+
+import gameboard
 from Piece import Piece
 from constants import *
 import gameboard as Gameboard
@@ -67,7 +69,35 @@ def draw(piece, playerTurn):
                     (BOARD_LEFT + BOARD_MARGIN*x, BOARD_BOTTOM + BOARD_MARGIN*y),
                     (BOARD_RIGHT + BOARD_MARGIN*x, BOARD_BOTTOM + BOARD_MARGIN*y),
                     (BOARD_RIGHT + BOARD_MARGIN*x, BOARD_TOP + BOARD_MARGIN*y))
-    if playerTurn == piece.getPlayer() or piece.getPlayer() == 3:
+    if gameboard.Gameboard.get_visibility(Gameboard) == False:
+        if playerTurn == piece.getPlayer() or piece.getPlayer() == 3:
+            if piece.getType() == "Flg":
+                arcade.draw_polygon_filled(point_list, arcade.color.WHITE)
+            elif piece.getType() == "Msh":
+                arcade.draw_polygon_filled(point_list, arcade.color.BROWN)
+            elif piece.getType() == "Gen":
+                arcade.draw_polygon_filled(point_list, arcade.color.VIOLET)
+            if piece.getType() == "Col":
+                arcade.draw_polygon_filled(point_list, arcade.color.PINK)
+            if piece.getType() == "Maj":
+                arcade.draw_polygon_filled(point_list, arcade.color.YELLOW)
+            if piece.getType() == "Cap":
+                arcade.draw_polygon_filled(point_list, arcade.color.MAGENTA)
+            if piece.getType() == "Ltn":
+                arcade.draw_polygon_filled(point_list, arcade.color.TANGERINE)
+            if piece.getType() == "Sgt":
+                arcade.draw_polygon_filled(point_list, arcade.color.BABY_BLUE)
+            if piece.getType() == "Min":
+                arcade.draw_polygon_filled(point_list, arcade.color.RASPBERRY)
+            elif piece.getType() == "Sct":
+                arcade.draw_polygon_filled(point_list, arcade.color.BLUE)
+            elif piece.getType() == "Spy":
+                arcade.draw_polygon_filled(point_list, arcade.color.BLACK)
+            elif piece.getType() == "Bom":
+                arcade.draw_polygon_filled(point_list, arcade.color.RED)
+        else:
+            arcade.draw_polygon_filled(point_list, arcade.color.BLACK)
+    elif gameboard.Gameboard.get_visibility(Gameboard) == True:
         if piece.getType() == "Flg":
             arcade.draw_polygon_filled(point_list, arcade.color.WHITE)
         elif piece.getType() == "Msh":
@@ -92,8 +122,7 @@ def draw(piece, playerTurn):
             arcade.draw_polygon_filled(point_list, arcade.color.BLACK)
         elif piece.getType() == "Bom":
             arcade.draw_polygon_filled(point_list, arcade.color.RED)
-    else:
-        arcade.draw_polygon_filled(point_list, arcade.color.BLACK)
+
 
 
 def is_piece(pieces, click):

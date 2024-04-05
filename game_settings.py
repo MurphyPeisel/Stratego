@@ -150,13 +150,13 @@ class Gameplay(arcade.View):
     #Called when reveal_button is pressed 
     def on_click_reveal(self, event):
         #CHANGE SETTING SO THAT DEFENDING PEICES ARE NOT REVEALED (FUTURE)
-        
+        gameboard.Gameboard.set_visibility(gameboard, True)
         self.window.show_view(gameboard.Gameboard())
     
     #Called when hide_button is pressed    
     def on_click_hide(self, event):
         #CHANGE SETTING SO THAT DEFENDING PEICES ARE REVEALED (FUTURE)
-        
+        gameboard.Gameboard.set_visibility(gameboard, False)
         #CHANGE WINDOWS
         self.window.show_view(gameboard.Gameboard())
       

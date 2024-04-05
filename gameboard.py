@@ -51,6 +51,7 @@ class Gameboard(arcade.View):
     player_turn = 1
 
     AI = 0
+    visible = False
 
     click_counter = 0
     selected = None
@@ -286,6 +287,12 @@ class Gameboard(arcade.View):
         Gameboard.change_turn()
         view = pass_turn.Pass_Turn()
         self.window.show_view(view)
+
+    def set_visibility(self, visible):
+        Gameboard.visible = visible
+
+    def get_visibility(self):
+        return Gameboard.visible
     
     def get_turn():
         return Gameboard.player_turn
