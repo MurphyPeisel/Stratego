@@ -76,25 +76,69 @@ class bot():
         rightMovement = True
         upMovement = True
         downMovement = True
-        for piece in bot_pieces:
-            if piece.getPosition()[0] == x + 1 and piece.getPosition()[1] == y or x + 1 > 9:
-                rightMovement = False
-            if piece.getPosition()[0] == x - 1 and piece.getPosition()[1] == y or x - 1 < 0:
-                leftMovement = False
-            if piece.getPosition()[0] == x and piece.getPosition()[1] == y + 1 or y + 1 > 9:
-                upMovement = False
-            if piece.getPosition()[0] == x and piece.getPosition()[1] == y - 1 or y - 1 < 0:
-                downMovement = False
-        movement = [leftMovement, rightMovement, upMovement, downMovement]
-        if bot.ai == 2:
-            movement.append(leftMovement)
-            movement.append(rightMovement)
-            movement.append(downMovement)
-        elif bot.ai == 3:
-            movement.append(leftMovement)
-            movement.append(rightMovement)
-            movement.append(downMovement)
-            movement.append(downMovement)
+        rightMovementList = []
+        leftMovementList = []
+        upMovementList = []
+        downMovementList = []
+        if bot.selected.getType() != "Sct":
+            for piece in bot_pieces:
+                if piece.getPosition()[0] == x + 1 and piece.getPosition()[1] == y or x + 1 > 9:
+                    rightMovement = False
+                if piece.getPosition()[0] == x - 1 and piece.getPosition()[1] == y or x - 1 < 0:
+                    leftMovement = False
+                if piece.getPosition()[0] == x and piece.getPosition()[1] == y + 1 or y + 1 > 9:
+                    upMovement = False
+                if piece.getPosition()[0] == x and piece.getPosition()[1] == y - 1 or y - 1 < 0:
+                    downMovement = False
+            movement = [leftMovement, rightMovement, upMovement, downMovement]
+            if bot.ai == 2:
+                movement.append(leftMovement)
+                movement.append(rightMovement)
+                movement.append(downMovement)
+            elif bot.ai == 3:
+                movement.append(leftMovement)
+                movement.append(rightMovement)
+                movement.append(downMovement)
+                movement.append(downMovement)
+        elif bot.selected.getType() == "Sct":
+            i = 0
+            while i < 9:
+                i = i + 1
+                for piece in bot_pieces:
+                    if piece.getPosition()[0] == x + i and piece.getPosition()[1] == y or x + i > 9:
+                        i = 10
+                if i <= 9:
+                    rightMovementList.append("can move")
+            print("right move list", rightMovementList)
+            i = 0
+            while i < 9:
+                i = i + 1
+                for piece in bot_pieces:
+                    if piece.getPosition()[0] == x - i and piece.getPosition()[1] == y or x - i < 0:
+                        i = 10
+                if i <= 9:
+                    leftMovementList.append("can move")
+                print(i)
+            print("left move list", leftMovementList)
+            while i < 9:
+                i = i + 1
+                for piece in bot_pieces:
+                    if piece.getPosition()[0] == x and piece.getPosition()[1] == y + i or y + i > 9:
+                        i = 10
+                if i <= 9:
+                    upMovementList.append("can move")
+            print("up move list", upMovementList)
+
+            i = 0
+            while i < 9:
+                i = i + 1
+                for piece in bot_pieces:
+                    if piece.getPosition()[0] == x and piece.getPosition()[1] == y - i or y - i < 0:
+                        i = 10
+                if i <= 9:
+                    downMovementList.append("can move")
+            print("down move list", downMovementList)
+
 
         possibleCaptureRight = False
         possibleCaptureLeft = False
@@ -104,16 +148,16 @@ class bot():
         k = 0
         while possibleCaptureLeft == False and possibleCaptureUp == False and possibleCaptureDown == False and possibleCaptureRight == False and k < len(lakelessUserPieces) - 1:
             j = lakelessUserPieces[k]
-            if j.getPosition()[0] == x + 1 and j.getPosition()[1] == y:
+            if j.getPosition()[0] == x + 1 and j.getPosition()[1] == y and bot.selected.getType() != "Sct":
                 print("possible capture right")
                 possibleCaptureRight = True
-            if j.getPosition()[0] == x - 1 and j.getPosition()[1] == y:
+            if j.getPosition()[0] == x - 1 and j.getPosition()[1] == y and bot.selected.getType() != "Sct":
                 print("possible capture left")
                 possibleCaptureLeft = True
-            if j.getPosition()[0] == x and j.getPosition()[1] == y + 1:
+            if j.getPosition()[0] == x and j.getPosition()[1] == y + 1 and bot.selected.getType() != "Sct":
                 print("possible capture up")
                 possibleCaptureUp = True
-            if j.getPosition()[0] == x and j.getPosition()[1] == y - 1:
+            if j.getPosition()[0] == x and j.getPosition()[1] == y - 1 and bot.selected.getType() != "Sct":
                 print("possible capture down")
                 possibleCaptureDown = True
             if possibleCaptureLeft == False and possibleCaptureUp == False and possibleCaptureDown == False and possibleCaptureRight == False:
@@ -134,14 +178,15 @@ class bot():
                               gameboard.graveyard1, gameboard.graveyard2, gameboard.p1_pieces, gameboard.p2_pieces)
 
         else:
-            bot_move = random.randint(0, len(movement) - 1)
-            print(bot_move)
-            while movement[bot_move] == False:
+            if bot.selected.getType() != "Sct":
                 bot_move = random.randint(0, len(movement) - 1)
                 print(bot_move)
-            move = "error"
-            print("ai", bot.ai)
-            if bot.ai == 1:
+                while movement[bot_move] == False:
+                    bot_move = random.randint(0, len(movement) - 1)
+                    print(bot_move)
+                move = "error"
+                print("ai", bot.ai)
+            if bot.ai == 1 and bot.selected.getType() != "Sct":
                 if bot_move == 0:
                     move = "left"
                     bot.selected.setPosition(x - 1, y)
@@ -154,7 +199,46 @@ class bot():
                 if bot_move >= 3:
                     move = "down"
                     bot.selected.setPosition(x, y - 1)
-            if bot.ai == 2:
+
+            if bot.ai == 1 and bot.selected.getType() == "Sct":
+                SctMovement = []
+                if len(leftMovementList) != 0:
+                    SctMovement.append("left")
+                if len(rightMovementList) != 0:
+                    SctMovement.append("right")
+                if len(upMovementList) != 0:
+                    SctMovement.append("up")
+                if len(downMovementList) != 0:
+                    SctMovement.append("down")
+                print(SctMovement)
+
+                bot_move = random.randint(0, len(SctMovement) - 1)
+                direction = "down"
+                if SctMovement[bot_move] == "left":
+                    direction = "left"
+                    movement_magnitude = random.randint(0, len(leftMovementList))
+                    print(direction, movement_magnitude)
+                    bot.selected.setPosition(x - movement_magnitude, y)
+                if SctMovement[bot_move] == "right":
+                    direction = "right"
+                    movement_magnitude = random.randint(0, len(rightMovementList))
+                    print(direction, movement_magnitude)
+                    bot.selected.setPosition(x + movement_magnitude, y)
+                if SctMovement[bot_move] == "up":
+                    direction = "up"
+                    movement_magnitude = random.randint(0, len(upMovementList))
+                    print(direction, movement_magnitude)
+                    bot.selected.setPosition(x, y + movement_magnitude)
+                if SctMovement[bot_move] == "down":
+                    direction = "down"
+                    movement_magnitude = random.randint(0, len(downMovementList))
+                    print(direction, movement_magnitude)
+                    bot.selected.setPosition(x, y - movement_magnitude)
+
+
+
+
+            if bot.ai == 2 and bot.selected.getType() != "Sct":
                 if bot_move == 0:
                     move = "left"
                     bot.selected.setPosition(x - 1, y)
@@ -176,7 +260,7 @@ class bot():
                 if bot_move >= 6:
                     move = "down"
                     bot.selected.setPosition(x, y - 1)
-            if bot.ai == 3:
+            if bot.ai == 3 and bot.selected.getType() != "Sct":
                 if bot_move == 0:
                     move = "left"
                     bot.selected.setPosition(x - 1, y)
