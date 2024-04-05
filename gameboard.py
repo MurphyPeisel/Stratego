@@ -30,8 +30,7 @@ lake_piece_7 = Piece.Piece("Lke", 0, 6, 5, 3)
 lake_piece_8 = Piece.Piece("Lke", 0, 7, 5, 3)
 
 p1_pieces = [p1_tester_piece1, p1_tester_piece2, p1_tester_piece3, p1_tester_piece4, p1_tester_piece5, lake_piece_1, lake_piece_2, lake_piece_3, lake_piece_4, lake_piece_5, lake_piece_6, lake_piece_7, lake_piece_8]
-# p2_pieces = [p2_tester_piece1, p2_tester_piece2, p2_tester_piece3, p2_tester_piece4, p2_tester_piece5, lake_piece_1, lake_piece_2, lake_piece_3, lake_piece_4, lake_piece_5, lake_piece_6, lake_piece_7, lake_piece_8]
-p2_pieces = [p2_tester_piece1, lake_piece_1, lake_piece_2, lake_piece_3, lake_piece_4, lake_piece_5, lake_piece_6, lake_piece_7, lake_piece_8]
+p2_pieces = [p2_tester_piece1, p2_tester_piece2, p2_tester_piece3, p2_tester_piece4, p2_tester_piece5, lake_piece_1, lake_piece_2, lake_piece_3, lake_piece_4, lake_piece_5, lake_piece_6, lake_piece_7, lake_piece_8]
 total_pieces = p1_pieces + p2_pieces
 
 
