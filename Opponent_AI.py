@@ -261,8 +261,6 @@ class bot():
                 print(SctMovement)
 
                 bot_move = random.randint(0, len(SctMovement) - 1)
-                direction = "down"
-                canAttack = canAttackLeft + canAttackRight + canAttackUp + canAttackDown
 
                 if SctMovement[bot_move] == "left":
                     direction = "left"
@@ -307,6 +305,42 @@ class bot():
                 if bot_move >= 6:
                     move = "down"
                     bot.selected.setPosition(x, y - 1)
+
+            if bot.ai == 2 and bot.selected.getType() == "Sct":
+                SctMovement = []
+                if len(leftMovementList) != 0:
+                    SctMovement.append("left")
+                if len(rightMovementList) != 0:
+                    SctMovement.append("right")
+                if len(upMovementList) != 0:
+                    SctMovement.append("up")
+                if len(downMovementList) != 0:
+                    SctMovement.append("down")
+                print(SctMovement)
+
+                bot_move = random.randint(0, len(SctMovement) - 1)
+
+                if SctMovement[bot_move] == "left":
+                    direction = "left"
+                    movement_magnitude = random.randint(0, len(leftMovementList))
+                    print(direction, movement_magnitude)
+                    bot.selected.setPosition(x - movement_magnitude, y)
+                if SctMovement[bot_move] == "right":
+                    direction = "right"
+                    movement_magnitude = random.randint(0, len(rightMovementList))
+                    print(direction, movement_magnitude)
+                    bot.selected.setPosition(x + movement_magnitude, y)
+                if SctMovement[bot_move] == "up":
+                    direction = "up"
+                    movement_magnitude = random.randint(0, len(upMovementList))
+                    print(direction, movement_magnitude)
+                    bot.selected.setPosition(x, y + movement_magnitude)
+                if SctMovement[bot_move] == "down":
+                    direction = "down"
+                    movement_magnitude = random.randint(0, len(downMovementList))
+                    print(direction, movement_magnitude)
+                    bot.selected.setPosition(x, y - movement_magnitude)
+
             if bot.ai == 3 and bot.selected.getType() != "Sct":
                 if bot_move == 0:
                     move = "left"
@@ -332,5 +366,41 @@ class bot():
                 if bot_move == 7:
                     move = "down"
                     bot.selected.setPosition(x, y - 1)
+
+            if bot.ai == 3 and bot.selected.getType() == "Sct":
+                SctMovement = []
+                if len(leftMovementList) != 0:
+                    SctMovement.append("left")
+                if len(rightMovementList) != 0:
+                    SctMovement.append("right")
+                if len(upMovementList) != 0:
+                    SctMovement.append("up")
+                if len(downMovementList) != 0:
+                    SctMovement.append("down")
+                print(SctMovement)
+
+                bot_move = random.randint(0, len(SctMovement) - 1)
+
+                if SctMovement[bot_move] == "left":
+                    direction = "left"
+                    movement_magnitude = random.randint(0, len(leftMovementList))
+                    print(direction, movement_magnitude)
+                    bot.selected.setPosition(x - movement_magnitude, y)
+                if SctMovement[bot_move] == "right":
+                    direction = "right"
+                    movement_magnitude = random.randint(0, len(rightMovementList))
+                    print(direction, movement_magnitude)
+                    bot.selected.setPosition(x + movement_magnitude, y)
+                if SctMovement[bot_move] == "up":
+                    direction = "up"
+                    movement_magnitude = random.randint(0, len(upMovementList))
+                    print(direction, movement_magnitude)
+                    bot.selected.setPosition(x, y + movement_magnitude)
+                if SctMovement[bot_move] == "down":
+                    direction = "down"
+                    movement_magnitude = random.randint(0, len(downMovementList))
+                    print(direction, movement_magnitude)
+                    bot.selected.setPosition(x, y - movement_magnitude)
+
                 print("moving", move)
 
