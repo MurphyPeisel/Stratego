@@ -101,10 +101,15 @@ class bot():
                 movement.append(downMovement)
                 movement.append(downMovement)
         elif bot.selected.getType() == "Sct":
+            canAttackRight = []
+            canAttackLeft = []
+            canAttackUp = []
+            canAttackDown = []
             i = 0
             while i < 9:
                 i = i + 1
-                for piece in bot_pieces:
+                total_pieces = bot_pieces + user_pieces
+                for piece in total_pieces:
                     if piece.getPosition()[0] == x + i and piece.getPosition()[1] == y or x + i > 9:
                         i = 10
                 if i <= 9:
@@ -113,26 +118,26 @@ class bot():
             i = 0
             while i < 9:
                 i = i + 1
-                for piece in bot_pieces:
+                for piece in total_pieces:
                     if piece.getPosition()[0] == x - i and piece.getPosition()[1] == y or x - i < 0:
                         i = 10
                 if i <= 9:
                     leftMovementList.append("can move")
                 print(i)
             print("left move list", leftMovementList)
+            i = 0
             while i < 9:
                 i = i + 1
-                for piece in bot_pieces:
+                for piece in total_pieces:
                     if piece.getPosition()[0] == x and piece.getPosition()[1] == y + i or y + i > 9:
                         i = 10
                 if i <= 9:
                     upMovementList.append("can move")
             print("up move list", upMovementList)
-
             i = 0
             while i < 9:
                 i = i + 1
-                for piece in bot_pieces:
+                for piece in total_pieces:
                     if piece.getPosition()[0] == x and piece.getPosition()[1] == y - i or y - i < 0:
                         i = 10
                 if i <= 9:
@@ -151,15 +156,58 @@ class bot():
             if j.getPosition()[0] == x + 1 and j.getPosition()[1] == y and bot.selected.getType() != "Sct":
                 print("possible capture right")
                 possibleCaptureRight = True
+            if bot.selected.getType() == "Sct":
+                i = 0
+                while i < 9:
+                    i = i + 1
+                    if j.getPlayer() == 2 and j.getPosition()[0] == x + i and j.getPosition()[1] == y:
+                        i = 10
+                    elif j.getPlayer() == 1 and j.getPosition()[0] == x + i and j.getPosition()[1] == y:
+                        print("found opponent right", piece.getType())
+                        possibleCaptureRight = True
+                        canAttackRight = [x + i, y]
+
             if j.getPosition()[0] == x - 1 and j.getPosition()[1] == y and bot.selected.getType() != "Sct":
                 print("possible capture left")
                 possibleCaptureLeft = True
+            if bot.selected.getType() == "Sct":
+                i = 0
+                while i < 9:
+                    i = i + 1
+                    if j.getPlayer() == 2 and j.getPosition()[0] == x - i and j.getPosition()[1] == y:
+                        i = 10
+                    elif j.getPlayer() == 1 and j.getPosition()[0] == x - i and j.getPosition()[1] == y:
+                        print("found opponent Left", piece.getType())
+                        possibleCaptureLeft = True
+                        canAttackLeft = [x - i, y]
+
             if j.getPosition()[0] == x and j.getPosition()[1] == y + 1 and bot.selected.getType() != "Sct":
                 print("possible capture up")
                 possibleCaptureUp = True
+            if bot.selected.getType() == "Sct":
+                i = 0
+                while i < 9:
+                    i = i + 1
+                    if j.getPlayer() == 2 and j.getPosition()[0] == x and j.getPosition()[1] == y - i:
+                        i = 10
+                    elif j.getPlayer() == 1 and j.getPosition()[0] == x and j.getPosition()[1] == y - i:
+                        print("found opponent up", piece.getType())
+                        possibleCaptureUp = True
+                        canAttackUp = [x, y - i]
+
             if j.getPosition()[0] == x and j.getPosition()[1] == y - 1 and bot.selected.getType() != "Sct":
                 print("possible capture down")
                 possibleCaptureDown = True
+            if bot.selected.getType() == "Sct":
+                i = 0
+                while i < 9:
+                    i = i + 1
+                    if j.getPlayer() == 2 and j.getPosition()[0] == x and j.getPosition()[1] == y - i:
+                        i = 10
+                    elif j.getPlayer() == 1 and j.getPosition()[0] == x and j.getPosition()[1] == y - i:
+                        print("found opponent up", piece.getType())
+                        possibleCaptureDown = True
+                        canAttackDown = [x, y + i]
             if possibleCaptureLeft == False and possibleCaptureUp == False and possibleCaptureDown == False and possibleCaptureRight == False:
                 k = k + 1
 
@@ -214,6 +262,8 @@ class bot():
 
                 bot_move = random.randint(0, len(SctMovement) - 1)
                 direction = "down"
+                canAttack = canAttackLeft + canAttackRight + canAttackUp + canAttackDown
+
                 if SctMovement[bot_move] == "left":
                     direction = "left"
                     movement_magnitude = random.randint(0, len(leftMovementList))
@@ -234,9 +284,6 @@ class bot():
                     movement_magnitude = random.randint(0, len(downMovementList))
                     print(direction, movement_magnitude)
                     bot.selected.setPosition(x, y - movement_magnitude)
-
-
-
 
             if bot.ai == 2 and bot.selected.getType() != "Sct":
                 if bot_move == 0:
