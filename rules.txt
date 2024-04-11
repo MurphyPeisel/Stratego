@@ -74,7 +74,7 @@ Special Miner Privileges:
     Bombs cannot attack or move. 
 
 Special Spy Privileges:
-   The Spy is rank "S". If any piece attacks the Spy, it is 
+   The Spy is rank "S". If any piece attacks it, it is 
    removed from the board. The Spy is also the only piece that can
    capture a Marshal, provided the Spy attacks the Marshal first.
    If the Marshal attacks first, then the Spy is removed.
