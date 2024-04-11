@@ -2,12 +2,6 @@ import Piece
 from draw_piece import is_piece_scan
 import random
 
-# def quicksort(arr):
-
-
-# def test_sort():
-
-
 def gen_layout(pieces, difficulty):
     # enemy is always on top of board
     # their grid cells are: (0,9) -- (9, 6)
@@ -25,68 +19,109 @@ def gen_layout(pieces, difficulty):
             pos_x = pos_x + 1
             if pos_x == 10:
                 pos_x = pos_x % 10
-                pos_y = pos_y + 1
+                pos_y = pos_y - 1
 
     # Medium
-    # Well-rounded, more defensive than offensive
-    # Bombs placed randomly
+    # Flag placed randomly in back two rows
+    # place bombs near flag
     elif difficulty == 2:
-        pass
+       # sort array in the following order
+        piece_order = {"Flg": 0, "Bom": 1, "Sct": 2, "Min": 3, 
+                       "Msh": 4, "Gen": 5,  "Col": 6, "Maj": 7, 
+                       "Cap": 8, "Ltn": 9, "Sgt": 10,  "Spy": 11}
+        
+        pieces.sort(key = lambda piece: piece_order[piece.getType()])
+        for piece in pieces:
+            match piece.getType():
+                case "Flg":
+                    # place flag on random column in back 2 rows
+                    flag_x = random.randint(0, 9)
+                    flag_y = random.randint(8, 9)
+                    piece.setPosition(flag_x, flag_y)
+                case "Bom":
+                    # place bombs orthogonal to flag
+                    if flag_x + 1 <= 9 and not is_piece_scan(pieces, (flag_x + 1, flag_y)):
+                        piece.setPosition(flag_x + 1, flag_y) # one cell right of the flag
+                    elif flag_x - 1 >= 0 and not is_piece_scan(pieces, (flag_x + 1, flag_y)):
+                        piece.setPosition(flag_x - 1, flag_y) # one cell left of flag
+                    elif not is_piece_scan(pieces, (flag_x, flag_y - 1)):
+                        piece.setPosition(flag_x, flag_y - 1) # one cell below flag
+                    elif flag_y + 1 <= 9 and not is_piece_scan(pieces, (flag_x, flag_y - 1)):
+                        piece.setPosition(flag_x, flag_y + 1) # one cell above flag
+                    else:  
+                    # randomly place other bombs
+                        bomb_x = random.randint(0, 9)
+                        bomb_y = random.randint(6, 9)
+                        while not is_piece_scan(pieces, (bomb_x, bomb_y)):
+                            bomb_x = random.randint(0, 9)
+                            bomb_y = random.randint(6, 9)
+                        piece.setPosition(bomb_x, bomb_y)
+                case _:
+                    # randomly place all other pieces
+                    piece_x = random.randint(0, 9)
+                    piece_y = random.randint(6, 9)
+                    while not is_piece_scan(pieces, (piece_x, piece_y)):
+                        piece_x = random.randint(0, 9)
+                        piece_y = random.randint(6, 9)
+                    piece.setPosition(piece_x, piece_y)                        
+    
     # Hard
     # Flag in bottom row surrounded by bombs
-    # Decoy flag post (bombs in corner)
-    # Aggressive set-up
+    # Randomly place other pieces, scouts / miners towards front 
     elif difficulty == 3:
         # sort array in the following order
-        piece_order = {"Flg": 0, "Bom": 1, "Msh": 2, "Gen": 3, 
-                       "Col": 4, "Maj": 5, "Cap": 6, "Ltn": 7, 
-                       "Sgt": 8, "Min": 9, "Sct": 10, "Spy": 11}
+        piece_order = {"Flg": 0, "Bom": 1, "Sct": 2, "Min": 3, 
+                       "Msh": 4, "Gen": 5,  "Col": 6, "Maj": 7, 
+                       "Cap": 8, "Ltn": 9, "Sgt": 10,  "Spy": 11}
         
-        pieces.sort(key=piece_order)
-
+        pieces.sort(key = lambda piece: piece_order[piece.getType()])
         for piece in pieces:
             match piece.getType():
                 case "Flg":
                     # place flag on random column in back row
-                    flag_x = random.randint(0,9)
+                    flag_x = random.randint(0, 9)
                     flag_y = 9
                     piece.setPosition(flag_x, flag_y)
                 case "Bom":
                     # place bombs orthogonal to flag
-                    bomb_x = flag_x
-                    bomb_y = flag_y
-                    # while cell is empty
-                    while not is_piece_scan(pieces, (bomb_x, bomb_y)):
-                        
-                        
-
-                    # if flag is already surrounded, place bombs randomly in columns that already have a bomb
-                    # cases: (+1, +1), (-1, -1), (+1, -1), (-1, +1)
-                    pass
-                case "Msh":
-                    pass
-                case "Gen":
-                    pass
-                case "Col":
-                    pass
-                case "Maj":
-                    pass
-                case "Cap":
-                    pass
-                case "Ltn":
-                    pass
-                case "Sgt":
-                    pass
-                case "Min":
-                    pass
+                    if flag_x + 1 <= 9 and not is_piece_scan(pieces, (flag_x + 1, flag_y)):
+                        piece.setPosition(flag_x + 1, flag_y) # one cell right of the flag
+                    elif flag_x - 1 >= 0 and not is_piece_scan(pieces, (flag_x + 1, flag_y)):
+                        piece.setPosition(flag_x - 1, flag_y) # one cell left of flag
+                    elif not is_piece_scan(pieces, (flag_x, flag_y - 1)):
+                        piece.setPosition(flag_x, flag_y - 1) # one cell below flag
+                    # randomly place other bombs
+                    else: 
+                        bomb_x = random.randint(0, 9)
+                        bomb_y = random.randint(6, 9)
+                        while not is_piece_scan(pieces, (bomb_x, bomb_y)):
+                            bomb_x = random.randint(0, 9)
+                            bomb_y = random.randint(6, 9)
+                        piece.setPosition(bomb_x, bomb_y)
                 case "Sct":
-                    pass
-                case "Spy":
-                    pass
+                    # place scout in front 2 rows 
+                    scout_x = random.randint(0, 9)
+                    scout_y = random.randint(6, 7)
+                    while not is_piece_scan(pieces, (scout_x, scout_y)):
+                        scout_x = random.randint(0, 9)
+                        scout_y = random.randint(6, 7)
+                    piece.setPosition(scout_x, scout_y)
+                case "Min":
+                    # place miner in front 3 rows
+                    miner_x = random.randint(0, 9)
+                    miner_y = random.randint(6, 8)
+                    while not is_piece_scan(pieces, (scout_x, scout_y)):
+                        miner_x = random.randint(0, 9)
+                        miner_y = random.randint(6, 8)
+                    piece.setPosition(miner_x, miner_y)
                 case _:
-                    raise Exception("Invalid piece ")
-                    
+                    # randomly place all other pieces
+                    piece_x = random.randint(0, 9)
+                    piece_y = random.randint(6, 9)
+                    while not is_piece_scan(pieces, (piece_x, piece_y)):
+                        piece_x = random.randint(0, 9)
+                        piece_y = random.randint(6, 9)
+                    piece.setPosition(piece_x, piece_y)                        
 
-            
     else:
         print(f"ERROR: {difficulty} is not a valid difficulty.")
