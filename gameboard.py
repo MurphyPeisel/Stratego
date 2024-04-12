@@ -5,6 +5,7 @@ import Piece
 import draw_piece
 import win
 from constants import *
+import Opponent_AI
 
 
 
@@ -14,7 +15,15 @@ from constants import *
 
 
 
+lake_piece_1 = Piece.Piece("Lke", 0, 2, 4, 3)
+lake_piece_2 = Piece.Piece("Lke", 0, 3, 4, 3)
+lake_piece_3 = Piece.Piece("Lke", 0, 2, 5, 3)
+lake_piece_4 = Piece.Piece("Lke", 0, 3, 5, 3)
 
+lake_piece_5 = Piece.Piece("Lke", 0, 6, 4, 3)
+lake_piece_6 = Piece.Piece("Lke", 0, 7, 4, 3)
+lake_piece_7 = Piece.Piece("Lke", 0, 6, 5, 3)
+lake_piece_8 = Piece.Piece("Lke", 0, 7, 5, 3)
 
 
 # The gameboard class is where the user will engage in gameplay. They can exit via the ESC key and button.  
@@ -26,13 +35,19 @@ class Gameboard(arcade.View):
     last_placement = [] #MIGHT NEVER BE USED
     graveyard1 = Piece.initPieces(1)
     graveyard2 = Piece.initPieces(2)
-    army1 = []
-    army2 = []
+    army1 = [lake_piece_1,lake_piece_2,lake_piece_3,lake_piece_4,lake_piece_5,lake_piece_6,lake_piece_7,lake_piece_8]
+    army2 = [lake_piece_1,lake_piece_2,lake_piece_3,lake_piece_4,lake_piece_5,lake_piece_6,lake_piece_7,lake_piece_8]
     total_pieces = army1 + army2
     hover = []
-    player_turn = 2
+    player_turn = 1
     click_counter = 0
     selected = None
+    AI = 0
+
+    AttackRight = None
+    AttackLeft = None
+    AttackAbove = None
+    AttackBelow = None
 
     def on_show_view(self):
         arcade.set_background_color(arcade.color.AVOCADO)
@@ -127,6 +142,21 @@ class Gameboard(arcade.View):
         for piece in Gameboard.army2:
             if piece.defeated != True:
                 draw_piece.draw(piece, 2)
+        
+        
+        if Gameboard.AttackRight != None:
+            arcade.draw_circle_filled(Gameboard.AttackRight[0], Gameboard.AttackRight[1], Gameboard.AttackRight[2], Gameboard.AttackRight[3])
+
+        if Gameboard.AttackLeft != None:
+            arcade.draw_circle_filled(Gameboard.AttackLeft[0], Gameboard.AttackLeft[1], Gameboard.AttackLeft[2],
+                                      Gameboard.AttackLeft[3])
+        if Gameboard.AttackAbove != None:
+            arcade.draw_circle_filled(Gameboard.AttackAbove[0], Gameboard.AttackAbove[1], Gameboard.AttackAbove[2],
+                                      Gameboard.AttackAbove[3])
+        if Gameboard.AttackBelow != None:
+            arcade.draw_circle_filled(Gameboard.AttackBelow[0], Gameboard.AttackBelow[1], Gameboard.AttackBelow[2],
+                                      Gameboard.AttackBelow[3])
+
             #else:
                 # piece is defeated --> draw it, but in the graveyary           
         
@@ -179,8 +209,23 @@ class Gameboard(arcade.View):
                 
     
    
+
+        if Gameboard.AttackRight != None:
+            arcade.draw_circle_filled(Gameboard.AttackRight[0], Gameboard.AttackRight[1], Gameboard.AttackRight[2], Gameboard.AttackRight[3])
+
+        if Gameboard.AttackLeft != None:
+            arcade.draw_circle_filled(Gameboard.AttackLeft[0], Gameboard.AttackLeft[1], Gameboard.AttackLeft[2],
+                                      Gameboard.AttackLeft[3])
+        if Gameboard.AttackAbove != None:
+            arcade.draw_circle_filled(Gameboard.AttackAbove[0], Gameboard.AttackAbove[1], Gameboard.AttackAbove[2],
+                                      Gameboard.AttackAbove[3])
+        if Gameboard.AttackBelow != None:
+            arcade.draw_circle_filled(Gameboard.AttackBelow[0], Gameboard.AttackBelow[1], Gameboard.AttackBelow[2],
+                                      Gameboard.AttackBelow[3])
+
              
     def on_mouse_press(self, x, y, button, key_modifiers):
+        print(Gameboard.AI)
         # escape menu coordinates --> make constants
         click = (x,y)
         if x>=798 and x<=882 and y<= 665 and y>= 615:
@@ -202,49 +247,105 @@ class Gameboard(arcade.View):
                     
         
         if Gameboard.game_state == "play":
-            click = (x,y)
-            print(click)
-            print("working")
-
-            print(len(Gameboard.total_pieces))
-            for piece in Gameboard.total_pieces:
+            print(Gameboard.player_turn)
+            if Gameboard.AI == 0:   #WHAT DOES THIS DO, IS THERE MORE CODE TO ADD?
+                click = (x,y)
+                print(click)
+                for piece in Gameboard.total_pieces:
 
 
                 # if the user has clicked any piece in the list of total pieces enter the if statement
-                
-                if draw_piece.select_piece(piece, click) == True:
-
-                    # if there is no selected piece assign it to the one clicked by the user
-                    if Gameboard.selected != None:
-                        if Gameboard.selected.getPlayer() == piece.getPlayer():
-                            # player re-selects one of their other pieces
+                    if draw_piece.select_piece(piece, click, Gameboard.player_turn) == True:
+                        # if there is no selected piece assign it to the one clicked by the user
+                        if Gameboard.selected != None:
+                            if Gameboard.selected.getPlayer() == piece.getPlayer():
+                                # player re-selects one of their other pieces
+                                Gameboard.selected = piece
+                        else:
+                            print(piece.getType() + " selected")
                             Gameboard.selected = piece
                     else:
-                        print(piece.getType() + " selected")
-                        Gameboard.selected = piece
-                else:
-                    print (draw_piece.select_piece(piece, click))
+                        print (draw_piece.select_piece(piece, click, Gameboard.player_turn))
 
-            if Gameboard.selected != None:
-                is_valid_move, cell_occupant = draw_piece.is_move_available(Gameboard.total_pieces, Gameboard.selected, click)
-                if is_valid_move and cell_occupant == None:
-                    # move piece to open space
-                    draw_piece.move_piece(Gameboard.selected, click)
+                if Gameboard.selected != None:
+                    is_valid_move, cell_occupant = draw_piece.is_move_available(Gameboard.total_pieces, Gameboard.selected, click)
+                    if is_valid_move and cell_occupant == None:
+                        # move piece to open space
+                        draw_piece.move_piece(Gameboard.selected, click)
+                        Gameboard.selected = None
+                        Gameboard.turn_screen(self)
+                    if is_valid_move and cell_occupant != None:
+                        # player clicked opposing piece: check combat conditions
+                        if cell_occupant.getType() != "Lke":
+                            if Piece.check_orthogonal(Gameboard.selected, cell_occupant):
+                                if cell_occupant.getType() == "Flg":
+                                    view = win.Win()
+                                    self.window.show_view(view)
+                                else:
+                                    draw_piece.combat(Gameboard.selected, cell_occupant, click, Gameboard.graveyard1, Gameboard.graveyard2, Gameboard.army1, Gameboard.army2) #p1_pieces/p2_pieces = Temp Variables
+                                    Gameboard.turn_screen(self)
+                        Gameboard.selected = None
+                else:
                     Gameboard.selected = None
-                    Gameboard.turn_screen(self)
-                if is_valid_move and cell_occupant != None:
-                    # player clicked opposing piece: check combat conditions
-                    if cell_occupant.getType() != "Lke":
-                        if Piece.check_orthogonal(Gameboard.selected, cell_occupant):
-                            if cell_occupant.getType() == "Flg":
-                                view = win.Win()
-                                self.window.show_view(view)
-                            else:
-                                draw_piece.combat(Gameboard.selected, cell_occupant, click, Gameboard.graveyard1, Gameboard.graveyard2, Gameboard.army1, Gameboard.army2) #p1_pieces/p2_pieces = Temp Variables
-                                Gameboard.turn_screen(self)
+
+            elif Gameboard.AI == 1 or Gameboard.AI == 2 or Gameboard.AI == 3 and Gameboard.player_turn == 1:
+                print(Gameboard.AI)
+                click = (x, y)
+                print(click)
+                for piece in Gameboard.total_pieces:
+                    # if the user has clicked any piece in the list of total pieces enter the if statement
+                    if draw_piece.select_piece(piece, click, Gameboard.player_turn) == True:
+                        # if there is no selected piece assign it to the one clicked by the user
+                        if Gameboard.selected != None:
+                            if Gameboard.selected.getPlayer() == piece.getPlayer():
+                                # player re-selects one of their other pieces
+                                Gameboard.selected = piece
+                        else:
+                            print(piece.getType() + " selected")
+                            Gameboard.selected = piece
+
+                if Gameboard.selected != None:
+                    is_valid_move, cell_occupant = draw_piece.is_move_available(Gameboard.total_pieces, Gameboard.selected, click)
+                    if is_valid_move and cell_occupant == None:
+                        # move piece to open space
+                        draw_piece.move_piece(Gameboard.selected, click)
+                        Gameboard.selected = None
+
+                        #make AI move here
+                        Opponent_AI.bot.select_piece(Opponent_AI.bot, Gameboard.army2)
+                        
+
+                    if is_valid_move and cell_occupant != None:
+                        # player clicked opposing piece: check combat conditions
+                        if cell_occupant.getType() != "Lke":
+                            if Piece.check_orthogonal(Gameboard.selected, cell_occupant):
+                                if cell_occupant.getType() == "Flg":
+                                    view = win.Win()
+                                    self.window.show_view(view)
+                                else:
+                                    draw_piece.combat(Gameboard.selected, cell_occupant, click, Gameboard.graveyard1, Gameboard.graveyard2,
+                                                    Gameboard.army1,Gameboard.army2)  # p1_pieces/p2_pieces = Temp Variables
+                                    #Gameboard.turn_screen(self)
+                        Gameboard.selected = None
+                        
+                else:
                     Gameboard.selected = None
-            else:
-                Gameboard.selected = None
+
+    def setAttack(self, loc, x, y, num, color):
+        if loc == "right":
+            Gameboard.AttackRight = [x, y, num, color]
+        elif loc == "left":
+            Gameboard.AttackLeft = [x, y, num, color]
+        elif loc == "up":
+            Gameboard.AttackAbove = [x, y, num, color]
+        elif loc == "down":
+            Gameboard.AttackBelow = [x, y, num, color]
+
+    def resetAttack(self):
+        Gameboard.AttackRight = None
+        Gameboard.AttackLeft = None
+        Gameboard.AttackAbove = None
+        Gameboard.AttackBelow = None
     def on_mouse_motion(self, x, y, dx, dy):
         """ Handle Mouse Motion """
         Gameboard.hover = x,y
@@ -318,6 +419,13 @@ class Gameboard(arcade.View):
     
     def get_turn():
         return Gameboard.player_turn
+
+    def get_ai():
+        return Gameboard.AI
+
+    def changeAI(ai):
+        Gameboard.AI = ai
+
 
     @classmethod
     def get_last_screen(cls):
