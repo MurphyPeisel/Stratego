@@ -43,6 +43,7 @@ class Gameboard(arcade.View):
     click_counter = 0
     selected = None
     AI = 0
+    
 
     AttackRight = None
     AttackLeft = None
@@ -225,8 +226,8 @@ class Gameboard(arcade.View):
 
              
     def on_mouse_press(self, x, y, button, key_modifiers):
-        print(Gameboard.AI)
-        # escape menu coordinates --> make constants
+        print(Gameboard.player_turn)
+       # escape menu coordinates --> make constants
         click = (x,y)
         if x>=798 and x<=882 and y<= 665 and y>= 615:
             board_view = esc_menu.Escape(self)
@@ -242,15 +243,9 @@ class Gameboard(arcade.View):
             if Gameboard.player_turn == 2:
                 if x>= 200 and x <= 700 and y<=600 and y>=400:
                     draw_piece.place_piece(Gameboard.graveyard2[Gameboard.highlight_index], click, Gameboard.graveyard2, Gameboard.army2)
-            
-
-                    
-        
         if Gameboard.game_state == "play":
-            print(Gameboard.player_turn)
             if Gameboard.AI == 0:   #WHAT DOES THIS DO, IS THERE MORE CODE TO ADD?
                 click = (x,y)
-                print(click)
                 for piece in Gameboard.total_pieces:
 
 
@@ -275,15 +270,22 @@ class Gameboard(arcade.View):
                         Gameboard.selected = None
                         Gameboard.turn_screen(self)
                     if is_valid_move and cell_occupant != None:
-                        # player clicked opposing piece: check combat conditions
+                    # player clicked opposing piece: check combat conditions
                         if cell_occupant.getType() != "Lke":
-                            if Piece.check_orthogonal(Gameboard.selected, cell_occupant):
+                            is_orthogonal = Piece.check_orthogonal(Gameboard.selected, cell_occupant)
+                            if Gameboard.selected.getType() == "Sct":
+                                print("scout")
+                                draw_piece.combat(Gameboard.selected, cell_occupant, click, Gameboard.graveyard1, Gameboard.graveyard2, Gameboard.army1, Gameboard.army2) #p1_pieces/p2_pieces = Temp Variables
+                                #Gameboard.turn_screen(self)
+                                Gameboard.change_turn()
+                            elif is_orthogonal:
                                 if cell_occupant.getType() == "Flg":
                                     view = win.Win()
                                     self.window.show_view(view)
                                 else:
                                     draw_piece.combat(Gameboard.selected, cell_occupant, click, Gameboard.graveyard1, Gameboard.graveyard2, Gameboard.army1, Gameboard.army2) #p1_pieces/p2_pieces = Temp Variables
-                                    Gameboard.turn_screen(self)
+                                    Gameboard.change_turn()
+                                    #Gameboard.turn_screen(self)
                         Gameboard.selected = None
                 else:
                     Gameboard.selected = None
@@ -291,7 +293,6 @@ class Gameboard(arcade.View):
             elif Gameboard.AI == 1 or Gameboard.AI == 2 or Gameboard.AI == 3 and Gameboard.player_turn == 1:
                 print(Gameboard.AI)
                 click = (x, y)
-                print(click)
                 for piece in Gameboard.total_pieces:
                     # if the user has clicked any piece in the list of total pieces enter the if statement
                     if draw_piece.select_piece(piece, click, Gameboard.player_turn) == True:
@@ -301,7 +302,6 @@ class Gameboard(arcade.View):
                                 # player re-selects one of their other pieces
                                 Gameboard.selected = piece
                         else:
-                            print(piece.getType() + " selected")
                             Gameboard.selected = piece
 
                 if Gameboard.selected != None:
@@ -314,18 +314,24 @@ class Gameboard(arcade.View):
                         #make AI move here
                         Opponent_AI.bot.select_piece(Opponent_AI.bot, Gameboard.army2)
                         
-
+                    print(is_valid_move,cell_occupant)
                     if is_valid_move and cell_occupant != None:
-                        # player clicked opposing piece: check combat conditions
+                    # player clicked opposing piece: check combat conditions
                         if cell_occupant.getType() != "Lke":
-                            if Piece.check_orthogonal(Gameboard.selected, cell_occupant):
+                            is_orthogonal = Piece.check_orthogonal(Gameboard.selected, cell_occupant)
+                            if Gameboard.selected.getType() == "Sct":
+                                print("scout")
+                                draw_piece.combat(Gameboard.selected, cell_occupant, click, Gameboard.graveyard1, Gameboard.graveyard2, Gameboard.army1, Gameboard.army2) #p1_pieces/p2_pieces = Temp Variables
+                                #Gameboard.turn_screen(self)
+                                Gameboard.change_turn()
+                            elif is_orthogonal:
                                 if cell_occupant.getType() == "Flg":
                                     view = win.Win()
                                     self.window.show_view(view)
                                 else:
-                                    draw_piece.combat(Gameboard.selected, cell_occupant, click, Gameboard.graveyard1, Gameboard.graveyard2,
-                                                    Gameboard.army1,Gameboard.army2)  # p1_pieces/p2_pieces = Temp Variables
+                                    draw_piece.combat(Gameboard.selected, cell_occupant, click, Gameboard.graveyard1, Gameboard.graveyard2, Gameboard.army1, Gameboard.army2) #p1_pieces/p2_pieces = Temp Variables
                                     #Gameboard.turn_screen(self)
+                                    Gameboard.change_turn()
                         Gameboard.selected = None
                         
                 else:
