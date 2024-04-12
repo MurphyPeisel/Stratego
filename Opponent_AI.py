@@ -113,7 +113,8 @@ class bot():
         for i in user_pieces:
             if i.getType() != "Lke":
                 lakelessUserPieces.append(i)
-
+        for i in lakelessUserPieces:
+            print(i.getType())
         x = bot.selected.getPosition()[0]
         y = bot.selected.getPosition()[1]
         leftMovement = True
@@ -201,68 +202,53 @@ class bot():
                     downMovementList.append("can move")
             print("down move list", downMovementList)
 
-        # this while loop checks to see if there are any enemy pieces within range of the selected piece and sets a
-        # boolean value to true if there is a possible capture
+        # this checks to see if there are any enemy pieces within range of the selected piece and sets a
+        # boolean value to true if there is a possible capture and it also sets the piece available to capture to a
+        # value to be accessed later
         possibleCaptureRight = False
         possibleCaptureLeft = False
         possibleCaptureUp = False
         possibleCaptureDown = False
-        k = 0
-        while possibleCaptureLeft == False and possibleCaptureUp == False and possibleCaptureDown == False and possibleCaptureRight == False and k < len(lakelessUserPieces) - 1:
-            j = lakelessUserPieces[k]
-            if j.getPosition()[0] == x + 1 and j.getPosition()[1] == y and bot.selected.getType() != "Sct":
-                print("possible capture right")
-                possibleCaptureRight = True
+        for j in user_pieces:
+            print("not capture position left", j.getPosition())
+            print("test left loc", x - (len(leftMovementList) + 1))
+            print("test right loc", x + (len(rightMovementList) + 1))
+            print("test up loc", y + (len(upMovementList) + 1))
+            print("test down loc", y - (len(downMovementList) + 1))
             if bot.selected.getType() == "Sct":
-                i = 0
-                while i < 9:
-                    i = i + 1
-                    if j.getPlayer() == 2 and j.getPosition()[0] == x + i and j.getPosition()[1] == y:
-                        i = 10
-                    elif j.getPlayer() == 1 and j.getPosition()[0] == x + i and j.getPosition()[1] == y:
-                        print("found opponent right", piece.getType())
-                        possibleCaptureRight = True
-
-            if j.getPosition()[0] == x - 1 and j.getPosition()[1] == y and bot.selected.getType() != "Sct":
-                print("possible capture left")
-                possibleCaptureLeft = True
-            if bot.selected.getType() == "Sct":
-                i = 0
-                while i < 9:
-                    i = i + 1
-                    if j.getPlayer() == 2 and j.getPosition()[0] == x - i and j.getPosition()[1] == y:
-                        i = 10
-                    elif j.getPlayer() == 1 and j.getPosition()[0] == x - i and j.getPosition()[1] == y:
-                        print("found opponent Left", piece.getType())
-                        possibleCaptureLeft = True
-
-            if j.getPosition()[0] == x and j.getPosition()[1] == y + 1 and bot.selected.getType() != "Sct":
-                print("possible capture up")
-                possibleCaptureUp = True
-            if bot.selected.getType() == "Sct":
-                i = 0
-                while i < 9:
-                    i = i + 1
-                    if j.getPlayer() == 2 and j.getPosition()[0] == x and j.getPosition()[1] == y - i:
-                        i = 10
-                    elif j.getPlayer() == 1 and j.getPosition()[0] == x and j.getPosition()[1] == y - i:
-                        print("found opponent up", piece.getType())
-                        possibleCaptureUp = True
-
-            if j.getPosition()[0] == x and j.getPosition()[1] == y - 1 and bot.selected.getType() != "Sct":
-                print("possible capture down")
-                possibleCaptureDown = True
-            if bot.selected.getType() == "Sct":
-                i = 0
-                while i < 9:
-                    i = i + 1
-                    if j.getPlayer() == 2 and j.getPosition()[0] == x and j.getPosition()[1] == y - i:
-                        i = 10
-                    elif j.getPlayer() == 1 and j.getPosition()[0] == x and j.getPosition()[1] == y - i:
-                        print("found opponent up", piece.getType())
-                        possibleCaptureDown = True
-            if possibleCaptureLeft == False and possibleCaptureUp == False and possibleCaptureDown == False and possibleCaptureRight == False:
-                k = k + 1
+                if x - (len(leftMovementList) + 1) == j.getPosition()[0] and y == j.getPosition()[1] and j.getPlayer() == 1:
+                    print("capture")
+                    possibleCaptureLeft = True
+                    leftCapturePiece = j
+                if x + (len(rightMovementList) + 1) == j.getPosition()[0] and y == j.getPosition()[1] and j.getPlayer() == 1:
+                    print("capture")
+                    possibleCaptureRight = True
+                    rightCapturePiece = j
+                if x == j.getPosition()[0] and y + (len(upMovementList) + 1) == j.getPosition()[1] and j.getPlayer() == 1:
+                    print("capture")
+                    possibleCaptureUp = True
+                    upCapturePiece = j
+                if x == j.getPosition()[0] and y - (len(downMovementList) + 1) == j.getPosition()[1] and j.getPlayer() == 1:
+                    print("capture")
+                    possibleCaptureDown = True
+                    downCapturePiece = j
+            else:
+                if x - 1 == j.getPosition()[0] and y == j.getPosition()[1] and j.getPlayer() == 1:
+                    print("capture")
+                    possibleCaptureLeft = True
+                    leftCapturePiece = j
+                if x + 1 == j.getPosition()[0] and y == j.getPosition()[1] and j.getPlayer() == 1:
+                    print("capture")
+                    possibleCaptureRight = True
+                    rightCapturePiece = j
+                if x == j.getPosition()[0] and y + 1 == j.getPosition()[1] and j.getPlayer() == 1:
+                    print("capture")
+                    possibleCaptureUp = True
+                    upCapturePiece = j
+                if x == j.getPosition()[0] and y - 1 == j.getPosition()[1] and j.getPlayer() == 1:
+                    print("capture")
+                    possibleCaptureDown = True
+                    downCapturePiece = j
 
         isCaptureAvailable = False
         # The following if statement check for a possible capture and set weather or not the computer attempts to
@@ -280,66 +266,25 @@ class bot():
                 captureOrFlee = 1
             else:
                 captureOrFlee = 0
-        if bot.ai == 1 and captureOrFlee == 1:
+        if captureOrFlee == 1:
             if possibleCaptureRight:
-                draw_piece.combat(bot.selected, j, [BOARD_RIGHT - 25 + BOARD_MARGIN * j.getPosition()[0], BOARD_BOTTOM + 25 + BOARD_MARGIN * j.getPosition()[1]], gameboard.graveyard1, gameboard.graveyard2, gameboard.p1_pieces, gameboard.p2_pieces)
+                draw_piece.combat(bot.selected, rightCapturePiece, [BOARD_RIGHT - 25 + BOARD_MARGIN * rightCapturePiece.getPosition()[0], BOARD_BOTTOM + 25 + BOARD_MARGIN * rightCapturePiece.getPosition()[1]], gameboard.graveyard1, gameboard.graveyard2, gameboard.p1_pieces, gameboard.p2_pieces)
             elif possibleCaptureLeft:
-                draw_piece.combat(bot.selected, j, [BOARD_LEFT + 25 + BOARD_MARGIN * j.getPosition()[0], BOARD_BOTTOM + 25 + BOARD_MARGIN * j.getPosition()[1]], gameboard.graveyard1, gameboard.graveyard2, gameboard.p1_pieces, gameboard.p2_pieces)
+                draw_piece.combat(bot.selected, leftCapturePiece, [BOARD_LEFT + 25 + BOARD_MARGIN * leftCapturePiece.getPosition()[0], BOARD_BOTTOM + 25 + BOARD_MARGIN * leftCapturePiece.getPosition()[1]], gameboard.graveyard1, gameboard.graveyard2, gameboard.p1_pieces, gameboard.p2_pieces)
             elif possibleCaptureDown:
-                draw_piece.combat(bot.selected, j,
-                                  [BOARD_LEFT + 25 + BOARD_MARGIN * j.getPosition()[0], BOARD_BOTTOM + 25 + BOARD_MARGIN * j.getPosition()[1]],
+                draw_piece.combat(bot.selected, downCapturePiece,
+                                  [BOARD_LEFT + 25 + BOARD_MARGIN * downCapturePiece.getPosition()[0], BOARD_BOTTOM + 25 + BOARD_MARGIN * downCapturePiece.getPosition()[1]],
                                   gameboard.graveyard1, gameboard.graveyard2, gameboard.p1_pieces, gameboard.p2_pieces)
             elif possibleCaptureUp:
-                draw_piece.combat(bot.selected, j,
-                                  [BOARD_RIGHT - 25 + BOARD_MARGIN * j.getPosition()[0], BOARD_TOP - 25 + BOARD_MARGIN * j.getPosition()[1]],
+                draw_piece.combat(bot.selected, upCapturePiece,
+                                  [BOARD_RIGHT - 25 + BOARD_MARGIN * upCapturePiece.getPosition()[0], BOARD_TOP - 25 + BOARD_MARGIN * upCapturePiece.getPosition()[1]],
                                   gameboard.graveyard1, gameboard.graveyard2, gameboard.p1_pieces, gameboard.p2_pieces)
-        elif bot.ai == 2 and captureOrFlee == 1:
-            if possibleCaptureRight:
-                draw_piece.combat(bot.selected, j, [BOARD_RIGHT - 25 + BOARD_MARGIN * j.getPosition()[0],
-                                                    BOARD_BOTTOM + 25 + BOARD_MARGIN * j.getPosition()[1]],
-                                  gameboard.graveyard1, gameboard.graveyard2, gameboard.p1_pieces, gameboard.p2_pieces)
-            elif possibleCaptureLeft:
-                draw_piece.combat(bot.selected, j, [BOARD_LEFT + 25 + BOARD_MARGIN * j.getPosition()[0],
-                                                        BOARD_BOTTOM + 25 + BOARD_MARGIN * j.getPosition()[1]],
-                                      gameboard.graveyard1, gameboard.graveyard2, gameboard.p1_pieces, gameboard.p2_pieces)
-            elif possibleCaptureDown:
-                draw_piece.combat(bot.selected, j,
-                                      [BOARD_LEFT + 25 + BOARD_MARGIN * j.getPosition()[0],
-                                       BOARD_BOTTOM + 25 + BOARD_MARGIN * j.getPosition()[1]],
-                                      gameboard.graveyard1, gameboard.graveyard2, gameboard.p1_pieces, gameboard.p2_pieces)
-            elif possibleCaptureUp:
-                draw_piece.combat(bot.selected, j,
-                                      [BOARD_RIGHT - 25 + BOARD_MARGIN * j.getPosition()[0],
-                                       BOARD_TOP - 25 + BOARD_MARGIN * j.getPosition()[1]],
-                                      gameboard.graveyard1, gameboard.graveyard2, gameboard.p1_pieces, gameboard.p2_pieces)
-        elif bot.ai == 3 and captureOrFlee == 1:
-            if possibleCaptureRight:
-                    draw_piece.combat(bot.selected, j, [BOARD_RIGHT - 25 + BOARD_MARGIN * j.getPosition()[0],
-                                                        BOARD_BOTTOM + 25 + BOARD_MARGIN * j.getPosition()[1]],
-                                      gameboard.graveyard1, gameboard.graveyard2, gameboard.p1_pieces,
-                                      gameboard.p2_pieces)
-            elif possibleCaptureLeft:
-                    draw_piece.combat(bot.selected, j, [BOARD_LEFT + 25 + BOARD_MARGIN * j.getPosition()[0],
-                                                        BOARD_BOTTOM + 25 + BOARD_MARGIN * j.getPosition()[1]],
-                                      gameboard.graveyard1, gameboard.graveyard2, gameboard.p1_pieces,
-                                      gameboard.p2_pieces)
-            elif possibleCaptureDown:
-                    draw_piece.combat(bot.selected, j,
-                                      [BOARD_LEFT + 25 + BOARD_MARGIN * j.getPosition()[0],
-                                       BOARD_BOTTOM + 25 + BOARD_MARGIN * j.getPosition()[1]],
-                                      gameboard.graveyard1, gameboard.graveyard2, gameboard.p1_pieces,
-                                      gameboard.p2_pieces)
-            elif possibleCaptureUp:
-                    draw_piece.combat(bot.selected, j,
-                                      [BOARD_RIGHT - 25 + BOARD_MARGIN * j.getPosition()[0],
-                                       BOARD_TOP - 25 + BOARD_MARGIN * j.getPosition()[1]],
-                                      gameboard.graveyard1, gameboard.graveyard2, gameboard.p1_pieces,
-                                      gameboard.p2_pieces)
 
         # All non attack based movement is executed here
         else:
             # if the selected piece is not a scout then a random integer is generated that is used to determine the
             # direction of movement
+            bot_move = 0
             if bot.selected.getType() != "Sct":
                 bot_move = random.randint(0, len(movement) - 1)
                 print(bot_move)
@@ -348,217 +293,296 @@ class bot():
                     print(bot_move)
                 move = "error"
                 print("ai", bot.ai)
-            # this makes the moves for all non scout pieces with bot difficulties of 1
             if bot.ai == 1 and bot.selected.getType() != "Sct":
-                if bot_move == 0:
-                    move = "left"
-                    bot.selected.setPosition(x - 1, y)
-                if bot_move == 1:
-                    move = "right"
-                    bot.selected.setPosition(x + 1, y)
-                if bot_move == 2:
-                    move = "up"
-                    bot.selected.setPosition(x, y + 1)
-                if bot_move >= 3:
-                    move = "down"
-                    bot.selected.setPosition(x, y - 1)
-
-            # if the selected piece is a scout then the movement needs to have a randomized magnitude generated as well
-            # this generates that so that the scout can move any distance it wants under the difficulty 1
+                bot.moves_for_ai_1_no_sct(self, bot_move)
             if bot.ai == 1 and bot.selected.getType() == "Sct":
-                SctMovement = []
-                if len(leftMovementList) != 0:
-                    SctMovement.append("left")
-                if len(rightMovementList) != 0:
-                    SctMovement.append("right")
-                if len(upMovementList) != 0:
-                    SctMovement.append("up")
-                if len(downMovementList) != 0:
-                    SctMovement.append("down")
-                print(SctMovement)
-
-                bot_move = random.randint(0, len(SctMovement) - 1)
-
-                if SctMovement[bot_move] == "left":
-                    direction = "left"
-                    movement_magnitude = random.randint(1, len(leftMovementList))
-                    print(direction, movement_magnitude)
-                    bot.selected.setPosition(x - movement_magnitude, y)
-                if SctMovement[bot_move] == "right":
-                    direction = "right"
-                    movement_magnitude = random.randint(1, len(rightMovementList))
-                    print(direction, movement_magnitude)
-                    bot.selected.setPosition(x + movement_magnitude, y)
-                if SctMovement[bot_move] == "up":
-                    direction = "up"
-                    movement_magnitude = random.randint(1, len(upMovementList))
-                    print(direction, movement_magnitude)
-                    bot.selected.setPosition(x, y + movement_magnitude)
-                if SctMovement[bot_move] == "down":
-                    direction = "down"
-                    movement_magnitude = random.randint(1, len(downMovementList))
-                    print(direction, movement_magnitude)
-                    bot.selected.setPosition(x, y - movement_magnitude)
-
-            # this makes the movements for all non scout pieces that have a bot difficulty of 2
+                bot.moves_for_ai_1_sct(self, leftMovementList, rightMovementList, upMovementList, downMovementList)
             if bot.ai == 2 and bot.selected.getType() != "Sct":
-                # this checks to make sure that the selected moves aren't going to be captures, if they are it
-                # re-randomizes the move
-                if possibleCaptureLeft:
-                    # cannot move, re select movement
-                    while bot_move == 0 or bot_move == 4:
-                        bot_move = random.randint(0, len(movement) - 1)
-                if possibleCaptureRight:
-                    # cannot move, re select movement
-                    while bot_move == 1 or bot_move == 5:
-                        bot_move = random.randint(0, len(movement) - 1)
-                if possibleCaptureUp:
-                    while bot_move == 2:
-                        bot_move = random.randint(0, len(movement) - 1)
-                if possibleCaptureDown:
-                    while bot_move == 3 or bot_move == 6:
-                        bot_move = random.randint(0, len(movement) - 1)
-                # the following if statements make the moves for the piece
-                if bot_move == 0:
-                    move = "left"
-                    bot.selected.setPosition(x - 1, y)
-
-                if bot_move == 1:
-                    move = "right"
-                    bot.selected.setPosition(x + 1, y)
-
-                if bot_move == 2:
-                    move = "up"
-                    bot.selected.setPosition(x, y + 1)
-
-                if bot_move == 3:
-                    move = "down"
-                    bot.selected.setPosition(x, y - 1)
-
-                if bot_move == 4:
-                    move = "left"
-                    bot.selected.setPosition(x - 1, y)
-
-                if bot_move == 5:
-                    move = "right"
-                    bot.selected.setPosition(x + 1, y)
-                if bot_move >= 6:
-                    move = "down"
-                    bot.selected.setPosition(x, y - 1)
-
-            # For selected pieces that are scouts and have an AI difficulty of 2, this generates random direction and
-            # magnitude for the scouts movement
+                bot.moves_for_ai_2_no_sct(self, bot_move, possibleCaptureLeft, possibleCaptureRight, possibleCaptureUp,
+                                          possibleCaptureDown, movement)
             if bot.ai == 2 and bot.selected.getType() == "Sct":
-                SctMovement = []
-                if len(leftMovementList) != 0:
-                    SctMovement.append("left")
-                if len(rightMovementList) != 0:
-                    SctMovement.append("right")
-                if len(upMovementList) != 0:
-                    SctMovement.append("up")
-                if len(downMovementList) != 0:
-                    SctMovement.append("down")
-                print(SctMovement)
-
-                bot_move = random.randint(0, len(SctMovement) - 1)
-
-                if SctMovement[bot_move] == "left":
-                    direction = "left"
-                    movement_magnitude = random.randint(1, len(leftMovementList))
-                    print(direction, movement_magnitude)
-                    bot.selected.setPosition(x - movement_magnitude, y)
-                if SctMovement[bot_move] == "right":
-                    direction = "right"
-                    movement_magnitude = random.randint(1, len(rightMovementList))
-                    print(direction, movement_magnitude)
-                    bot.selected.setPosition(x + movement_magnitude, y)
-                if SctMovement[bot_move] == "up":
-                    direction = "up"
-                    movement_magnitude = random.randint(1, len(upMovementList))
-                    print(direction, movement_magnitude)
-                    bot.selected.setPosition(x, y + movement_magnitude)
-                if SctMovement[bot_move] == "down":
-                    direction = "down"
-                    movement_magnitude = random.randint(1, len(downMovementList))
-                    print(direction, movement_magnitude)
-                    bot.selected.setPosition(x, y - movement_magnitude)
-
-            # this if statement handles all selected non scout pieces with AI difficulties of 3, it has to make sure
-            # that any movements do not overlap with opponent pieces and if so it re-generates a random move.
+                bot.moves_for_ai_2_sct(self, leftMovementList, rightMovementList, upMovementList, downMovementList)
             if bot.ai == 3 and bot.selected.getType() != "Sct":
-                if possibleCaptureLeft:
-                    # cannot move, re select movement
-                    while bot_move == 0 or bot_move == 4:
-                        bot_move = random.randint(0, len(movement) - 1)
-                if possibleCaptureRight:
-                    # cannot move, re select movement
-                    while bot_move == 1 or bot_move == 5:
-                        bot_move = random.randint(0, len(movement) - 1)
-                if possibleCaptureUp:
-                    while bot_move == 2:
-                        bot_move = random.randint(0, len(movement) - 1)
-                if possibleCaptureDown:
-                    while bot_move == 3 or bot_move == 6 or bot_move == 7:
-                        bot_move = random.randint(0, len(movement) - 1)
-                if bot_move == 0:
-                    move = "left"
-                    bot.selected.setPosition(x - 1, y)
-                if bot_move == 1:
-                    move = "right"
-                    bot.selected.setPosition(x + 1, y)
-                if bot_move == 2:
-                    move = "up"
-                    bot.selected.setPosition(x, y + 1)
-                if bot_move == 3:
-                    move = "down"
-                    bot.selected.setPosition(x, y - 1)
-                if bot_move == 4:
-                    move = "left"
-                    bot.selected.setPosition(x - 1, y)
-                if bot_move == 5:
-                    move = "right"
-                    bot.selected.setPosition(x + 1, y)
-                if bot_move == 6:
-                    move = "down"
-                    bot.selected.setPosition(x, y - 1)
-                if bot_move == 7:
-                    move = "down"
-                    bot.selected.setPosition(x, y - 1)
-
-            # this if statement handles all scout movement with AI difficulties of 3, randomized movement directions and
-            # magnitude must be generated
+                bot.moves_for_ai_3_no_sct(self, bot_move, possibleCaptureLeft, possibleCaptureRight, possibleCaptureUp,
+                                          possibleCaptureDown, movement)
             if bot.ai == 3 and bot.selected.getType() == "Sct":
-                SctMovement = []
-                if len(leftMovementList) != 0:
-                    SctMovement.append("left")
-                if len(rightMovementList) != 0:
-                    SctMovement.append("right")
-                if len(upMovementList) != 0:
-                    SctMovement.append("up")
-                if len(downMovementList) != 0:
-                    SctMovement.append("down")
-                print(SctMovement)
+                bot.moves_for_ai_3_sct(self, leftMovementList, rightMovementList, upMovementList, downMovementList)
 
-                bot_move = random.randint(0, len(SctMovement) - 1)
+    def moves_for_ai_1_no_sct(self, bot_move):
+        """
+        this function makes the piece move if the selected piece is not a scout and the AI is at a difficulty of 1
+        :param self / bot: the bot itself
+        :param bot_move: the random number representing the direction of movement
+        """
+        x = bot.selected.getPosition()[0]
+        y = bot.selected.getPosition()[1]
+        # this makes the moves for all non scout pieces with bot difficulties of 1
+        if bot.ai == 1 and bot.selected.getType() != "Sct":
+            if bot_move == 0:
+                move = "left"
+                bot.selected.setPosition(x - 1, y)
+            if bot_move == 1:
+                move = "right"
+                bot.selected.setPosition(x + 1, y)
+            if bot_move == 2:
+                move = "up"
+                bot.selected.setPosition(x, y + 1)
+            if bot_move >= 3:
+                move = "down"
+                bot.selected.setPosition(x, y - 1)
 
-                if SctMovement[bot_move] == "left":
-                    direction = "left"
-                    movement_magnitude = 1
-                    print(direction, movement_magnitude)
-                    bot.selected.setPosition(x - movement_magnitude, y)
-                if SctMovement[bot_move] == "right":
-                    direction = "right"
-                    movement_magnitude = 1
-                    print(direction, movement_magnitude)
-                    bot.selected.setPosition(x + movement_magnitude, y)
-                if SctMovement[bot_move] == "up":
-                    direction = "up"
-                    movement_magnitude = 1
-                    print(direction, movement_magnitude)
-                    bot.selected.setPosition(x, y + movement_magnitude)
-                if SctMovement[bot_move] == "down":
-                    direction = "down"
-                    movement_magnitude = 1
-                    print(direction, movement_magnitude)
-                    bot.selected.setPosition(x, y - movement_magnitude)
+    def moves_for_ai_1_sct(self, leftMovementList, rightMovementList, upMovementList,
+                                   downMovementList):
+        """
+        this function executes the moves for selected scout pieces with AI difficulties of 1
+        :param leftMovementList: a list that has a size equal to that of how many moves to the left the selected piece
+                                 can make
+        :param rightMovementList: a list that has a size equal to that of how many moves to the right the selected piece
+                                  can make
+        :param upMovementList: a list that has a size equal to that of how many moves up the selected piece
+                               can make
+        :param downMovementList: a list that has a size equal to that of how many moves down the selected piece
+                                 can make
+        """
+        x = bot.selected.getPosition()[0]
+        y = bot.selected.getPosition()[1]
+        # if the selected piece is a scout then the movement needs to have a randomized magnitude generated as well
+        # this generates that so that the scout can move any distance it wants under the difficulty 1
+        if bot.ai == 1 and bot.selected.getType() == "Sct":
+            SctMovement = []
+            if len(leftMovementList) != 0:
+                SctMovement.append("left")
+            if len(rightMovementList) != 0:
+                SctMovement.append("right")
+            if len(upMovementList) != 0:
+                SctMovement.append("up")
+            if len(downMovementList) != 0:
+                SctMovement.append("down")
+            print(SctMovement)
 
+            bot_move = random.randint(0, len(SctMovement) - 1)
+
+            if SctMovement[bot_move] == "left":
+                direction = "left"
+                movement_magnitude = random.randint(1, len(leftMovementList))
+                print(direction, movement_magnitude)
+                bot.selected.setPosition(x - movement_magnitude, y)
+            if SctMovement[bot_move] == "right":
+                direction = "right"
+                movement_magnitude = random.randint(1, len(rightMovementList))
+                print(direction, movement_magnitude)
+                bot.selected.setPosition(x + movement_magnitude, y)
+            if SctMovement[bot_move] == "up":
+                direction = "up"
+                movement_magnitude = random.randint(1, len(upMovementList))
+                print(direction, movement_magnitude)
+                bot.selected.setPosition(x, y + movement_magnitude)
+            if SctMovement[bot_move] == "down":
+                direction = "down"
+                movement_magnitude = random.randint(1, len(downMovementList))
+                print(direction, movement_magnitude)
+                bot.selected.setPosition(x, y - movement_magnitude)
+
+    def moves_for_ai_2_no_sct(self, bot_move, possibleCaptureLeft, possibleCaptureRight, possibleCaptureUp, possibleCaptureDown, movement):
+        """
+        this function makes the piece move if the selected piece is not a scout and the AI is at a difficulty of 2
+        :param self / bot: the bot itself
+        :param bot_move: the random number representing the direction of movement
+        """
+        x = bot.selected.getPosition()[0]
+        y = bot.selected.getPosition()[1]
+        # this makes the movements for all non scout pieces that have a bot difficulty of 2
+        if bot.ai == 2 and bot.selected.getType() != "Sct":
+            # this checks to make sure that the selected moves aren't going to be captures, if they are it
+            # re-randomizes the move
+            if possibleCaptureLeft:
+                # cannot move, re select movement
+                while bot_move == 0 or bot_move == 4:
+                    bot_move = random.randint(0, len(movement) - 1)
+            if possibleCaptureRight:
+                # cannot move, re select movement
+                while bot_move == 1 or bot_move == 5:
+                    bot_move = random.randint(0, len(movement) - 1)
+            if possibleCaptureUp:
+                while bot_move == 2:
+                    bot_move = random.randint(0, len(movement) - 1)
+            if possibleCaptureDown:
+                while bot_move == 3 or bot_move == 6:
+                    bot_move = random.randint(0, len(movement) - 1)
+            # the following if statements make the moves for the piece
+            if bot_move == 0:
+                move = "left"
+                bot.selected.setPosition(x - 1, y)
+
+            if bot_move == 1:
+                move = "right"
+                bot.selected.setPosition(x + 1, y)
+
+            if bot_move == 2:
+                move = "up"
+                bot.selected.setPosition(x, y + 1)
+
+            if bot_move == 3:
+                move = "down"
+                bot.selected.setPosition(x, y - 1)
+
+            if bot_move == 4:
+                move = "left"
+                bot.selected.setPosition(x - 1, y)
+
+            if bot_move == 5:
+                move = "right"
+                bot.selected.setPosition(x + 1, y)
+            if bot_move >= 6:
+                move = "down"
+                bot.selected.setPosition(x, y - 1)
+    def moves_for_ai_2_sct(self, leftMovementList, rightMovementList, upMovementList, downMovementList):
+        """
+        this function executes the moves for selected scout pieces with AI difficulties of 2
+        :param leftMovementList: a list that has a size equal to that of how many moves to the left the selected piece
+                                 can make
+        :param rightMovementList: a list that has a size equal to that of how many moves to the right the selected piece
+                                  can make
+        :param upMovementList: a list that has a size equal to that of how many moves up the selected piece
+                               can make
+        :param downMovementList: a list that has a size equal to that of how many moves down the selected piece
+                                 can make
+        """
+        x = bot.selected.getPosition()[0]
+        y = bot.selected.getPosition()[1]
+        # For selected pieces that are scouts and have an AI difficulty of 2, this generates random direction and
+        # magnitude for the scouts movement
+        if bot.ai == 2 and bot.selected.getType() == "Sct":
+            SctMovement = []
+            if len(leftMovementList) != 0:
+                SctMovement.append("left")
+            if len(rightMovementList) != 0:
+                SctMovement.append("right")
+            if len(upMovementList) != 0:
+                SctMovement.append("up")
+            if len(downMovementList) != 0:
+                SctMovement.append("down")
+            print(SctMovement)
+
+            bot_move = random.randint(0, len(SctMovement) - 1)
+
+            if SctMovement[bot_move] == "left":
+                direction = "left"
+                movement_magnitude = random.randint(1, len(leftMovementList))
+                print(direction, movement_magnitude)
+                bot.selected.setPosition(x - movement_magnitude, y)
+            if SctMovement[bot_move] == "right":
+                direction = "right"
+                movement_magnitude = random.randint(1, len(rightMovementList))
+                print(direction, movement_magnitude)
+                bot.selected.setPosition(x + movement_magnitude, y)
+            if SctMovement[bot_move] == "up":
+                direction = "up"
+                movement_magnitude = random.randint(1, len(upMovementList))
+                print(direction, movement_magnitude)
+                bot.selected.setPosition(x, y + movement_magnitude)
+            if SctMovement[bot_move] == "down":
+                direction = "down"
+                movement_magnitude = random.randint(1, len(downMovementList))
+                print(direction, movement_magnitude)
+                bot.selected.setPosition(x, y - movement_magnitude)
+
+    def moves_for_ai_3_no_sct(self, bot_move, possibleCaptureLeft, possibleCaptureRight, possibleCaptureUp, possibleCaptureDown, movement):
+        """
+        this function makes the piece move if the selected piece is not a scout and the AI is at a difficulty of 3
+        :param self / bot: the bot itself
+        :param bot_move: the random number representing the direction of movement
+        """
+        x = bot.selected.getPosition()[0]
+        y = bot.selected.getPosition()[1]
+        # this if statement handles all selected non scout pieces with AI difficulties of 3, it has to make sure
+        # that any movements do not overlap with opponent pieces and if so it re-generates a random move.
+        if bot.ai == 3 and bot.selected.getType() != "Sct":
+            if possibleCaptureLeft:
+                # cannot move, re select movement
+                while bot_move == 0 or bot_move == 4:
+                    bot_move = random.randint(0, len(movement) - 1)
+            if possibleCaptureRight:
+                # cannot move, re select movement
+                while bot_move == 1 or bot_move == 5:
+                    bot_move = random.randint(0, len(movement) - 1)
+            if possibleCaptureUp:
+                while bot_move == 2:
+                    bot_move = random.randint(0, len(movement) - 1)
+            if possibleCaptureDown:
+                while bot_move == 3 or bot_move == 6 or bot_move == 7:
+                    bot_move = random.randint(0, len(movement) - 1)
+            if bot_move == 0:
+                move = "left"
+                bot.selected.setPosition(x - 1, y)
+            if bot_move == 1:
+                move = "right"
+                bot.selected.setPosition(x + 1, y)
+            if bot_move == 2:
+                move = "up"
+                bot.selected.setPosition(x, y + 1)
+            if bot_move == 3:
+                move = "down"
+                bot.selected.setPosition(x, y - 1)
+            if bot_move == 4:
+                move = "left"
+                bot.selected.setPosition(x - 1, y)
+            if bot_move == 5:
+                move = "right"
+                bot.selected.setPosition(x + 1, y)
+            if bot_move == 6:
+                move = "down"
+                bot.selected.setPosition(x, y - 1)
+            if bot_move == 7:
+                move = "down"
+                bot.selected.setPosition(x, y - 1)
+    def moves_for_ai_3_sct(self, leftMovementList, rightMovementList, upMovementList, downMovementList):
+        """
+        this function executes the moves for selected scout pieces with AI difficulties of 3
+        :param leftMovementList: a list that has a size equal to that of how many moves to the left the selected piece
+                                 can make
+        :param rightMovementList: a list that has a size equal to that of how many moves to the right the selected piece
+                                  can make
+        :param upMovementList: a list that has a size equal to that of how many moves up the selected piece
+                               can make
+        :param downMovementList: a list that has a size equal to that of how many moves down the selected piece
+                                 can make
+        """
+        x = bot.selected.getPosition()[0]
+        y = bot.selected.getPosition()[1]
+        # this if statement handles all scout movement with AI difficulties of 3, randomized movement directions and
+        # magnitude must be generated
+        if bot.ai == 3 and bot.selected.getType() == "Sct":
+            SctMovement = []
+            if len(leftMovementList) != 0:
+                SctMovement.append("left")
+            if len(rightMovementList) != 0:
+                SctMovement.append("right")
+            if len(upMovementList) != 0:
+                SctMovement.append("up")
+            if len(downMovementList) != 0:
+                SctMovement.append("down")
+            print(SctMovement)
+
+            bot_move = random.randint(0, len(SctMovement) - 1)
+
+            if SctMovement[bot_move] == "left":
+                direction = "left"
+                movement_magnitude = 1
+                print(direction, movement_magnitude)
+                bot.selected.setPosition(x - movement_magnitude, y)
+            if SctMovement[bot_move] == "right":
+                direction = "right"
+                movement_magnitude = 1
+                print(direction, movement_magnitude)
+                bot.selected.setPosition(x + movement_magnitude, y)
+            if SctMovement[bot_move] == "up":
+                direction = "up"
+                movement_magnitude = 1
+                print(direction, movement_magnitude)
+                bot.selected.setPosition(x, y + movement_magnitude)
+            if SctMovement[bot_move] == "down":
+                direction = "down"
+                movement_magnitude = 1
+                print(direction, movement_magnitude)
+                bot.selected.setPosition(x, y - movement_magnitude)

@@ -7,14 +7,14 @@ import win
 from constants import *
 import Opponent_AI
 
-p1_tester_piece1 = Piece.Piece("Min", 3, 0, 0, 1)
-p1_tester_piece2 = Piece.Piece("Msh", 10, 2, 0, 1)
+p1_tester_piece1 = Piece.Piece("Min", 3, 1, 6, 1)
+p1_tester_piece2 = Piece.Piece("Msh", 10, 4, 8, 1)
 p1_tester_piece3 = Piece.Piece("Gen", 9, 4, 0, 1)
 p1_tester_piece4 = Piece.Piece("Bom", 12, 6, 0, 1)
 p1_tester_piece5 = Piece.Piece("Flg", 0, 8, 0, 1)
 
-p2_tester_piece1 = Piece.Piece("Sct", 2, 1, 8, 2)
-p2_tester_piece2 = Piece.Piece("Msh", 10, 2, 9, 2)
+p2_tester_piece1 = Piece.Piece("Sct", 2, 4, 6, 2)
+p2_tester_piece2 = Piece.Piece("Msh", 10, 3, 6, 2)
 p2_tester_piece3 = Piece.Piece("Gen", 9, 3, 9, 2)
 p2_tester_piece4 = Piece.Piece("Bom", 12, 6, 9, 2)
 p2_tester_piece5 = Piece.Piece("Flg", 0, 8, 9, 2)
@@ -30,7 +30,7 @@ lake_piece_7 = Piece.Piece("Lke", 0, 6, 5, 3)
 lake_piece_8 = Piece.Piece("Lke", 0, 7, 5, 3)
 
 p1_pieces = [p1_tester_piece1, p1_tester_piece2, p1_tester_piece3, p1_tester_piece4, p1_tester_piece5, lake_piece_1, lake_piece_2, lake_piece_3, lake_piece_4, lake_piece_5, lake_piece_6, lake_piece_7, lake_piece_8]
-p2_pieces = [p2_tester_piece2, lake_piece_1, lake_piece_2, lake_piece_3, lake_piece_4, lake_piece_5, lake_piece_6, lake_piece_7, lake_piece_8]
+p2_pieces = [p2_tester_piece1, p2_tester_piece2, p2_tester_piece3, p2_tester_piece4, p2_tester_piece5, lake_piece_1, lake_piece_2, lake_piece_3, lake_piece_4, lake_piece_5, lake_piece_6, lake_piece_7, lake_piece_8]
 total_pieces = p1_pieces + p2_pieces
 
 
