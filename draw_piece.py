@@ -1,6 +1,7 @@
 import arcade
 from Piece import Piece
 from constants import *
+import gameboard
 
 GRAVEYARD_1_LEFT = 5
 GRAVEYARD_1_RIGHT = 195
@@ -15,38 +16,42 @@ def draw_start(piece, army, index):
     yard_left = 0
     if army == 1:
         yard_left = GRAVEYARD_1_LEFT
+        color = arcade.color.BLUE
     else:
         yard_left = GRAVEYARD_2_LEFT
+        color = arcade.color.RED
    
     row = index // 4
     point_list = ((yard_left+YARD_MARGIN*(index - 4*row),GRAVEYARD_TOP - YARD_MARGIN*row), 
                   (yard_left+YARD_MARGIN*(index - 4*row), (GRAVEYARD_TOP- YARD_MARGIN*row) - 40),
                   (yard_left+(YARD_MARGIN * (index-4*row)) + 40, (GRAVEYARD_TOP - YARD_MARGIN*row)-40),
                   (yard_left+(YARD_MARGIN * (index-4*row)) + 40, GRAVEYARD_TOP - YARD_MARGIN*row))
+    arcade.draw_polygon_filled(point_list, color)
+
     if piece.getType() == "Flg":
-        arcade.draw_polygon_filled(point_list, arcade.color.WHITE)
+        arcade.draw_text("F", yard_left+YARD_MARGIN*(index-4*row)+13, GRID_TOP-YARD_MARGIN*row-33, arcade.color.WHITE, 20, 1, "center", "Kenney Blocks Font", bold=True)
     elif piece.getType() == "Msh":
-        arcade.draw_polygon_filled(point_list, arcade.color.BROWN)
+        arcade.draw_text("10", yard_left+YARD_MARGIN*(index-4*row)+5, GRID_TOP-YARD_MARGIN*row-33, arcade.color.WHITE, 20, 1, "center", "Kenney Rocket Square Font", bold=True)
     elif piece.getType() == "Gen":
-        arcade.draw_polygon_filled(point_list, arcade.color.VIOLET)
+        arcade.draw_text("9", yard_left+YARD_MARGIN*(index-4*row)+12, GRID_TOP-YARD_MARGIN*row-33, arcade.color.WHITE, 20, 1, "center", "Kenney Pixel Square Font", bold=True)
     if piece.getType() == "Col":
-        arcade.draw_polygon_filled(point_list, arcade.color.PINK)
+        arcade.draw_text("8", yard_left+YARD_MARGIN*(index-4*row)+12, GRID_TOP-YARD_MARGIN*row-33, arcade.color.WHITE, 20, 1, "center", "Kenney Pixel Square Font", bold=True)
     if piece.getType() == "Maj":
-        arcade.draw_polygon_filled(point_list, arcade.color.YELLOW)
+        arcade.draw_text("7", yard_left+YARD_MARGIN*(index-4*row)+12, GRID_TOP-YARD_MARGIN*row-33, arcade.color.WHITE, 20, 1, "center", "Kenney Pixel Square Font", bold=True)
     if piece.getType() == "Cap":
-        arcade.draw_polygon_filled(point_list, arcade.color.MAGENTA)
+        arcade.draw_text("6", yard_left+YARD_MARGIN*(index-4*row)+12, GRID_TOP-YARD_MARGIN*row-33, arcade.color.WHITE, 20, 1, "center", "Kenney Pixel Square Font", bold=True)
     if piece.getType() == "Ltn":
-        arcade.draw_polygon_filled(point_list, arcade.color.TANGERINE)
+        arcade.draw_text("5", yard_left+YARD_MARGIN*(index-4*row)+12, GRID_TOP-YARD_MARGIN*row-33, arcade.color.WHITE, 20, 1, "center", "Kenney Pixel Square Font", bold=True)
     if piece.getType() == "Sgt":
-        arcade.draw_polygon_filled(point_list, arcade.color.BABY_BLUE)
+        arcade.draw_text("4", yard_left+YARD_MARGIN*(index-4*row)+12, GRID_TOP-YARD_MARGIN*row-33, arcade.color.WHITE, 20, 1, "center", "Kenney Pixel Square Font", bold=True)
     if piece.getType() == "Min":
-        arcade.draw_polygon_filled(point_list, arcade.color.RASPBERRY)
+        arcade.draw_text("3", yard_left+YARD_MARGIN*(index-4*row)+12, GRID_TOP-YARD_MARGIN*row-33, arcade.color.WHITE, 20, 1, "center", "Kenney Pixel Square Font", bold=True)
     elif piece.getType() == "Sct":
-        arcade.draw_polygon_filled(point_list, arcade.color.BLUE)
+        arcade.draw_text("2", yard_left+YARD_MARGIN*(index-4*row)+12, GRID_TOP-YARD_MARGIN*row-33, arcade.color.WHITE, 20, 1, "center", "Kenney Pixel Square Font", bold=True)
     elif piece.getType() == "Spy":
-        arcade.draw_polygon_filled(point_list, arcade.color.BLACK)
+        arcade.draw_text("S", yard_left+YARD_MARGIN*(index-4*row)+13, GRID_TOP-YARD_MARGIN*row-33, arcade.color.WHITE, 20, 1, "center", "Kenney Pixel Square Font", bold=True)
     elif piece.getType() == "Bom":
-        arcade.draw_polygon_filled(point_list, arcade.color.RED)
+        arcade.draw_text("B", yard_left+YARD_MARGIN*(index-4*row)+13, GRID_TOP-YARD_MARGIN*row-33, arcade.color.WHITE, 20, 1, "center", "Kenney Pixel Square Font", bold=True)
 
     if piece.getType() == "Lke":
         arcade.draw_polygon_filled(point_list, arcade.color.BLACK)
@@ -69,49 +74,69 @@ def add_highlight(army, index):
     
 
 
-def draw(piece):
+def draw(piece, army):
+    if army == 1:
+        color = arcade.color.BLUE
+    else:
+        color = arcade.color.RED
+    
     x = piece.getPosition()[0]
     y = piece.getPosition()[1]
     point_list = (((BOARD_LEFT+10) + YARD_MARGIN*x, (BOARD_TOP-10) + YARD_MARGIN*y),
                     ((BOARD_LEFT+10) + YARD_MARGIN*x, (BOARD_BOTTOM+10) + YARD_MARGIN*y),
                     ((BOARD_RIGHT-10) + YARD_MARGIN*x, (BOARD_BOTTOM+10) + YARD_MARGIN*y),
                     ((BOARD_RIGHT-10) + YARD_MARGIN*x, (BOARD_TOP-10) + YARD_MARGIN*y))
+    arcade.draw_polygon_filled(point_list, color)
+    down = 10-y
+    if army == gameboard.Gameboard.player_turn:
+        if piece.getType() == "Flg":
+            arcade.draw_text("F", BOARD_LEFT+YARD_MARGIN*x +16, GRID_TOP-YARD_MARGIN*down + 16, arcade.color.WHITE, 18, 1, "center", "Kenney Blocks Font", bold=True)
+        elif piece.getType() == "Msh":
+            arcade.draw_text("10", BOARD_LEFT+YARD_MARGIN*x + 12, GRID_TOP-YARD_MARGIN*down + 16, arcade.color.WHITE, 18, 1, "center", "Kenney Rocket Square Font", bold=True)
+        elif piece.getType() == "Gen":
+            arcade.draw_text("9", BOARD_LEFT+YARD_MARGIN*x + 16, GRID_TOP-YARD_MARGIN*down + 16, arcade.color.WHITE, 18, 1, "center", "Kenney Pixel Square Font", bold=True)
+        if piece.getType() == "Col":
+            arcade.draw_text("8", BOARD_LEFT+YARD_MARGIN*x + 16, GRID_TOP-YARD_MARGIN*down + 16, arcade.color.WHITE, 18, 1, "center", "Kenney Pixel Square Font", bold=True)
+        if piece.getType() == "Maj":
+            arcade.draw_text("7", BOARD_LEFT+YARD_MARGIN*x + 16, GRID_TOP-YARD_MARGIN*down + 16, arcade.color.WHITE, 18, 1, "center", "Kenney Pixel Square Font", bold=True)
+        if piece.getType() == "Cap":
+            arcade.draw_text("6", BOARD_LEFT+YARD_MARGIN*x + 16, GRID_TOP-YARD_MARGIN*down + 16, arcade.color.WHITE, 18, 1, "center", "Kenney Pixel Square Font", bold=True)
+        if piece.getType() == "Ltn":
+            arcade.draw_text("5", BOARD_LEFT+YARD_MARGIN*x + 16, GRID_TOP-YARD_MARGIN*down + 16, arcade.color.WHITE, 18, 1, "center", "Kenney Pixel Square Font", bold=True)
+        if piece.getType() == "Sgt":
+            arcade.draw_text("4", BOARD_LEFT+YARD_MARGIN*x + 16, GRID_TOP-YARD_MARGIN*down + 16, arcade.color.WHITE, 18, 1, "center", "Kenney Pixel Square Font", bold=True)
+        if piece.getType() == "Min":
+            arcade.draw_text("3", BOARD_LEFT+YARD_MARGIN*x + 16, GRID_TOP-YARD_MARGIN*down + 16, arcade.color.WHITE, 18, 1, "center", "Kenney Pixel Square Font", bold=True)
+        elif piece.getType() == "Sct":
+            arcade.draw_text("2", BOARD_LEFT+YARD_MARGIN*x + 16, GRID_TOP-YARD_MARGIN*down + 16, arcade.color.WHITE, 18, 1, "center", "Kenney Pixel Square Font", bold=True)
+        elif piece.getType() == "Spy":
+            arcade.draw_text("S", BOARD_LEFT+YARD_MARGIN*x + 16, GRID_TOP-YARD_MARGIN*down + 16, arcade.color.WHITE, 18, 1, "center", "Kenney Pixel Square Font", bold=True)
+        elif piece.getType() == "Bom":
+            arcade.draw_text("B", BOARD_LEFT+YARD_MARGIN*x +16, GRID_TOP-YARD_MARGIN*down + 16, arcade.color.WHITE, 18, 1, "center", "Kenney Pixel Square Font", bold=True)
+        
     if piece.getType() == "Flg":
-        arcade.draw_polygon_filled(point_list, arcade.color.WHITE)
         arcade.draw_polygon_outline(point_list, arcade.color.BLACK, 2)
     elif piece.getType() == "Msh":
-        arcade.draw_polygon_filled(point_list, arcade.color.BROWN)
         arcade.draw_polygon_outline(point_list, arcade.color.BLACK, 2)
-
     elif piece.getType() == "Gen":
-        arcade.draw_polygon_filled(point_list, arcade.color.VIOLET)
         arcade.draw_polygon_outline(point_list, arcade.color.BLACK, 2)
     if piece.getType() == "Col":
-        arcade.draw_polygon_filled(point_list, arcade.color.PINK)
         arcade.draw_polygon_outline(point_list, arcade.color.BLACK, 2)
     if piece.getType() == "Maj":
-        arcade.draw_polygon_filled(point_list, arcade.color.YELLOW)
         arcade.draw_polygon_outline(point_list, arcade.color.BLACK, 2)
     if piece.getType() == "Cap":
-        arcade.draw_polygon_filled(point_list, arcade.color.MAGENTA)
         arcade.draw_polygon_outline(point_list, arcade.color.BLACK, 2)
     if piece.getType() == "Ltn":
-        arcade.draw_polygon_filled(point_list, arcade.color.TANGERINE)
         arcade.draw_polygon_outline(point_list, arcade.color.BLACK, 2)
     if piece.getType() == "Sgt":
-        arcade.draw_polygon_filled(point_list, arcade.color.BABY_BLUE)
         arcade.draw_polygon_outline(point_list, arcade.color.BLACK, 2)
     if piece.getType() == "Min":
-        arcade.draw_polygon_filled(point_list, arcade.color.RASPBERRY)
         arcade.draw_polygon_outline(point_list, arcade.color.BLACK, 2)
     elif piece.getType() == "Sct":
-        arcade.draw_polygon_filled(point_list, arcade.color.BLUE)
         arcade.draw_polygon_outline(point_list, arcade.color.BLACK, 2)
     elif piece.getType() == "Spy":
-        arcade.draw_polygon_filled(point_list, arcade.color.BLACK)
         arcade.draw_polygon_outline(point_list, arcade.color.BLACK, 2)
     elif piece.getType() == "Bom":
-        arcade.draw_polygon_filled(point_list, arcade.color.RED)
         arcade.draw_polygon_outline(point_list, arcade.color.BLACK, 2)
 
 
@@ -189,25 +214,24 @@ def show_available_placements(total_pieces, player):
     loc = [0,0]
     
     next_i = 5
-    y=0
     if player == 1:
+        y=0
         while (y < 4):
                 x = 0
                 while (x < 10):
-                    
                     arcade.draw_arc_filled(center_x= BOARD_LEFT+25+50*x, center_y=BOARD_BOTTOM+25 + y*50, width=10, height=10, color=arcade.color.WHITE, start_angle=0, end_angle=360)
                     arcade.draw_arc_outline(center_x= BOARD_LEFT+25+50*x, center_y=BOARD_BOTTOM+25 + y*50, width=10, height=10, color=arcade.color.BLACK, start_angle=0, end_angle=360, border_width=3)
                     x = x + 1
                 y = y + 1
     else:
-        while (y < 4):
+        y= 6
+        while (y < 10):
                 x = 0
                 while (x < 10):
-                    arcade.draw_arc_filled(center_x= BOARD_LEFT+25+50*x, center_y=BOARD_TOP*4-(25 + y*50), width=10, height=10, color=arcade.color.WHITE, start_angle=0, end_angle=360)
-                    arcade.draw_arc_outline(center_x= BOARD_LEFT+25+50*x, center_y=BOARD_TOP*4-(25 + y*50), width=10, height=10, color=arcade.color.BLACK, start_angle=0, end_angle=360, border_width=3)
+                    arcade.draw_arc_filled(center_x= BOARD_LEFT+25+50*x, center_y=BOARD_TOP*4-(25 + (y-6)*50), width=10, height=10, color=arcade.color.WHITE, start_angle=0, end_angle=360)
+                    arcade.draw_arc_outline(center_x= BOARD_LEFT+25+50*x, center_y=BOARD_TOP*4-(25 + (y-6)*50), width=10, height=10, color=arcade.color.BLACK, start_angle=0, end_angle=360, border_width=3)
                     x = x + 1
                 y = y + 1
-    #while (is_piece_scan(total_pieces, [BOARD_RIGHT + 25 * next_i + BOARD_MARGIN, BOARD_BOTTOM + 25 + BOARD_MARGIN]) == False and BOARD_RIGHT + 25 * next_i + BOARD_MARGIN < 700):
         
     
 def place_piece(piece, click,graveyard,army):
@@ -420,7 +444,8 @@ def get_coordinates(click):
     # elif:
     #     pass
     else:
-        return click
+        return click        #Changed Return from none to click prevents errors and allows get coordinates to return coordinates if the value of click is already coordinates.
+                            #USEFUL FOR PLACING PIECES TO PRESET POSITIONS.
 
     
 def move_to_graveyard(army,piece, graveyard):

@@ -3,6 +3,7 @@ import arcade.gui
 import rules
 import gameboard
 import win
+import Piece
 import menu as mn
 
 # initialize formatting details
@@ -89,6 +90,13 @@ class Escape(arcade.View):
     # Functionality for when the user presses the back to menu button to change the screen back to the menu screen
     def on_click_back(self, event):
         self.manager.disable()
+        
+        #RESET GAME
+        gameboard.Gameboard.game_state = "setup"
+        gameboard.Gameboard.army1 = []
+        gameboard.Gameboard.army2 = []
+        gameboard.Gameboard.graveyard1 = Piece.initPieces(1)
+        gameboard.Gameboard.graveyard2 = Piece.initPieces(2)
         board_view = mn.Menu()
         self.window.show_view(board_view)
     
@@ -97,6 +105,12 @@ class Escape(arcade.View):
             gameboard.Gameboard.player_turn = 2
         else:
             gameboard.Gameboard.player_turn = 1
+        #RESET GAME 
+        gameboard.Gameboard.game_state = "setup"
+        gameboard.Gameboard.army1 = []
+        gameboard.Gameboard.army2 = []
+        gameboard.Gameboard.graveyard1 = Piece.initPieces(1)
+        gameboard.Gameboard.graveyard2 = Piece.initPieces(2)
         win_view = win.Win()
         self.window.show_view(win_view)            
 

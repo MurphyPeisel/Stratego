@@ -8,6 +8,7 @@ class Piece():
     posY = None
     player = None
     defeated = False
+    hidden = True
     
     def __init__ (self, type, power, x, y, player):        
         self.type = type
@@ -15,6 +16,7 @@ class Piece():
         self.posX = x
         self.posY = y
         self.player = player
+        self.hidden = True
 
     
     def getType(self):
@@ -27,6 +29,11 @@ class Piece():
     
     def getPlayer(self):
         return self.player
+    def getHidden(self):
+        return self.hidden
+    
+    def setHidden(self, hide):
+        self.hidden = hide
 
     def setPosition(self, x, y):
         self.posX = x

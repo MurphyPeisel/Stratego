@@ -6,13 +6,9 @@ import draw_piece
 import win
 from constants import *
 
-game_state = "setup"
 
 
-graveyard1 = Piece.initPieces(1)
-graveyard2 = Piece.initPieces(2)
-army1 = []
-army2 = []
+
 
 
 
@@ -24,16 +20,17 @@ army2 = []
 # The gameboard class is where the user will engage in gameplay. They can exit via the ESC key and button.  
 # To pass turn, the user must double click the board. 
 class Gameboard(arcade.View):
+    game_state = "setup"
     highlight_index = 0
     last_screen = "game_board"
+    last_placement = [] #MIGHT NEVER BE USED
+    graveyard1 = Piece.initPieces(1)
+    graveyard2 = Piece.initPieces(2)
+    army1 = []
+    army2 = []
     total_pieces = army1 + army2
-    last_placement = []
-
-    
     hover = []
-
     player_turn = 2
-
     click_counter = 0
     selected = None
 
@@ -83,8 +80,11 @@ class Gameboard(arcade.View):
                 arcade.draw_polygon_outline(point_list, arcade.color.BLACK, 4)
                 x = x + 1
             y = y + 1
+        
+        Gameboard.total_pieces = Gameboard.army1 + Gameboard.army2
 
-
+            
+       
         #draw it
         if Gameboard.selected is not None:
             draw_piece.show_available_moves(Gameboard.selected, Gameboard.total_pieces)
@@ -119,58 +119,63 @@ class Gameboard(arcade.View):
         arcade.draw_polygon_outline(yard2, arcade.color.BLACK,8)
 
         # draw pieces
-        for piece in Gameboard.total_pieces:
+        for piece in Gameboard.army1:
             if piece.defeated != True:
-                draw_piece.draw(piece)
+                draw_piece.draw(piece, 1)
+               
+
+        for piece in Gameboard.army2:
+            if piece.defeated != True:
+                draw_piece.draw(piece, 2)
             #else:
                 # piece is defeated --> draw it, but in the graveyary           
+        
+        if Gameboard.game_state == "setup":
+            if Gameboard.player_turn == 1 and len(Gameboard.graveyard1) !=0:
+                Gameboard.player_turn = 1
+                draw_piece.show_available_placements(Gameboard.total_pieces, 1)
+                draw_piece.add_highlight(1, Gameboard.highlight_index)
+                if Gameboard.highlight_index >= len(Gameboard.graveyard1):
+                    Gameboard.highlight_index = Gameboard.highlight_index-1 
+
+                
+
+
+            else:
+                Gameboard.player_turn = 2
+            if Gameboard.player_turn == 2 and len(Gameboard.graveyard2) !=0:
+                Gameboard.player_turn = 2
+                draw_piece.show_available_placements(Gameboard.total_pieces, 2)
+                draw_piece.add_highlight(2, Gameboard.highlight_index)
+                if Gameboard.highlight_index >= len(Gameboard.graveyard2):
+                    Gameboard.highlight_index = Gameboard.highlight_index-1 
+
+                
+
+            else:
+                Gameboard.player_turn = 1
+            if len(Gameboard.graveyard1) == 0 and len(Gameboard.graveyard2) == 0:
+                Gameboard.game_state = "play"
+                print(Gameboard.game_state)
+
+
 
         #draw army 1
         i = 0
-        for piece in graveyard1:
+        for piece in Gameboard.graveyard1:
              draw_piece.draw_start(piece, 1, i)
              i = i+1
         #draw army 2
         i = 0
-        for piece in graveyard2:
+        for piece in Gameboard.graveyard2:
              draw_piece.draw_start(piece, 2, i)
              i = i+1
-        for piece in army1:
-                    draw_piece.draw(piece)
-        for piece in army2:
-                    draw_piece.draw(piece)
+        for piece in Gameboard.army1:
+                    draw_piece.draw(piece, 1)
+        for piece in Gameboard.army2:
+                    draw_piece.draw(piece, 2)
                     
-        Gameboard.total_pieces = army1 + army2
 
-        
-        global game_state  
-        if game_state == "setup":
-            if Gameboard.player_turn == 1 and len(graveyard1) !=0:
-                Gameboard.player_turn = 1
-                draw_piece.show_available_placements(Gameboard.total_pieces, 1)
-                draw_piece.add_highlight(1, Gameboard.highlight_index)
-                if Gameboard.highlight_index >= len(graveyard1):
-                    Gameboard.highlight_index = Gameboard.highlight_index-1 
-
-                
-
-
-            else:
-                Gameboard.player_turn = 2
-            if Gameboard.player_turn == 2 and len(graveyard2) !=0:
-                Gameboard.player_turn = 2
-                draw_piece.show_available_placements(Gameboard.total_pieces, 2)
-                draw_piece.add_highlight(2, Gameboard.highlight_index)
-                if Gameboard.highlight_index >= len(graveyard2):
-                    Gameboard.highlight_index = Gameboard.highlight_index-1 
-
-                
-
-            else:
-                Gameboard.player_turn = 1
-            if len(graveyard1) == 0 and len(graveyard2) == 0:
-                game_state = "play"
-                print(game_state)
                 
     
    
@@ -183,20 +188,20 @@ class Gameboard(arcade.View):
             self.window.show_view(board_view)
             esc_menu.Escape.last_screen = Gameboard.last_screen
 
-        if game_state == "setup":
+        if Gameboard.game_state == "setup":
             click = (x,y)
             if Gameboard.player_turn == 1:
                 if x >= 200 and x <= 700 and y>=100 and y<=300:
                     
-                    draw_piece.place_piece(graveyard1[Gameboard.highlight_index], click, graveyard1, army1)
+                    draw_piece.place_piece(Gameboard.graveyard1[Gameboard.highlight_index], click, Gameboard.graveyard1, Gameboard.army1)
             if Gameboard.player_turn == 2:
                 if x>= 200 and x <= 700 and y<=600 and y>=400:
-                    draw_piece.place_piece(graveyard2[Gameboard.highlight_index], click, graveyard2, army2)
+                    draw_piece.place_piece(Gameboard.graveyard2[Gameboard.highlight_index], click, Gameboard.graveyard2, Gameboard.army2)
             
 
                     
         
-        if game_state == "play":
+        if Gameboard.game_state == "play":
             click = (x,y)
             print(click)
             print("working")
@@ -235,7 +240,7 @@ class Gameboard(arcade.View):
                                 view = win.Win()
                                 self.window.show_view(view)
                             else:
-                                draw_piece.combat(Gameboard.selected, cell_occupant, click, graveyard1, graveyard2, army1, army2) #p1_pieces/p2_pieces = Temp Variables
+                                draw_piece.combat(Gameboard.selected, cell_occupant, click, Gameboard.graveyard1, Gameboard.graveyard2, Gameboard.army1, Gameboard.army2) #p1_pieces/p2_pieces = Temp Variables
                                 Gameboard.turn_screen(self)
                     Gameboard.selected = None
             else:
@@ -251,13 +256,13 @@ class Gameboard(arcade.View):
             board_view = esc_menu.Escape(self)
             self.window.show_view(board_view)
             esc_menu.Escape.last_screen = Gameboard.last_screen
-        if (game_state == "setup"):
+        if (Gameboard.game_state == "setup"):
             if Gameboard.player_turn == 1:
-                yard = graveyard1
-                army = army1
+                yard = Gameboard.graveyard1
+                army = Gameboard.army1
             else:
-                yard = graveyard2
-                army = army2
+                yard = Gameboard.graveyard2
+                army = Gameboard.army2
             if (key == arcade.key.LEFT):
                     if Gameboard.highlight_index != 0:
                         Gameboard.highlight_index = Gameboard.highlight_index -1
@@ -270,8 +275,8 @@ class Gameboard(arcade.View):
             if (key == arcade.key.UP):
                 if Gameboard.highlight_index>=4:
                     Gameboard.highlight_index = Gameboard.highlight_index - 4
+            #Place a full army by hitting the R key.
             if (key == arcade.key.R):
-                index = 0
                 print(len(yard))
                 if Gameboard.player_turn == 1:
                     for i in range(4):
@@ -284,15 +289,15 @@ class Gameboard(arcade.View):
 
                             
         if key == arcade.key.Y:
-            if game_state == "setup": 
+            if Gameboard.game_state == "setup": 
                 x = Gameboard.hover[0]
                 y = Gameboard.hover[1]
                 if Gameboard.player_turn == 1:
                     if x >= 200 and x <= 700 and y>=100 and y<=300:
-                        draw_piece.place_piece(graveyard1[Gameboard.highlight_index], Gameboard.hover, graveyard1, army1)
+                        draw_piece.place_piece(Gameboard.graveyard1[Gameboard.highlight_index], Gameboard.hover, Gameboard.graveyard1, Gameboard.army1)
                 if Gameboard.player_turn == 2:
                     if x>= 200 and x <= 700 and y<=600 and y>=400:
-                        draw_piece.place_piece(graveyard2[Gameboard.highlight_index], Gameboard.hover, graveyard2, army2)
+                        draw_piece.place_piece(Gameboard.graveyard2[Gameboard.highlight_index], Gameboard.hover, Gameboard.graveyard2, Gameboard.army2)
             
 
                     
