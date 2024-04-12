@@ -88,7 +88,7 @@ def draw(piece, army):
                     ((BOARD_RIGHT-10) + YARD_MARGIN*x, (BOARD_TOP-10) + YARD_MARGIN*y))
     arcade.draw_polygon_filled(point_list, color)
     down = 10-y
-    if army == gameboard.Gameboard.player_turn:
+    if army == gameboard.Gameboard.player_turn and piece.getHidden() == True:
         if piece.getType() == "Flg":
             arcade.draw_text("F", BOARD_LEFT+YARD_MARGIN*x +16, GRID_TOP-YARD_MARGIN*down + 16, arcade.color.WHITE, 18, 1, "center", "Kenney Blocks Font", bold=True)
         elif piece.getType() == "Msh":
