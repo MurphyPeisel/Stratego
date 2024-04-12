@@ -8,15 +8,17 @@ import random
 # sets the default AI to 0 level difficultly
 allAI = 0
 
+
 def generateBot(ai):
     """
-    sets the AI difficutly to what the user selected
+    sets the AI difficultly to what the user selected
     :param ai: integer representing the difficulty of the AI
     :return: none
     """
     print("generate")
     allAI = ai
     gameboard.Gameboard.changeAI(ai)
+
 
 class bot():
     """
@@ -27,7 +29,7 @@ class bot():
 
     def generateBot(ai):
         """
-        sets the AI difficutly to what the user selected
+        sets the AI difficultly to what the user selected
         :param ai: integer representing the difficulty of the AI
         :return: none
         """
@@ -68,6 +70,7 @@ class bot():
                     bot.selected = None
         print(bot.selected.getType())
         bot.make_move(self, bot_pieces, gameboard.p1_pieces)
+
     def are_moves_available(self, selected_piece, bot_pieces):
         """
         this function scans the surrounding areas of the piece to determine if a move can be made
@@ -99,6 +102,7 @@ class bot():
             return False
         else:
             return True
+
     def make_move(self, bot_pieces, user_pieces):
         """
         This function takes makes the selected piece move to a randomized location depending on if the move is
@@ -436,6 +440,7 @@ class bot():
             if bot_move >= 6:
                 move = "down"
                 bot.selected.setPosition(x, y - 1)
+
     def moves_for_ai_2_sct(self, leftMovementList, rightMovementList, upMovementList, downMovementList):
         """
         this function executes the moves for selected scout pieces with AI difficulties of 2
@@ -536,6 +541,7 @@ class bot():
             if bot_move == 7:
                 move = "down"
                 bot.selected.setPosition(x, y - 1)
+
     def moves_for_ai_3_sct(self, leftMovementList, rightMovementList, upMovementList, downMovementList):
         """
         this function executes the moves for selected scout pieces with AI difficulties of 3
