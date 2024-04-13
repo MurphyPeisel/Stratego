@@ -19,7 +19,7 @@ class Menu(arcade.View):
     last_screen = "menu"
     Loop = 0
     sound = arcade.load_sound("Menu_Screen.wav",False)
-    media_player = arcade.play_sound(sound, 4, 0)
+    media_player = arcade.play_sound(sound, 4, 0, looping=True)
     playing = False
 
     def on_show_view(self):
@@ -31,16 +31,12 @@ class Menu(arcade.View):
     def on_draw(self):
         arcade.start_render()
         self.clear()
-        try:
-            if(Menu.sound.is_playing(Menu.media_player) == False):
-                    Menu.media_player.seek(0)
-                    Menu.media_player.loop(True)
-                    Menu.media_player.play()
-                    Menu.playing = True
-
-        except Exception:
-            Menu.media_player = arcade.play_sound(Menu.sound, 4, 0)
+        if(Menu.sound.is_playing(Menu.media_player) == False):
+            Menu.media_player.seek(0)
+            Menu.media_player.play()
             Menu.playing = True
+
+    
 
 
 

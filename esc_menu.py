@@ -141,7 +141,7 @@ class Escape(arcade.View):
         gameboard.Gameboard.game_state = "setup"
         gameboard.Gameboard.army1 = [lake_piece_1,lake_piece_2,lake_piece_3,lake_piece_4,lake_piece_5,lake_piece_6,lake_piece_7,lake_piece_8]
         gameboard.Gameboard.army2 = [lake_piece_1,lake_piece_2,lake_piece_3,lake_piece_4,lake_piece_5,lake_piece_6,lake_piece_7,lake_piece_8]
-        gameboard.Gameboard.graveyard1 = Piece.initPieces(1)
+        gameboard.Gameboard.graveyard1 = Piece.initPieces(1) 
         gameboard.Gameboard.graveyard2 = Piece.initPieces(2)
         gameboard.Gameboard.AI = 0
         gameboard.Gameboard.player_turn = 1

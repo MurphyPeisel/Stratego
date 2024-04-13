@@ -50,6 +50,7 @@ class Win(arcade.View):
 
     # These functions add the functionality to the three button options
     def on_replay_click(self, event):
+        
         self.manager.disable()
         board_view = gameboard.Gameboard()
         self.window.show_view(board_view)
