@@ -1,4 +1,5 @@
 import arcade
+import menu
 import esc_menu
 import pass_turn
 import Piece
@@ -58,6 +59,8 @@ class Gameboard(arcade.View):
     # This method draws our assets including constructing a grid
     def on_draw(self):
         arcade.start_render()
+        if menu.Menu.sound.is_playing(menu.Menu.media_player):
+            menu.Menu.sound.stop(menu.Menu.media_player)
 
         # initialize formatting details
         start_x = 0
