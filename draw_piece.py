@@ -1,6 +1,7 @@
 import arcade
 from Piece import Piece
 from constants import *
+import time
 import gameboard as Gameboard
 
 GRAVEYARD_1_LEFT = 5
@@ -536,6 +537,8 @@ def move_piece(piece, click):
 
 
 def combat(attacker, defender, click, graveyard1, graveyard2, army1, army2):
+    sound = arcade.load_sound("Death.mp3",False)
+    
     """ 
     Combat between two pieces. If the attacking piece 
     :param attacker: Attacking piece
@@ -549,7 +552,7 @@ def combat(attacker, defender, click, graveyard1, graveyard2, army1, army2):
     print(f"defender located at {defender.getPosition()}, type: {defender.getType()}, power: {defender.getPower()}")
 
     # SPECIAL CASE: Miner vs. Bomb
-    if attacker.getType() == "Min" and defender.getType() == "Bom":
+    if attacker.getType() == "Min" and defender.getType() == "Bom": #HISS SFX
         print("Miner defuses bomb")
         if defender.getPlayer() == 1:
             move_to_graveyard(army1, defender, graveyard1)
@@ -562,8 +565,12 @@ def combat(attacker, defender, click, graveyard1, graveyard2, army1, army2):
         print("Bomb explodes")
         if attacker.getPlayer() == 1:
             move_to_graveyard(army1, attacker, graveyard1)
+            arcade.play_sound(sound, 4, 0)
+
         else:
             move_to_graveyard(army2, attacker, graveyard2)
+            arcade.play_sound(sound, 4, 0)
+
 
     # SPECIAL CASE: Spy is attacking Marshall
     elif attacker.getType() == "Spy" and defender.getType() == "Msh":
@@ -571,8 +578,12 @@ def combat(attacker, defender, click, graveyard1, graveyard2, army1, army2):
         print("SPY wins: attacked Marshall")
         if defender.getPlayer() == 1:
             move_to_graveyard(army1, defender, graveyard1)
+            arcade.play_sound(sound, 4, 0)
+
         else:
             move_to_graveyard(army2, defender, graveyard2)
+            arcade.play_sound(sound, 4, 0)
+
         move_piece(attacker, click) 
 
     elif attacker.getPower() > defender.getPower():
@@ -580,8 +591,12 @@ def combat(attacker, defender, click, graveyard1, graveyard2, army1, army2):
         print("attacker wins")
         if defender.getPlayer() == 1:
             move_to_graveyard(army1, defender, graveyard1)
+            arcade.play_sound(sound, 4, 0)
+
         else:
             move_to_graveyard(army2, defender, graveyard2)
+            arcade.play_sound(sound, 4, 0)
+
         move_piece(attacker, click)
 
     elif attacker.getPower() < defender.getPower():
@@ -589,14 +604,26 @@ def combat(attacker, defender, click, graveyard1, graveyard2, army1, army2):
         print("defender wins")
         if attacker.getPlayer() == 1:
             move_to_graveyard(army1, attacker, graveyard1)
+            arcade.play_sound(sound, 4, 0)
+
         else:
             move_to_graveyard(army2, attacker, graveyard2)
+            arcade.play_sound(sound, 4, 0)
+
     else:
         # attacker and defender have same power, both sent to graveyards
         print("attacker and defender defeated")
         if attacker.getPlayer() == 1:
             move_to_graveyard(army1, attacker, graveyard1)
             move_to_graveyard(army2, defender, graveyard2)
+            arcade.play_sound(sound, 4, 0)
+            time.sleep(.2)
+
+            arcade.play_sound(sound, 4, 0)
+
         else:
             move_to_graveyard(army1, defender, graveyard1)
             move_to_graveyard(army2, attacker, graveyard2)
+            arcade.play_sound(sound, 4, 0)
+            time.sleep(.2)
+            arcade.play_sound(sound, 4, 0)

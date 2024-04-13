@@ -18,12 +18,13 @@ DEFAULT_FONT_SIZE = 20
 class Menu(arcade.View):
     last_screen = "menu"
     Loop = 0
-    sound = arcade.load_sound("Menu_Screen.wav",True)
+    sound = arcade.load_sound("Menu_Screen.wav",False)
     media_player = arcade.play_sound(sound, 4, 0)
+    playing = False
 
     def on_show_view(self):
         arcade.set_background_color(arcade.color.WHITE)
-       
+
 
 
     # On draw will create all of our assets onto the screen
@@ -31,11 +32,16 @@ class Menu(arcade.View):
         arcade.start_render()
         self.clear()
         try:
-            if(Menu.sound.is_playing(self.media_player) == False):
-                    self.media_player = arcade.play_sound(Menu.sound, 4, 0)
+            if(Menu.sound.is_playing(Menu.media_player) == False):
+                    Menu.media_player.seek(0)
+                    Menu.media_player.loop(True)
+                    Menu.media_player.play()
+                    Menu.playing = True
+
         except Exception:
-            global media_player
-            self.media_player = arcade.play_sound(Menu.sound, 4, 0)
+            Menu.media_player = arcade.play_sound(Menu.sound, 4, 0)
+            Menu.playing = True
+
 
 
         start_x = 0

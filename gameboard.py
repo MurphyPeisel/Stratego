@@ -55,8 +55,11 @@ class Gameboard(arcade.View):
         arcade.set_background_color(arcade.color.AVOCADO)
         #AVOCADO
         self.clear()
-        if menu.Menu.sound.is_playing(menu.Menu.media_player):
+        if menu.Menu.sound.is_playing(menu.Menu.media_player) or menu.Menu.playing == True:
             menu.Menu.sound.stop(menu.Menu.media_player)
+            menu.Menu.playing = False
+
+
 
     # This method draws our assets including constructing a grid
     def on_draw(self):
