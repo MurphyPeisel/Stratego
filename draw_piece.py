@@ -505,7 +505,7 @@ def combat(attacker, defender, click, graveyard1, graveyard2, army1, army2):
         print("attacker and defender defeated")
         if attacker.getPlayer() == 1:
             move_to_graveyard(army1, attacker, graveyard1)
-            move_to_graveyard(army2, defender, graveyard1)
+            move_to_graveyard(army2, defender, graveyard2)
         else:
             move_to_graveyard(army1, defender, graveyard1)
             move_to_graveyard(army2, attacker, graveyard2)
