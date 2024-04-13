@@ -277,24 +277,24 @@ class Gameboard(arcade.View):
                     # move piece to open space
                     draw_piece.move_piece(Gameboard.selected, click)
                     Gameboard.selected = None
-                    Gameboard.turn_screen(self)
+                    if Gameboard.AI == 0:
+                        Gameboard.turn_screen(self)
+                    else:
+                        Gameboard.change_turn()
                 if is_valid_move and cell_occupant != None:
                 # player clicked opposing piece: check combat conditions
                     if cell_occupant.getType() != "Lke":
                         is_orthogonal = Piece.check_orthogonal(Gameboard.selected, cell_occupant, Gameboard.total_pieces)
-                        # if Gameboard.selected.getType() == "Sct":
-                        #     print("scout")
-                        #     draw_piece.combat(Gameboard.selected, cell_occupant, click, Gameboard.graveyard1, Gameboard.graveyard2, Gameboard.army1, Gameboard.army2) #p1_pieces/p2_pieces = Temp Variables
-                        #     #Gameboard.turn_screen(self)
-                        #     Gameboard.change_turn()
                         if is_orthogonal:
                             if cell_occupant.getType() == "Flg":
                                 view = win.Win()
                                 self.window.show_view(view)
                             else:
                                 draw_piece.combat(Gameboard.selected, cell_occupant, click, Gameboard.graveyard1, Gameboard.graveyard2, Gameboard.army1, Gameboard.army2) #p1_pieces/p2_pieces = Temp Variables
-                                Gameboard.change_turn()
-                                #Gameboard.turn_screen(self)
+                                if Gameboard.AI == 0:
+                                    Gameboard.turn_screen(self)
+                                else:
+                                    Gameboard.change_turn()
                     Gameboard.selected = None
             else:
                 Gameboard.selected = None
