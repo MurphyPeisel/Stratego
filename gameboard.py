@@ -157,9 +157,7 @@ class Gameboard(arcade.View):
         if Gameboard.AttackBelow != None:
             arcade.draw_circle_filled(Gameboard.AttackBelow[0], Gameboard.AttackBelow[1], Gameboard.AttackBelow[2],
                                       Gameboard.AttackBelow[3])
-
-            #else:
-                # piece is defeated --> draw it, but in the graveyary           
+        
         
         if Gameboard.game_state == "setup":
             if Gameboard.player_turn == 1 and len(Gameboard.graveyard1) !=0:
@@ -226,7 +224,12 @@ class Gameboard(arcade.View):
 
              
     def on_mouse_press(self, x, y, button, key_modifiers):
+        print(f"THIS CLICK: {draw_piece.get_coordinates((x,y))}")
         print(Gameboard.player_turn)
+        if Gameboard.selected:
+            print(f"{Gameboard.selected.getType()} at {Gameboard.selected.getPosition()}")
+        else:
+            print("Nothing selected")
        # escape menu coordinates --> make constants
         click = (x,y)
         if x>=798 and x<=882 and y<= 665 and y>= 615:
@@ -244,99 +247,59 @@ class Gameboard(arcade.View):
                 if x>= 200 and x <= 700 and y<=600 and y>=400:
                     draw_piece.place_piece(Gameboard.graveyard2[Gameboard.highlight_index], click, Gameboard.graveyard2, Gameboard.army2)
         if Gameboard.game_state == "play":
-            if Gameboard.AI == 0:   #WHAT DOES THIS DO, IS THERE MORE CODE TO ADD?
-                click = (x,y)
-                for piece in Gameboard.total_pieces:
+            # if Gameboard.AI == 0:   #WHAT DOES THIS DO, IS THERE MORE CODE TO ADD?
+            click = (x,y)
+            for piece in Gameboard.total_pieces:
 
 
-                # if the user has clicked any piece in the list of total pieces enter the if statement
-                    if draw_piece.select_piece(piece, click, Gameboard.player_turn) == True:
-                        # if there is no selected piece assign it to the one clicked by the user
-                        if Gameboard.selected != None:
-                            if Gameboard.selected.getPlayer() == piece.getPlayer():
-                                # player re-selects one of their other pieces
-                                Gameboard.selected = piece
-                        else:
-                            print(piece.getType() + " selected")
+            # if the user has clicked any piece in the list of total pieces enter the if statement
+                if draw_piece.select_piece(piece, click, Gameboard.player_turn) == True:
+                    # if there is no selected piece assign it to the one clicked by the user
+                    if Gameboard.selected != None:
+                        if Gameboard.selected.getPlayer() == piece.getPlayer():
+                            # player re-selects one of their other pieces
                             Gameboard.selected = piece
                     else:
-                        print (draw_piece.select_piece(piece, click, Gameboard.player_turn))
-
-                if Gameboard.selected != None:
-                    is_valid_move, cell_occupant = draw_piece.is_move_available(Gameboard.total_pieces, Gameboard.selected, click)
-                    if is_valid_move and cell_occupant == None:
-                        # move piece to open space
-                        draw_piece.move_piece(Gameboard.selected, click)
-                        Gameboard.selected = None
-                        Gameboard.turn_screen(self)
-                    if is_valid_move and cell_occupant != None:
-                    # player clicked opposing piece: check combat conditions
-                        if cell_occupant.getType() != "Lke":
-                            is_orthogonal = Piece.check_orthogonal(Gameboard.selected, cell_occupant)
-                            if Gameboard.selected.getType() == "Sct":
-                                print("scout")
-                                draw_piece.combat(Gameboard.selected, cell_occupant, click, Gameboard.graveyard1, Gameboard.graveyard2, Gameboard.army1, Gameboard.army2) #p1_pieces/p2_pieces = Temp Variables
-                                #Gameboard.turn_screen(self)
-                                Gameboard.change_turn()
-                            elif is_orthogonal:
-                                if cell_occupant.getType() == "Flg":
-                                    view = win.Win()
-                                    self.window.show_view(view)
-                                else:
-                                    draw_piece.combat(Gameboard.selected, cell_occupant, click, Gameboard.graveyard1, Gameboard.graveyard2, Gameboard.army1, Gameboard.army2) #p1_pieces/p2_pieces = Temp Variables
-                                    Gameboard.change_turn()
-                                    #Gameboard.turn_screen(self)
-                        Gameboard.selected = None
+                        print(piece.getType() + " selected")
+                        Gameboard.selected = piece
                 else:
+                    pass
+                    # print("else line 267")
+                    # print (draw_piece.select_piece(piece, click, Gameboard.player_turn))
+
+            if Gameboard.selected != None:
+                is_valid_move, cell_occupant = draw_piece.is_move_available(Gameboard.total_pieces, Gameboard.selected, click)
+                if is_valid_move and cell_occupant == None:
+                    # move piece to open space
+                    draw_piece.move_piece(Gameboard.selected, click)
                     Gameboard.selected = None
-
-            elif Gameboard.AI == 1 or Gameboard.AI == 2 or Gameboard.AI == 3 and Gameboard.player_turn == 1:
-                print(Gameboard.AI)
-                click = (x, y)
-                for piece in Gameboard.total_pieces:
-                    # if the user has clicked any piece in the list of total pieces enter the if statement
-                    if draw_piece.select_piece(piece, click, Gameboard.player_turn) == True:
-                        # if there is no selected piece assign it to the one clicked by the user
-                        if Gameboard.selected != None:
-                            if Gameboard.selected.getPlayer() == piece.getPlayer():
-                                # player re-selects one of their other pieces
-                                Gameboard.selected = piece
-                        else:
-                            Gameboard.selected = piece
-
-                if Gameboard.selected != None:
-                    is_valid_move, cell_occupant = draw_piece.is_move_available(Gameboard.total_pieces, Gameboard.selected, click)
-                    if is_valid_move and cell_occupant == None:
-                        # move piece to open space
-                        draw_piece.move_piece(Gameboard.selected, click)
-                        Gameboard.selected = None
-
-                        #make AI move here
-                        Opponent_AI.bot.select_piece(Opponent_AI.bot, Gameboard.army2)
-                        
-                    print(is_valid_move,cell_occupant)
-                    if is_valid_move and cell_occupant != None:
-                    # player clicked opposing piece: check combat conditions
-                        if cell_occupant.getType() != "Lke":
-                            is_orthogonal = Piece.check_orthogonal(Gameboard.selected, cell_occupant)
-                            if Gameboard.selected.getType() == "Sct":
-                                print("scout")
+                    Gameboard.turn_screen(self)
+                if is_valid_move and cell_occupant != None:
+                # player clicked opposing piece: check combat conditions
+                    if cell_occupant.getType() != "Lke":
+                        is_orthogonal = Piece.check_orthogonal(Gameboard.selected, cell_occupant, Gameboard.total_pieces)
+                        # if Gameboard.selected.getType() == "Sct":
+                        #     print("scout")
+                        #     draw_piece.combat(Gameboard.selected, cell_occupant, click, Gameboard.graveyard1, Gameboard.graveyard2, Gameboard.army1, Gameboard.army2) #p1_pieces/p2_pieces = Temp Variables
+                        #     #Gameboard.turn_screen(self)
+                        #     Gameboard.change_turn()
+                        if is_orthogonal:
+                            if cell_occupant.getType() == "Flg":
+                                view = win.Win()
+                                self.window.show_view(view)
+                            else:
                                 draw_piece.combat(Gameboard.selected, cell_occupant, click, Gameboard.graveyard1, Gameboard.graveyard2, Gameboard.army1, Gameboard.army2) #p1_pieces/p2_pieces = Temp Variables
-                                #Gameboard.turn_screen(self)
                                 Gameboard.change_turn()
-                            elif is_orthogonal:
-                                if cell_occupant.getType() == "Flg":
-                                    view = win.Win()
-                                    self.window.show_view(view)
-                                else:
-                                    draw_piece.combat(Gameboard.selected, cell_occupant, click, Gameboard.graveyard1, Gameboard.graveyard2, Gameboard.army1, Gameboard.army2) #p1_pieces/p2_pieces = Temp Variables
-                                    #Gameboard.turn_screen(self)
-                                    Gameboard.change_turn()
-                        Gameboard.selected = None
-                        
-                else:
+                                #Gameboard.turn_screen(self)
                     Gameboard.selected = None
+            else:
+                Gameboard.selected = None
 
+            if Gameboard.AI == 1 or Gameboard.AI == 2 or Gameboard.AI == 3 and Gameboard.player_turn == 2:
+                print("AI IF (line 294)")
+                Opponent_AI.bot.select_piece(self, Gameboard.army2)
+                Gameboard.change_turn()
+                
     def setAttack(self, loc, x, y, num, color):
         if loc == "right":
             Gameboard.AttackRight = [x, y, num, color]

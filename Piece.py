@@ -78,7 +78,24 @@ def placePiece(P1):
         column[y][x] = P1.getType()
         return f"{P1.getType()} Placed Succesfully"
 
-def check_orthogonal(piece1, piece2):
+def is_piece_scan2(pieces, loc):
+    """
+    Checks if there is a piece at the location of a provided coordinate set, this is to be used inside the show
+    available moves function so that it only returns the necessary values.
+    :param pieces: List of all pieces
+    :param loc: location to check for a piece (x, y)
+    :return boolean value: This value represents whether there is a piece at the given location
+    """
+    x = loc[0]
+    y = loc[1]
+    for piece in pieces:
+        piecex = piece.getPosition()[0]
+        piecey = piece.getPosition()[1]
+        if x>=BOARD_LEFT + BOARD_MARGIN*piecex and x<=BOARD_RIGHT + BOARD_MARGIN*piecex and y<= BOARD_TOP + BOARD_MARGIN*piecey and y>= BOARD_BOTTOM + BOARD_MARGIN*piecey:
+            return True
+    return False
+
+def check_orthogonal(piece1, piece2, pieces):
     """ 
     Checks if two pieces are orthogonally adjacent.
     :param piece1: First piece
@@ -86,9 +103,42 @@ def check_orthogonal(piece1, piece2):
     :return: 'True' if orthongal, 'False' otherwise
     :rtype: bool
     """
-    x_diff = abs(piece1.posX - piece2.posX)
-    y_diff = abs(piece1.posY - piece2.posY) 
-    if (x_diff == 0 and y_diff == 1) or (x_diff == 1 and y_diff == 0):
+    x_diff = piece1.posX - piece2.posX
+    y_diff = piece1.posY - piece2.posY
+    print(f"diff : ({x_diff}, {y_diff})")
+    if piece1.getType() == "Sct":
+        # same column
+        valid_move = True
+        if x_diff == 0 and valid_move:
+            if y_diff > 0:
+                for cell in range(piece1.posY-1, piece2.posY):
+                    if is_piece_scan2(pieces, (piece1.posX, cell)) != False:
+                        valid_move = False
+            else:
+                for cell in range(piece1.posY+1, piece2.posY):
+                    if is_piece_scan2(pieces, (piece1.posX, cell)) != False:
+                        valid_move = False
+        # same row
+        elif y_diff == 0 and valid_move:
+            if x_diff > 0:
+                for cell in range(piece1.posX-1, piece2.posX):
+                    if is_piece_scan2(pieces, (cell, piece1.posY)) != False:
+                        valid_move = False
+            else:
+                for cell in range(piece1.posX+1, piece2.posX):
+                    if is_piece_scan2(pieces, (cell, piece1.posY)) != False:
+                        valid_move = False
+        else:
+            print("can't target diagonally")
+            return False              
+
+        if valid_move:
+            return True
+        else:
+            print("piece(s) inbetween, no jumping")
+            return False
+        
+    elif (abs(x_diff) == 0 and abs(y_diff == 1)) or (abs(x_diff) == 1 and (y_diff == 0)):
         return True
     else:
         return False
