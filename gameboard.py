@@ -221,7 +221,7 @@ class Gameboard(arcade.View):
         if Gameboard.AttackBelow != None:
             arcade.draw_circle_filled(Gameboard.AttackBelow[0], Gameboard.AttackBelow[1], Gameboard.AttackBelow[2],
                                       Gameboard.AttackBelow[3])
-
+            
              
     def on_mouse_press(self, x, y, button, key_modifiers):
         print(f"THIS CLICK: {draw_piece.get_coordinates((x,y))}")
@@ -273,33 +273,33 @@ class Gameboard(arcade.View):
                     # move piece to open space
                     draw_piece.move_piece(Gameboard.selected, click)
                     Gameboard.selected = None
-                    Gameboard.turn_screen(self)
+                    if Gameboard.AI == 0:
+                        Gameboard.turn_screen(self)
+                    else:
+                        Gameboard.change_turn()
                 if is_valid_move and cell_occupant != None:
                 # player clicked opposing piece: check combat conditions
                     if cell_occupant.getType() != "Lke":
                         is_orthogonal = Piece.check_orthogonal(Gameboard.selected, cell_occupant, Gameboard.total_pieces)
-                        # if Gameboard.selected.getType() == "Sct":
-                        #     print("scout")
-                        #     draw_piece.combat(Gameboard.selected, cell_occupant, click, Gameboard.graveyard1, Gameboard.graveyard2, Gameboard.army1, Gameboard.army2) #p1_pieces/p2_pieces = Temp Variables
-                        #     #Gameboard.turn_screen(self)
-                        #     Gameboard.change_turn()
                         if is_orthogonal:
                             if cell_occupant.getType() == "Flg":
                                 view = win.Win()
                                 self.window.show_view(view)
                             else:
                                 draw_piece.combat(Gameboard.selected, cell_occupant, click, Gameboard.graveyard1, Gameboard.graveyard2, Gameboard.army1, Gameboard.army2) #p1_pieces/p2_pieces = Temp Variables
-                                Gameboard.change_turn()
-                                #Gameboard.turn_screen(self)
+                                # Gameboard.change_turn()
+                                if Gameboard.AI == 0:
+                                    Gameboard.turn_screen(self)
+                                else:
+                                    Gameboard.change_turn()
                     Gameboard.selected = None
             else:
                 Gameboard.selected = None
 
             if Gameboard.AI == 1 or Gameboard.AI == 2 or Gameboard.AI == 3 and Gameboard.player_turn == 2:
-                print("AI IF (line 294)")
                 Opponent_AI.bot.select_piece(self, Gameboard.army2)
                 Gameboard.change_turn()
-                
+
     def setAttack(self, loc, x, y, num, color):
         if loc == "right":
             Gameboard.AttackRight = [x, y, num, color]

@@ -138,7 +138,7 @@ def check_orthogonal(piece1, piece2, pieces):
             print("piece(s) inbetween, no jumping")
             return False
         
-    elif (abs(x_diff) == 0 and abs(y_diff == 1)) or (abs(x_diff) == 1 and (y_diff == 0)):
+    elif (abs(x_diff) == 0 and abs(y_diff) == 1) or (abs(x_diff) == 1 and (y_diff) == 0):
         return True
     else:
         return False
