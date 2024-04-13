@@ -103,6 +103,17 @@ def check_orthogonal(piece1, piece2, pieces):
     :return: 'True' if orthongal, 'False' otherwise
     :rtype: bool
     """
+    lake_piece_1 = Piece("Lke", 0, 2, 4, 3)
+    lake_piece_2 = Piece("Lke", 0, 3, 4, 3)
+    lake_piece_3 = Piece("Lke", 0, 2, 5, 3)
+    lake_piece_4 = Piece("Lke", 0, 3, 5, 3)
+
+    lake_piece_5 = Piece("Lke", 0, 6, 4, 3)
+    lake_piece_6 = Piece("Lke", 0, 7, 4, 3)
+    lake_piece_7 = Piece("Lke", 0, 6, 5, 3)
+    lake_piece_8 = Piece("Lke", 0, 7, 5, 3)
+
+    lakes = [lake_piece_1,lake_piece_2,lake_piece_3,lake_piece_4,lake_piece_5,lake_piece_6,lake_piece_7,lake_piece_8]
     x_diff = piece1.posX - piece2.posX
     y_diff = piece1.posY - piece2.posY
     print(f"diff : ({x_diff}, {y_diff})")
@@ -111,23 +122,36 @@ def check_orthogonal(piece1, piece2, pieces):
         valid_move = True
         if x_diff == 0 and valid_move:
             if y_diff > 0:
-                for cell in range(piece1.posY-1, piece2.posY):
+                for cell in range(piece2.posY - 1, piece1.posY):
                     if is_piece_scan2(pieces, (piece1.posX, cell)) != False:
-                        valid_move = False
+                            valid_move = False
+                    for lake in lakes:
+                        if lake.getPosition() == [piece1.posX, cell]:
+                            valid_move = False
             else:
                 for cell in range(piece1.posY+1, piece2.posY):
                     if is_piece_scan2(pieces, (piece1.posX, cell)) != False:
                         valid_move = False
+                    for lake in lakes:
+                        if lake.getPosition() == [piece1.posX, cell]:
+                            valid_move = False
         # same row
         elif y_diff == 0 and valid_move:
             if x_diff > 0:
-                for cell in range(piece1.posX-1, piece2.posX):
+                for cell in range(piece2.posX - 1, piece1.posX):
                     if is_piece_scan2(pieces, (cell, piece1.posY)) != False:
                         valid_move = False
+                    for lake in lakes:
+                        if lake.getPosition() == [cell, piece1.posY]:
+                            valid_move = False
             else:
                 for cell in range(piece1.posX+1, piece2.posX):
+                    print(f"x-diff < 0: ({cell}, {piece1.posY})")
                     if is_piece_scan2(pieces, (cell, piece1.posY)) != False:
                         valid_move = False
+                    for lake in lakes:
+                        if lake.getPosition() == [cell, piece1.posY]:
+                            valid_move = False
         else:
             print("can't target diagonally")
             return False              
