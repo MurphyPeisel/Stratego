@@ -97,6 +97,15 @@ class Escape(arcade.View):
         gameboard.Gameboard.army2 = []
         gameboard.Gameboard.graveyard1 = Piece.initPieces(1)
         gameboard.Gameboard.graveyard2 = Piece.initPieces(2)
+        gameboard.Gameboard.AI = 0
+        gameboard.Gameboard.player_turn = 1
+        gameboard.Gameboard.highlight_index = 0
+        gameboard.Gameboard.selected = None
+        gameboard.Gameboard.AttackRight = None
+        gameboard.Gameboard.AttackLeft = None
+        gameboard.Gameboard.AttackAbove = None
+        gameboard.Gameboard.AttackBelow = None
+        
         board_view = mn.Menu()
         self.window.show_view(board_view)
     
