@@ -15,8 +15,7 @@ DEFAULT_FONT_SIZE = 20
 class Menu(arcade.View):
     last_screen = "menu"
     
-    def on_show_view(self):
-        arcade.set_background_color(arcade.color.WHITE)
+    #def on_show_view(self):
 
     # On draw will create all of our assets onto the screen
     def on_draw(self):
@@ -26,59 +25,83 @@ class Menu(arcade.View):
         start_x = 0
         start_y = SCREEN_HEIGHT - DEFAULT_LINE_HEIGHT * 1.5
 
-        # Colored boxes "buttons"
-        arcade.draw_rectangle_filled(160,160,275,100,
-                                     arcade.color.GRANNY_SMITH_APPLE)
-        arcade.draw_rectangle_filled(160,300,275,100,
-                                     arcade.color.FRENCH_WINE)
-        arcade.draw_rectangle_filled(160,440,275,100,
-                                     arcade.color.LIGHT_STEEL_BLUE)
-        
+        #arcade.set_background_color(arcade.color.BLUE_YONDER)
+
+        img = arcade.load_texture('MenuScreen.png')
+        arcade.draw_texture_rectangle (SCREEN_WIDTH*.5, SCREEN_HEIGHT*.5, SCREEN_WIDTH, SCREEN_HEIGHT, img)       
+
         # Text to communicate button purposes
+        WIDTH_POSITIONING = .1
+        underlay = .093
+        FONT_SIZE = 2.3
+
         arcade.draw_text("Stratego",
-                         start_x,
-                         start_y - (SCREEN_HEIGHT * .1),
+                         start_x + (SCREEN_WIDTH * underlay),
+                         start_y - (SCREEN_HEIGHT * .303),
                          arcade.color.BLACK,
-                         DEFAULT_FONT_SIZE * 4,
+                         DEFAULT_FONT_SIZE * FONT_SIZE,
                          width=SCREEN_WIDTH,
-                         align="center",
                          font_name="Kenney Future")
         arcade.draw_text("Play",
-                         start_x + (SCREEN_WIDTH *.05),
-                         start_y - (SCREEN_HEIGHT *.3),
+                         start_x + (SCREEN_WIDTH * underlay),
+                         start_y - (SCREEN_HEIGHT *.443),
                          arcade.color.BLACK,
-                         DEFAULT_FONT_SIZE * 2,
+                         DEFAULT_FONT_SIZE * FONT_SIZE,
                          font_name="Kenney Future")
         arcade.draw_text("Rules",
-                         start_x + (SCREEN_WIDTH * .05),
-                         start_y - (SCREEN_HEIGHT * .5),
+                         start_x + (SCREEN_WIDTH * underlay),
+                         start_y - (SCREEN_HEIGHT * .553),
                          arcade.color.BLACK,
-                         DEFAULT_FONT_SIZE * 2,
+                         DEFAULT_FONT_SIZE * FONT_SIZE,
                          font_name="Kenney Future")
         arcade.draw_text("Quit",
-                         start_x + (SCREEN_WIDTH * .05),
-                         start_y - (SCREEN_HEIGHT * .7),
+                         start_x + (SCREEN_WIDTH * underlay),
+                         start_y - (SCREEN_HEIGHT * .663),
                          arcade.color.BLACK,
-                         DEFAULT_FONT_SIZE * 2,
+                         DEFAULT_FONT_SIZE * FONT_SIZE,
                          font_name="Kenney Future")
-        
+
+        arcade.draw_text("Stratego",
+                         start_x + (SCREEN_WIDTH * WIDTH_POSITIONING),
+                         start_y - (SCREEN_HEIGHT * .3),
+                         arcade.color.WHITE,
+                         DEFAULT_FONT_SIZE * FONT_SIZE,
+                         width=SCREEN_WIDTH,
+                         font_name="Kenney Future")
+        arcade.draw_text("Play",
+                         start_x + (SCREEN_WIDTH * WIDTH_POSITIONING),
+                         start_y - (SCREEN_HEIGHT *.44),
+                         arcade.color.WHITE,
+                         DEFAULT_FONT_SIZE * FONT_SIZE,
+                         font_name="Kenney Future")
+        arcade.draw_text("Rules",
+                         start_x + (SCREEN_WIDTH * WIDTH_POSITIONING),
+                         start_y - (SCREEN_HEIGHT * .55),
+                         arcade.color.WHITE,
+                         DEFAULT_FONT_SIZE * FONT_SIZE,
+                         font_name="Kenney Future")
+        arcade.draw_text("Quit",
+                         start_x + (SCREEN_WIDTH * WIDTH_POSITIONING),
+                         start_y - (SCREEN_HEIGHT * .66),
+                         arcade.color.WHITE,
+                         DEFAULT_FONT_SIZE * FONT_SIZE,
+                         font_name="Kenney Future")
+         
     # Called when mouse is pressed, depending on the location of 
     # the mouse will direct user to selected destination
     def on_mouse_press(self, x, y, button, key_modifiers):
-        if x>=23 and x<=298 and y<= 540 and y>= 340:
-            settings_view = game_settings.Opponent()
+        if x>=77 and x<=287 and y<= 366 and y>= 323:
+            settings_view = game_settings.Game_Settings()
+            #settings_view = esc_menu.Escape(self)
             self.window.show_view(settings_view)
-        if x>=23 and x<=298 and y<= 350 and y>= 250:
+        if x>=77 and x<=287 and y<= 290 and y>= 246:
             rules_view = rules.Rules(self)
             self.window.show_view(rules_view)
-        if x>=23 and x<=298 and y<= 210 and y>= 110:
+        if x>=77 and x<=287 and y<= 211 and y>= 171:
             arcade.exit()
 
     # Listening for ESC menu call and opens that menu
-    def on_key_press(self, key, key_modifiers):
-        if(key == arcade.key.Q):
-            global Quit
-            Quit = True
+    def on_key_press(self, key):
         if(key == arcade.key.ESCAPE):
             board_view = esc_menu.Escape(self)
             self.window.show_view(board_view)
@@ -89,16 +112,4 @@ class Menu(arcade.View):
     def get_last_screen(cls):
         return cls.last_screen
 
-    #For later, disregard        
-        #RULES
-        #center (160,300)
-        
-        #PLAY
-        #center (160,440)
-        #width 275
-        #100
-        
-        #QUIT
-        #center (160,160)
-        #width 275
-        #height 100    
+    
