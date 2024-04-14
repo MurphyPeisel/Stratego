@@ -2,6 +2,7 @@ import arcade
 import arcade.gui 
 import esc_menu
 import game_settings
+import gameboard
 import rules
 import pyglet
 
@@ -29,6 +30,7 @@ class Menu(arcade.View):
 
     # On draw will create all of our assets onto the screen
     def on_draw(self):
+        gameboard.Gameboard.set_is_menu(gameboard.Gameboard, True)
         arcade.start_render()
         self.clear()
         try:

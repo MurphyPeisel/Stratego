@@ -125,6 +125,8 @@ class Escape(arcade.View):
         self.window.show_view(board_view)
     
     def on_click_resign(self, event):
+        gameboard.Gameboard.set_is_menu(gameboard.Gameboard, True)
+        print("test")
         if gameboard.Gameboard.player_turn == 1:
             gameboard.Gameboard.player_turn = 2
         else:
@@ -136,7 +138,8 @@ class Escape(arcade.View):
         gameboard.Gameboard.graveyard1 = Piece.initPieces(1)
         gameboard.Gameboard.graveyard2 = Piece.initPieces(2)
         win_view = win.Win()
-        self.window.show_view(win_view)            
+        self.window.show_view(win_view)
+
 
     # This function closes the program when the user hits the exit button
     def on_click_exit(self, event):

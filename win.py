@@ -50,9 +50,13 @@ class Win(arcade.View):
 
     # These functions add the functionality to the three button options
     def on_replay_click(self, event):
+        gameboard.Gameboard.set_is_menu(gameboard.Gameboard, False)
         self.manager.disable()
         board_view = gameboard.Gameboard()
         self.window.show_view(board_view)
+        gameboard.Gameboard.game_state = "setup"
+        gameboard.Gameboard.army1 = []
+        gameboard.Gameboard.army2 = []
 
     def on_game_settings_click(self, event):
         self.manager.disable()
@@ -67,16 +71,17 @@ class Win(arcade.View):
 
     # This function draws all that is defined in show view to allow the window to appear. The text will show who won
     def on_draw(self):
-        self.clear()
-        arcade.start_render()
-        self.manager.draw()
-        start_x = 0
-        start_y = SCREEN_HEIGHT - DEFAULT_LINE_HEIGHT * 1.5
-        arcade.draw_text("Player " + str(gameboard.Gameboard.get_turn()) + "\nWins",
-                         start_x,
-                         start_y - (SCREEN_HEIGHT * .1),
-                         arcade.color.BLACK,
-                         DEFAULT_FONT_SIZE * 4,
-                         width=SCREEN_WIDTH,
-                         align="center",
-                         font_name="Kenney Future")
+        if gameboard.Gameboard.get_is_menu(gameboard.Gameboard) == True:
+            self.clear()
+            arcade.start_render()
+            self.manager.draw()
+            start_x = 0
+            start_y = SCREEN_HEIGHT - DEFAULT_LINE_HEIGHT * 1.5
+            arcade.draw_text("Player " + str(gameboard.Gameboard.get_turn()) + "\nWins",
+                             start_x,
+                             start_y - (SCREEN_HEIGHT * .1),
+                             arcade.color.BLACK,
+                             DEFAULT_FONT_SIZE * 4,
+                             width=SCREEN_WIDTH,
+                             align="center",
+                             font_name="Kenney Future")

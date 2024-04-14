@@ -162,7 +162,9 @@ class Computer(arcade.View):
             else:
                 gameboard.Gameboard.set_visibility(gameboard, False)
 
-            self.window.show_view(gameboard.Gameboard())   
+            self.window.show_view(gameboard.Gameboard())
+            gameboard.Gameboard.set_is_menu(gameboard.Gameboard, False)
+
 
     #On draw will create all of our assets onto the screen
     def on_draw(self):
@@ -246,6 +248,7 @@ class Players2(arcade.View):
                 gameboard.Gameboard.set_visibility(gameboard, False)
 
             self.window.show_view(gameboard.Gameboard())
+            gameboard.Gameboard.set_is_menu(gameboard.Gameboard, False)
    
     def on_draw(self):
         self.clear()
