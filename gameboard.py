@@ -48,6 +48,8 @@ class Gameboard(arcade.View):
     total_pieces = army1 + army2
     hover = []
     player_turn = 1
+    text = [""]
+    text_index = 0
 
     AI = 0
     #visible = False
@@ -74,7 +76,13 @@ class Gameboard(arcade.View):
     def on_draw(self):
         self.clear()
         arcade.start_render()
-        
+        if Gameboard.text[Gameboard.text_index] != "":
+            arcade.draw_text(f"{Gameboard.text_index} : {Gameboard.text[Gameboard.text_index]}",450,650,arcade.color.BLACK,15,font_name="Kenney Mini Square Font",bold=True,anchor_x= "center", anchor_y= "center", width=400, multiline = True, align="center", )
+        arcade.draw_triangle_filled(652, 635, 652, 660, 677, 647.5, arcade.color.BUFF)
+        arcade.draw_triangle_outline(652, 635, 652, 660, 677, 647.5, arcade.color.BLACK, 4)
+        arcade.draw_triangle_filled(248, 635, 248, 660, 223, 647.5, arcade.color.BUFF)
+        arcade.draw_triangle_outline(248, 635, 248, 660, 223, 647.5, arcade.color.BLACK, 4)
+
 
         # initialize formatting details
         start_x = 0
@@ -276,6 +284,13 @@ class Gameboard(arcade.View):
             board_view = esc_menu.Escape(self)
             self.window.show_view(board_view)
             esc_menu.Escape.last_screen = Gameboard.last_screen
+        if x>=215 and x<= 260 and y>= 625 and y<= 670:
+            if Gameboard.text_index > 1:
+                Gameboard.text_index = Gameboard.text_index -1
+        if x>= 640 and x<=685 and y>= 625 and y<= 670:
+            if Gameboard.text_index < len(Gameboard.text)-1:
+                Gameboard.text_index = Gameboard.text_index +1
+
 
         if Gameboard.game_state == "setup":
             click = (x,y)
@@ -315,6 +330,8 @@ class Gameboard(arcade.View):
                     # move piece to open space
                     draw_piece.move_piece(Gameboard.selected, click)
                     Gameboard.selected = None
+                    Gameboard.text.append("PLAYER MOVES")
+                    Gameboard.text_index = len(Gameboard.text)-1
                     if Gameboard.AI == 0:
                         # set time of move, this is used as a marker for a timer for the delay to see your piece move before the screen changes
                         pass_turn.Pass_Turn.turn_pause = time.time()
@@ -329,7 +346,8 @@ class Gameboard(arcade.View):
                                 view = win.Win()
                                 self.window.show_view(view)
                             else:
-                                draw_piece.combat(Gameboard.selected, cell_occupant, click, Gameboard.graveyard1, Gameboard.graveyard2, Gameboard.army1, Gameboard.army2) #p1_pieces/p2_pieces = Temp Variables
+                                Gameboard.text.append(draw_piece.combat(Gameboard.selected, cell_occupant, click, Gameboard.graveyard1, Gameboard.graveyard2, Gameboard.army1, Gameboard.army2)) #p1_pieces/p2_pieces = Temp Variables
+                                Gameboard.text_index = len(Gameboard.text)-1
                                 if Gameboard.AI == 0:
                                     # set time of move, this is used as a marker for a timer for the delay to see your piece move before the screen changes
                                     pass_turn.Pass_Turn.turn_pause = time.time()
@@ -342,6 +360,8 @@ class Gameboard(arcade.View):
             if (Gameboard.AI == 1 or Gameboard.AI == 2 or Gameboard.AI == 3) and (Gameboard.player_turn == 2):
                 Opponent_AI.bot.select_piece(self, Gameboard.army2)
                 print("AI Moved")
+                Gameboard.text.append("COMPUTER MOVES")
+                Gameboard.text_index = len(Gameboard.text)-1
                 Gameboard.change_turn()
                 
     def setAttack(self, loc, x, y, num, color):
@@ -417,13 +437,8 @@ class Gameboard(arcade.View):
                 if Gameboard.player_turn == 2:
                     if x>= 200 and x <= 700 and y<=600 and y>=400:
                         draw_piece.place_piece(Gameboard.graveyard2[Gameboard.highlight_index], Gameboard.hover, Gameboard.graveyard2, Gameboard.army2)
-            
-
-                    
-
                 
                     
-
     def change_turn():
         if Gameboard.player_turn == 1:
             Gameboard.player_turn = 2

@@ -32,9 +32,9 @@ def draw_start(piece, army, index):
     arcade.draw_polygon_filled(point_list, color)
 
     if piece.getType() == "Flg":
-        arcade.draw_text("F", yard_left+YARD_MARGIN*(index-4*row)+13, GRID_TOP-YARD_MARGIN*row-33, arcade.color.WHITE, 20, 1, "center", "Kenney Blocks Font", bold=True)
+        arcade.draw_text("F", yard_left+YARD_MARGIN*(index-4*row)+13, GRID_TOP-YARD_MARGIN*row-33, arcade.color.WHITE, 20, 1, "center", "Kenney Pixel Square Font", bold=True)
     elif piece.getType() == "Msh":
-        arcade.draw_text("10", yard_left+YARD_MARGIN*(index-4*row)+5, GRID_TOP-YARD_MARGIN*row-33, arcade.color.WHITE, 20, 1, "center", "Kenney Rocket Square Font", bold=True)
+        arcade.draw_text("10", yard_left+YARD_MARGIN*(index-4*row)+5, GRID_TOP-YARD_MARGIN*row-33, arcade.color.WHITE, 20, 1, "center", "Kenney Pixel Square Font", bold=True)
     elif piece.getType() == "Gen":
         arcade.draw_text("9", yard_left+YARD_MARGIN*(index-4*row)+12, GRID_TOP-YARD_MARGIN*row-33, arcade.color.WHITE, 20, 1, "center", "Kenney Pixel Square Font", bold=True)
     if piece.getType() == "Col":
@@ -543,8 +543,37 @@ def move_piece(piece, click):
         piece.setPosition(loc_x, loc_y)
         Gameboard.Gameboard.resetAttack(Gameboard)
 
+def convert_piece_type(piece):
+    if piece.getType() == "Flg":
+        return "FLAG"
+    elif piece.getType() == "Msh":
+        return "MARSHALL"
+    elif piece.getType() == "Gen":
+        return "GENERAL"
+    if piece.getType() == "Col":
+        return "COLONEL"
+    if piece.getType() == "Maj":
+        return "MAJOR"
+    if piece.getType() == "Cap":
+        return "CAPITAIN"
+    if piece.getType() == "Ltn":
+        return "LEIUTENANT"
+    if piece.getType() == "Sgt":
+        return "SERGEANT"
+    if piece.getType() == "Min":
+        return "MINER"
+    elif piece.getType() == "Sct":
+        return "SCOUT"
+    elif piece.getType() == "Spy":
+        return "SPY"
+    elif piece.getType() == "Bom":
+        return "BOMB"
 
 def combat(attacker, defender, click, graveyard1, graveyard2, army1, army2):
+    if Gameboard.Gameboard.AI == 0:
+        opponent = "PLAYER 2"
+    else:
+        opponent = "COMPUTER"
     sound = arcade.load_sound("Death.mp3",False)
     
     """ 
@@ -553,6 +582,7 @@ def combat(attacker, defender, click, graveyard1, graveyard2, army1, army2):
     :param defender: Defending piece
     :param click: Cursor click location (x, y)
     """
+    output = ""
     
     # temp debug code
     print("COMBAT")
@@ -564,6 +594,8 @@ def combat(attacker, defender, click, graveyard1, graveyard2, army1, army2):
         print("Miner defuses bomb")
         if defender.getPlayer() == 1:
             move_to_graveyard(army1, defender, graveyard1)
+            output = f"{opponent}'S MINER DEFUSES PLAYER 1'S BOMB"
+
         else:
             move_to_graveyard(army2, defender, graveyard2)
         move_piece(attacker, click)
@@ -573,24 +605,32 @@ def combat(attacker, defender, click, graveyard1, graveyard2, army1, army2):
         print("Bomb explodes")
         if attacker.getPlayer() == 1:
             move_to_graveyard(army1, attacker, graveyard1)
-            arcade.play_sound(sound, 4, 0)
+            arcade.play_sound(sound, 3, 0)
+            output = f"BOMB EXPLODES, PLAYER 1'S {convert_piece_type(attacker)} DEFEATED"
+
 
         else:
             move_to_graveyard(army2, attacker, graveyard2)
-            arcade.play_sound(sound, 4, 0)
+            arcade.play_sound(sound, 3, 0)
+            output = f"BOMB EXPLODES, {opponent}'S {convert_piece_type(attacker)} DEFEATED"
+
 
 
     # SPECIAL CASE: Spy is attacking Marshall
     elif attacker.getType() == "Spy" and defender.getType() == "Msh":
         # spy attacks msh, msh defeated
-        print("SPY wins: attacked Marshall")
+        print("SPY WINS: attacked Marshall")
         if defender.getPlayer() == 1:
             move_to_graveyard(army1, defender, graveyard1)
-            arcade.play_sound(sound, 4, 0)
+            arcade.play_sound(sound, 3, 0)
+            output = f"{opponent}'S SPY DEFEATS PLAYER 1'S MARSHALL"
+
 
         else:
             move_to_graveyard(army2, defender, graveyard2)
-            arcade.play_sound(sound, 4, 0)
+            arcade.play_sound(sound, 3, 0)
+            output =  f"PLAYER 1'S SPY DEFEATS {opponent}'S MARSHALL"
+
 
         move_piece(attacker, click) 
 
@@ -599,11 +639,14 @@ def combat(attacker, defender, click, graveyard1, graveyard2, army1, army2):
         print("attacker wins")
         if defender.getPlayer() == 1:
             move_to_graveyard(army1, defender, graveyard1)
-            arcade.play_sound(sound, 4, 0)
+            arcade.play_sound(sound, 3, 0)
+            output = f"{opponent}'S {convert_piece_type(attacker)} DEFEATS PLAYER 1'S {convert_piece_type(defender)}"
 
         else:
             move_to_graveyard(army2, defender, graveyard2)
-            arcade.play_sound(sound, 4, 0)
+            arcade.play_sound(sound, 3, 0)
+            output = f"PLAYER 1'S {convert_piece_type(attacker)} DEFEATS {opponent}'S {convert_piece_type(defender)}"
+
 
         move_piece(attacker, click)
 
@@ -612,11 +655,15 @@ def combat(attacker, defender, click, graveyard1, graveyard2, army1, army2):
         print("defender wins")
         if attacker.getPlayer() == 1:
             move_to_graveyard(army1, attacker, graveyard1)
-            arcade.play_sound(sound, 4, 0)
+            arcade.play_sound(sound, 3, 0)
+            output = f"{opponent}'S {convert_piece_type(defender)} DEFEATS PLAYERS 1'S {convert_piece_type(attacker)}"
+
 
         else:
             move_to_graveyard(army2, attacker, graveyard2)
-            arcade.play_sound(sound, 4, 0)
+            arcade.play_sound(sound, 3, 0)
+            output = f"PLAYER 1'S {convert_piece_type(defender)} DEFEATS {opponent}'S {convert_piece_type(attacker)}"
+
 
     else:
         # attacker and defender have same power, both sent to graveyards
@@ -624,14 +671,18 @@ def combat(attacker, defender, click, graveyard1, graveyard2, army1, army2):
         if attacker.getPlayer() == 1:
             move_to_graveyard(army1, attacker, graveyard1)
             move_to_graveyard(army2, defender, graveyard2)
-            arcade.play_sound(sound, 4, 0)
+            arcade.play_sound(sound, 3, 0)
             time.sleep(.2)
 
-            arcade.play_sound(sound, 4, 0)
+            arcade.play_sound(sound, 3, 0)
+            output = f"{opponent}'S {convert_piece_type(defender)} DEFEATED. PLAYER 1'S {convert_piece_type(attacker)} DEFEATED"
+
 
         else:
             move_to_graveyard(army1, defender, graveyard1)
             move_to_graveyard(army2, attacker, graveyard2)
-            arcade.play_sound(sound, 4, 0)
+            arcade.play_sound(sound, 3, 0)
             time.sleep(.2)
-            arcade.play_sound(sound, 4, 0)
+            arcade.play_sound(sound, 3, 0)
+            output = f"PLAYER 1'S {convert_piece_type(defender)} DEFEATED. {opponent}'S {convert_piece_type(attacker)} DEFEATED"
+    return output
