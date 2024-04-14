@@ -6,7 +6,9 @@ import gameboard
 import random
 
 # sets the default AI to 0 level difficultly
+# sets the default AI to 0 level difficultly
 allAI = 0
+
 
 
 def generateBot(ai):
@@ -20,7 +22,11 @@ def generateBot(ai):
     gameboard.Gameboard.changeAI(ai)
 
 
+
 class bot():
+    """
+    bot class that controls the moves and pieces of the computers moves if the user selects to play against the computer
+    """
     """
     bot class that controls the moves and pieces of the computers moves if the user selects to play against the computer
     """
@@ -46,10 +52,12 @@ class bot():
         """
         bot.selected = None
         # this filters for pieces that inherently cannot be moved as a part of the rules
+        # this filters for pieces that inherently cannot be moved as a part of the rules
         movable_pieces = []
         for piece in bot_pieces:
             if piece.getType() != "Lke" and piece.getType() != "Flg" and piece.getType() != "Bom":
                 movable_pieces.append(piece)
+        # generates a random number to be used to pick the piece to move
         # generates a random number to be used to pick the piece to move
         selected_num = random.randint(0, len(movable_pieces) - 1)
         # print("movable pieces", movable_pieces)
@@ -60,6 +68,8 @@ class bot():
         # NEEDS MORE TESTING WHEN THE FULL BOARD IS INITIALIZED
         while bot.selected == None:
             for piece in movable_pieces:
+                # uses the selected number to find the piece at that point in the list. if the piece is movable it
+                # becomes selected and calls make move
                 # uses the selected number to find the piece at that point in the list. if the piece is movable it
                 # becomes selected and calls make move
                 if x == selected_num and piece.getType() != "Lke" and piece.getType() != "Flg" and piece.getType() != "Bom":
@@ -83,12 +93,23 @@ class bot():
         :returns boolean: true or false depending on if the piece can move in one or more of directions left, right, up,
                           or down
         """
+        """
+        this function scans the surrounding areas of the piece to determine if a move can be made
+        :param self / bot: the bot itself
+        :param selected_piece: the piece selected by the selected piece function
+        :param bot_pieces: the list of the bots total pieces
+        :returns boolean: true or false depending on if the piece can move in one or more of directions left, right, up,
+                          or down
+        """
         x = selected_piece.getPosition()[0]
         y = selected_piece.getPosition()[1]
         leftMovement = True
         rightMovement = True
         upMovement = True
         downMovement = True
+        # This scans through each piece in the bots pieces to see if any of them are directly above, below, to the right
+        # or to the left of the selected piece. if they are it restricts movement in that respective direction. This
+        # also accounts for the size of the board so that moves don't move pieces off the board itself
         # This scans through each piece in the bots pieces to see if any of them are directly above, below, to the right
         # or to the left of the selected piece. if they are it restricts movement in that respective direction. This
         # also accounts for the size of the board so that moves don't move pieces off the board itself
@@ -106,7 +127,17 @@ class bot():
         else:
             return True
 
+
     def make_move(self, bot_pieces, user_pieces):
+        """
+        This function takes makes the selected piece move to a randomized location depending on if the move is
+        available/legal and the difficulty selected by the user
+        :param bot / self: the bot itself
+        :param bot_pieces: a list of all the bots pieces
+        :param user_pieces: a list of all the users pieces
+        """
+        # This creates a list of pieces excluding the lakes, this way the bot doesn't get confused and attempt to attack
+        # a lake
         """
         This function takes makes the selected piece move to a randomized location depending on if the move is
         available/legal and the difficulty selected by the user

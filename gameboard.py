@@ -8,15 +8,20 @@ import time
 import win
 from constants import *
 import Opponent_AI
+
 import ai_layout
 
-
-
-
-
-
-
-
+# p1_tester_piece1 = Piece.Piece("Min", 3, 0, 0, 1)
+# p1_tester_piece2 = Piece.Piece("Msh", 10, 2, 0, 1)
+# p1_tester_piece3 = Piece.Piece("Gen", 9, 4, 0, 1)
+# p1_tester_piece4 = Piece.Piece("Bom", 12, 6, 0, 1)
+# p1_tester_piece5 = Piece.Piece("Flg", 0, 8, 0, 1)
+# 
+# p2_tester_piece1 = Piece.Piece("Sct", 2, 0, 9, 2)
+# p2_tester_piece2 = Piece.Piece("Msh", 10, 2, 9, 2)
+# p2_tester_piece3 = Piece.Piece("Gen", 9, 3, 9, 2)
+# p2_tester_piece4 = Piece.Piece("Bom", 12, 6, 9, 2)
+# p2_tester_piece5 = Piece.Piece("Flg", 0, 8, 9, 2)
 
 lake_piece_1 = Piece.Piece("Lke", 0, 2, 4, 3)
 lake_piece_2 = Piece.Piece("Lke", 0, 3, 4, 3)
@@ -43,6 +48,11 @@ class Gameboard(arcade.View):
     total_pieces = army1 + army2
     hover = []
     player_turn = 1
+
+    AI = 0
+    #visible = False
+
+
     click_counter = 0
     selected = None
     AI = Opponent_AI.bot.ai
@@ -54,9 +64,6 @@ class Gameboard(arcade.View):
     AttackBelow = None
 
     def on_show_view(self):
-        arcade.set_background_color(arcade.color.AVOCADO)
-        #AVOCADO
-        self.clear()
         if menu.Menu.sound.is_playing(menu.Menu.media_player) or menu.Menu.playing == True:
             menu.Menu.sound.stop(menu.Menu.media_player)
             menu.Menu.playing = False
@@ -65,6 +72,7 @@ class Gameboard(arcade.View):
 
     # This method draws our assets including constructing a grid
     def on_draw(self):
+        self.clear()
         arcade.start_render()
         
 
@@ -135,6 +143,14 @@ class Gameboard(arcade.View):
                  (GRAVEYARD_1_LEFT, GRAVEYARD_TOP),)
         arcade.draw_polygon_filled(yard1, arcade.color.DARK_TAUPE)
         arcade.draw_polygon_outline(yard1, arcade.color.BLACK,8)
+        arcade.draw_text("1",
+                         start_x - (SCREEN_WIDTH * .37),
+                         start_y - (SCREEN_HEIGHT * .52),
+                         arcade.color.GRAY,
+                         DEFAULT_FONT_SIZE * 10,
+                         width=SCREEN_WIDTH,
+                         align="center",
+                         font_name="Kenney Future")
         
         yard2 = ((GRAVEYARD_2_LEFT, GRAVEYARD_BOTTOM),
                  (GRAVEYARD_2_RIGHT, GRAVEYARD_BOTTOM),
@@ -142,6 +158,14 @@ class Gameboard(arcade.View):
                  (GRAVEYARD_2_LEFT, GRAVEYARD_TOP),)
         arcade.draw_polygon_filled(yard2, arcade.color.DARK_TAUPE)
         arcade.draw_polygon_outline(yard2, arcade.color.BLACK,8)
+        arcade.draw_text("2",
+                        start_x + (SCREEN_WIDTH * .42),
+                        start_y - (SCREEN_HEIGHT * .52),
+                        arcade.color.GRAY,
+                        DEFAULT_FONT_SIZE * 10,
+                        width=SCREEN_WIDTH,
+                        align="center",
+                        font_name="Kenney Future")
 
         # draw pieces
         for piece in Gameboard.army1:
@@ -410,6 +434,12 @@ class Gameboard(arcade.View):
         Gameboard.change_turn()
         view = pass_turn.Pass_Turn()
         self.window.show_view(view)
+
+    def set_visibility(self, visible):
+        Gameboard.visible = visible
+
+    def get_visibility(self):
+        return Gameboard.visible
     
     def get_turn():
         return Gameboard.player_turn
