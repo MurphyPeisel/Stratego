@@ -116,7 +116,8 @@ class Escape(arcade.View):
         gameboard.Gameboard.AttackLeft = None
         gameboard.Gameboard.AttackAbove = None
         gameboard.Gameboard.AttackBelow = None
-
+        gameboard.Gameboard.text_index = 0
+        gameboard.Gameboard.text = [""]
 
         
 
@@ -163,6 +164,8 @@ class Escape(arcade.View):
         gameboard.Gameboard.AttackLeft = None
         gameboard.Gameboard.AttackAbove = None
         gameboard.Gameboard.AttackBelow = None
+        gameboard.Gameboard.text_index = 0
+        gameboard.Gameboard.text = [""]
         win_view = win.Win()
         # stop playing sound from gameboard
         if gameboard.Gameboard.sound.is_playing(gameboard.Gameboard.media_player) or gameboard.Gameboard.playing == True:

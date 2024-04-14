@@ -35,7 +35,6 @@ class Menu(arcade.View):
         self.clear()
         if(Menu.sound.is_playing(Menu.media_player) == False):
             Menu.media_player.seek(0)
-            print("no except")
             Menu.media_player.play()
             Menu.playing = True
 
