@@ -3,6 +3,7 @@ import arcade.gui
 import rules
 import gameboard
 import win
+import Piece
 import menu as mn
 
 # initialize formatting details
@@ -89,6 +90,36 @@ class Escape(arcade.View):
     # Functionality for when the user presses the back to menu button to change the screen back to the menu screen
     def on_click_back(self, event):
         self.manager.disable()
+        
+        lake_piece_1 = Piece.Piece("Lke", 0, 2, 4, 3)
+        lake_piece_2 = Piece.Piece("Lke", 0, 3, 4, 3)
+        lake_piece_3 = Piece.Piece("Lke", 0, 2, 5, 3)
+        lake_piece_4 = Piece.Piece("Lke", 0, 3, 5, 3)
+
+        lake_piece_5 = Piece.Piece("Lke", 0, 6, 4, 3)
+        lake_piece_6 = Piece.Piece("Lke", 0, 7, 4, 3)
+        lake_piece_7 = Piece.Piece("Lke", 0, 6, 5, 3)
+        lake_piece_8 = Piece.Piece("Lke", 0, 7, 5, 3)
+
+        #RESET GAME
+        gameboard.Gameboard.game_state = "setup"
+        gameboard.Gameboard.army1 = [lake_piece_1,lake_piece_2,lake_piece_3,lake_piece_4,lake_piece_5,lake_piece_6,lake_piece_7,lake_piece_8]
+        gameboard.Gameboard.army2 = [lake_piece_1,lake_piece_2,lake_piece_3,lake_piece_4,lake_piece_5,lake_piece_6,lake_piece_7,lake_piece_8]
+        gameboard.Gameboard.graveyard1 = Piece.initPieces(1)
+        gameboard.Gameboard.graveyard2 = Piece.initPieces(2)
+        gameboard.Gameboard.AI = 0
+        gameboard.Gameboard.player_turn = 1
+        gameboard.Gameboard.highlight_index = 0
+        gameboard.Gameboard.selected = None
+        gameboard.Gameboard.AttackRight = None
+        gameboard.Gameboard.AttackLeft = None
+        gameboard.Gameboard.AttackAbove = None
+        gameboard.Gameboard.AttackBelow = None
+
+
+        
+
+        gameboard.Gameboard.total_pieces = gameboard.Gameboard.army1 + gameboard.Gameboard.army2
         board_view = mn.Menu()
         self.window.show_view(board_view)
     
@@ -97,6 +128,12 @@ class Escape(arcade.View):
             gameboard.Gameboard.player_turn = 2
         else:
             gameboard.Gameboard.player_turn = 1
+        #RESET GAME 
+        gameboard.Gameboard.game_state = "setup"
+        gameboard.Gameboard.army1 = []
+        gameboard.Gameboard.army2 = []
+        gameboard.Gameboard.graveyard1 = Piece.initPieces(1)
+        gameboard.Gameboard.graveyard2 = Piece.initPieces(2)
         win_view = win.Win()
         self.window.show_view(win_view)            
 

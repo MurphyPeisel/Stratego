@@ -3,6 +3,7 @@ import arcade.gui
 import esc_menu
 import game_settings
 import rules
+import pyglet
 
 # initialize formatting details
 SCREEN_WIDTH = 900
@@ -10,18 +11,38 @@ SCREEN_HEIGHT = 700
 DEFAULT_LINE_HEIGHT = 45
 DEFAULT_FONT_SIZE = 20
 
+
+
 # The menu class displays three possible button options that navigates you to their resepective views
 # This view is what is first displayed upon running main
 class Menu(arcade.View):
     last_screen = "menu"
-    
+    Loop = 0
+    sound = arcade.load_sound("Menu_Screen.wav",False)
+    media_player = arcade.play_sound(sound, 4, 0)
+    playing = False
+
     def on_show_view(self):
         arcade.set_background_color(arcade.color.WHITE)
+
+
 
     # On draw will create all of our assets onto the screen
     def on_draw(self):
         arcade.start_render()
         self.clear()
+        try:
+            if(Menu.sound.is_playing(Menu.media_player) == False):
+                    Menu.media_player.seek(0)
+                    Menu.media_player.loop(True)
+                    Menu.media_player.play()
+                    Menu.playing = True
+
+        except Exception:
+            Menu.media_player = arcade.play_sound(Menu.sound, 4, 0)
+            Menu.playing = True
+
+
 
         start_x = 0
         start_y = SCREEN_HEIGHT - DEFAULT_LINE_HEIGHT * 1.5
