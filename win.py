@@ -56,7 +56,7 @@ class Win(arcade.View):
 
     def on_game_settings_click(self, event):
         self.manager.disable()
-        board_view = game_settings.Opponent()
+        board_view = game_settings.Game_Settings()
         self.window.show_view(board_view)
 
     def on_exit_click(self, event):

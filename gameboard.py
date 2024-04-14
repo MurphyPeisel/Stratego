@@ -62,13 +62,14 @@ class Gameboard(arcade.View):
     AttackAbove = None
     AttackBelow = None
 
-    def on_show_view(self):
-        arcade.set_background_color(arcade.color.AVOCADO)
-        #AVOCADO
-        self.clear()
+    #def on_show_view(self):
+    #    arcade.set_background_color(arcade.color.AVOCADO)
+    #    #AVOCADO
+    #    self.clear()
 
     # This method draws our assets including constructing a grid
     def on_draw(self):
+        self.clear()
         arcade.start_render()
 
         # initialize formatting details
@@ -135,6 +136,14 @@ class Gameboard(arcade.View):
                  (GRAVEYARD_1_LEFT, GRAVEYARD_TOP),)
         arcade.draw_polygon_filled(yard1, arcade.color.DARK_TAUPE)
         arcade.draw_polygon_outline(yard1, arcade.color.BLACK,8)
+        arcade.draw_text("1",
+                         start_x - (SCREEN_WIDTH * .37),
+                         start_y - (SCREEN_HEIGHT * .52),
+                         arcade.color.GRAY,
+                         DEFAULT_FONT_SIZE * 10,
+                         width=SCREEN_WIDTH,
+                         align="center",
+                         font_name="Kenney Future")
         
         yard2 = ((GRAVEYARD_2_LEFT, GRAVEYARD_BOTTOM),
                  (GRAVEYARD_2_RIGHT, GRAVEYARD_BOTTOM),
@@ -142,6 +151,14 @@ class Gameboard(arcade.View):
                  (GRAVEYARD_2_LEFT, GRAVEYARD_TOP),)
         arcade.draw_polygon_filled(yard2, arcade.color.DARK_TAUPE)
         arcade.draw_polygon_outline(yard2, arcade.color.BLACK,8)
+        arcade.draw_text("2",
+                        start_x + (SCREEN_WIDTH * .42),
+                        start_y - (SCREEN_HEIGHT * .52),
+                        arcade.color.GRAY,
+                        DEFAULT_FONT_SIZE * 10,
+                        width=SCREEN_WIDTH,
+                        align="center",
+                        font_name="Kenney Future")
 
         # draw pieces
         for piece in total_pieces:
