@@ -6,27 +6,24 @@ import gameboard
 import random
 
 # sets the default AI to 0 level difficultly
-# sets the default AI to 0 level difficultly
 allAI = 0
-
-
-
+topBoard = 9
+farRightBoard = 9
+farLeftBoard = 0
+bottomBoard = 0
+pieceMidpointAdjuster = 25
 def generateBot(ai):
     """
     sets the AI difficultly to what the user selected
     :param ai: integer representing the difficulty of the AI
     :return: none
     """
-    # print("generate")
     allAI = ai
     gameboard.Gameboard.changeAI(ai)
 
 
 
 class bot():
-    """
-    bot class that controls the moves and pieces of the computers moves if the user selects to play against the computer
-    """
     """
     bot class that controls the moves and pieces of the computers moves if the user selects to play against the computer
     """
@@ -39,12 +36,10 @@ class bot():
         :param ai: integer representing the difficulty of the AI
         :return: none
         """
-        # print("generate")
         bot.ai = ai
         gameboard.Gameboard.changeAI(ai)
 
     def select_piece(self, bot_pieces):
-        # print("Selected")
         """
         this function scans all the pieces on its side and randomly selects from those that are movable
         :param self / bot: the bot itself
@@ -52,47 +47,28 @@ class bot():
         """
         bot.selected = None
         # this filters for pieces that inherently cannot be moved as a part of the rules
-        # this filters for pieces that inherently cannot be moved as a part of the rules
         movable_pieces = []
         for piece in bot_pieces:
             if piece.getType() != "Lke" and piece.getType() != "Flg" and piece.getType() != "Bom":
                 movable_pieces.append(piece)
         # generates a random number to be used to pick the piece to move
-        # generates a random number to be used to pick the piece to move
         selected_num = random.randint(0, len(movable_pieces) - 1)
-        # print("movable pieces", movable_pieces)
         x = 0
-        # print("selected_num", selected_num)
-        # I THINK THIS WORKS BUT IT COULD CAUSE AN ERROR WHEN MORE PIECES ARE ON THE BOARD. NEEDS FURTHER TESTING
-        # IF RANDOM NUMBER SELECTED HAS NO AVAILABLE MOVES IT DOESN'T LOOK LIKE THE SELECTED NUMBER IS BEING RESET. THIS
-        # NEEDS MORE TESTING WHEN THE FULL BOARD IS INITIALIZED
         while bot.selected == None:
             for piece in movable_pieces:
-                # uses the selected number to find the piece at that point in the list. if the piece is movable it
-                # becomes selected and calls make move
                 # uses the selected number to find the piece at that point in the list. if the piece is movable it
                 # becomes selected and calls make move
                 if x == selected_num and piece.getType() != "Lke" and piece.getType() != "Flg" and piece.getType() != "Bom":
                     bot.selected = piece
                 x = x + 1
             if bot.selected != None:
-                # print("testing", bot.selected.getType())
                 if bot.are_moves_available(self, bot.selected, bot_pieces) == False:
                     bot.selected = None
                     selected_num = random.randint(0, len(movable_pieces) - 1)
                     x = 0
-        # print(bot.selected.getType())
         bot.make_move(self, bot_pieces, gameboard.Gameboard.army1)
 
     def are_moves_available(self, selected_piece, bot_pieces):
-        """
-        this function scans the surrounding areas of the piece to determine if a move can be made
-        :param self / bot: the bot itself
-        :param selected_piece: the piece selected by the selected piece function
-        :param bot_pieces: the list of the bots total pieces
-        :returns boolean: true or false depending on if the piece can move in one or more of directions left, right, up,
-                          or down
-        """
         """
         this function scans the surrounding areas of the piece to determine if a move can be made
         :param self / bot: the bot itself
@@ -110,17 +86,14 @@ class bot():
         # This scans through each piece in the bots pieces to see if any of them are directly above, below, to the right
         # or to the left of the selected piece. if they are it restricts movement in that respective direction. This
         # also accounts for the size of the board so that moves don't move pieces off the board itself
-        # This scans through each piece in the bots pieces to see if any of them are directly above, below, to the right
-        # or to the left of the selected piece. if they are it restricts movement in that respective direction. This
-        # also accounts for the size of the board so that moves don't move pieces off the board itself
         for piece in bot_pieces:
-            if piece.getPosition()[0] == x + 1 and piece.getPosition()[1] == y or x + 1 > 9:
+            if piece.getPosition()[0] == x + 1 and piece.getPosition()[1] == y or x + 1 > farRightBoard:
                 rightMovement = False
-            if piece.getPosition()[0] == x - 1 and piece.getPosition()[1] == y or x - 1 < 0:
+            if piece.getPosition()[0] == x - 1 and piece.getPosition()[1] == y or x - 1 < farLeftBoard:
                 leftMovement = False
-            if piece.getPosition()[0] == x and piece.getPosition()[1] == y + 1 or y + 1 > 9:
+            if piece.getPosition()[0] == x and piece.getPosition()[1] == y + 1 or y + 1 > topBoard:
                 upMovement = False
-            if piece.getPosition()[0] == x and piece.getPosition()[1] == y - 1 or y - 1 < 0:
+            if piece.getPosition()[0] == x and piece.getPosition()[1] == y - 1 or y - 1 < bottomBoard:
                 downMovement = False
         if leftMovement == False and rightMovement == False and upMovement == False and downMovement == False:
             return False
@@ -138,21 +111,10 @@ class bot():
         """
         # This creates a list of pieces excluding the lakes, this way the bot doesn't get confused and attempt to attack
         # a lake
-        """
-        This function takes makes the selected piece move to a randomized location depending on if the move is
-        available/legal and the difficulty selected by the user
-        :param bot / self: the bot itself
-        :param bot_pieces: a list of all the bots pieces
-        :param user_pieces: a list of all the users pieces
-        """
-        # This creates a list of pieces excluding the lakes, this way the bot doesn't get confused and attempt to attack
-        # a lake
         lakelessUserPieces = []
         for i in user_pieces:
             if i.getType() != "Lke":
                 lakelessUserPieces.append(i)
-        # for i in lakelessUserPieces:
-            # print(i.getType())
         x = bot.selected.getPosition()[0]
         y = bot.selected.getPosition()[1]
         leftMovement = True
@@ -168,13 +130,13 @@ class bot():
         # relate to the direction in question. The Order of this list is left, right, up, down
         if bot.selected.getType() != "Sct":
             for piece in bot_pieces:
-                if piece.getPosition()[0] == x + 1 and piece.getPosition()[1] == y or x + 1 > 9:
+                if piece.getPosition()[0] == x + 1 and piece.getPosition()[1] == y or x + 1 > farRightBoard:
                     rightMovement = False
-                if piece.getPosition()[0] == x - 1 and piece.getPosition()[1] == y or x - 1 < 0:
+                if piece.getPosition()[0] == x - 1 and piece.getPosition()[1] == y or x - 1 < farLeftBoard:
                     leftMovement = False
-                if piece.getPosition()[0] == x and piece.getPosition()[1] == y + 1 or y + 1 > 9:
+                if piece.getPosition()[0] == x and piece.getPosition()[1] == y + 1 or y + 1 > topBoard:
                     upMovement = False
-                if piece.getPosition()[0] == x and piece.getPosition()[1] == y - 1 or y - 1 < 0:
+                if piece.getPosition()[0] == x and piece.getPosition()[1] == y - 1 or y - 1 < bottomBoard:
                     downMovement = False
             movement = [leftMovement, rightMovement, upMovement, downMovement]
             # If the bot AI has a higher difficulty it has more preference to moving down, left and right. this way the
@@ -202,43 +164,38 @@ class bot():
             # below of the selected piece and creates a list with the length of how many moves can be made in that
             # direction without landing on top of another piece
             i = 0
-            while i < 9:
+            while i < farRightBoard:
                 i = i + 1
                 total_pieces = bot_pieces + user_pieces
                 for piece in total_pieces:
-                    if piece.getPosition()[0] == x + i and piece.getPosition()[1] == y or x + i > 9:
+                    if piece.getPosition()[0] == x + i and piece.getPosition()[1] == y or x + i > farRightBoard:
                         i = 10
-                if i <= 9:
+                if i <= farRightBoard:
                     rightMovementList.append("can move")
-            # print("right move list", rightMovementList)
             i = 0
-            while i < 9:
+            while i < farRightBoard:
                 i = i + 1
                 for piece in total_pieces:
-                    if piece.getPosition()[0] == x - i and piece.getPosition()[1] == y or x - i < 0:
+                    if piece.getPosition()[0] == x - i and piece.getPosition()[1] == y or x - i < farLeftBoard:
                         i = 10
-                if i <= 9:
+                if i <= farRightBoard:
                     leftMovementList.append("can move")
-                # print(i)
-            # print("left move list", leftMovementList)
             i = 0
-            while i < 9:
+            while i < topBoard:
                 i = i + 1
                 for piece in total_pieces:
-                    if piece.getPosition()[0] == x and piece.getPosition()[1] == y + i or y + i > 9:
+                    if piece.getPosition()[0] == x and piece.getPosition()[1] == y + i or y + i > topBoard:
                         i = 10
-                if i <= 9:
+                if i <= topBoard:
                     upMovementList.append("can move")
-            # print("up move list", upMovementList)
             i = 0
-            while i < 9:
+            while i < topBoard:
                 i = i + 1
                 for piece in total_pieces:
-                    if piece.getPosition()[0] == x and piece.getPosition()[1] == y - i or y - i < 0:
+                    if piece.getPosition()[0] == x and piece.getPosition()[1] == y - i or y - i < bottomBoard:
                         i = 10
-                if i <= 9:
+                if i <= topBoard:
                     downMovementList.append("can move")
-            # print("down move list", downMovementList)
 
         # this checks to see if there are any enemy pieces within range of the selected piece and sets a
         # boolean value to true if there is a possible capture and it also sets the piece available to capture to a
@@ -248,43 +205,30 @@ class bot():
         possibleCaptureUp = False
         possibleCaptureDown = False
         for j in user_pieces:
-            # print("not capture position left", j.getPosition())
-            # print("test left loc", x - (len(leftMovementList) + 1))
-            # print("test right loc", x + (len(rightMovementList) + 1))
-            # print("test up loc", y + (len(upMovementList) + 1))
-            # print("test down loc", y - (len(downMovementList) + 1))
             if bot.selected.getType() == "Sct":
                 if x - (len(leftMovementList) + 1) == j.getPosition()[0] and y == j.getPosition()[1] and j.getPlayer() == 1:
-                    # print("capture")
                     possibleCaptureLeft = True
                     leftCapturePiece = j
                 if x + (len(rightMovementList) + 1) == j.getPosition()[0] and y == j.getPosition()[1] and j.getPlayer() == 1:
-                    # print("capture")
                     possibleCaptureRight = True
                     rightCapturePiece = j
                 if x == j.getPosition()[0] and y + (len(upMovementList) + 1) == j.getPosition()[1] and j.getPlayer() == 1:
-                    # print("capture")
                     possibleCaptureUp = True
                     upCapturePiece = j
                 if x == j.getPosition()[0] and y - (len(downMovementList) + 1) == j.getPosition()[1] and j.getPlayer() == 1:
-                    # print("capture")
                     possibleCaptureDown = True
                     downCapturePiece = j
             else:
                 if x - 1 == j.getPosition()[0] and y == j.getPosition()[1] and j.getPlayer() == 1:
-                    # print("capture")
                     possibleCaptureLeft = True
                     leftCapturePiece = j
                 if x + 1 == j.getPosition()[0] and y == j.getPosition()[1] and j.getPlayer() == 1:
-                    # print("capture")
                     possibleCaptureRight = True
                     rightCapturePiece = j
                 if x == j.getPosition()[0] and y + 1 == j.getPosition()[1] and j.getPlayer() == 1:
-                    # print("capture")
                     possibleCaptureUp = True
                     upCapturePiece = j
                 if x == j.getPosition()[0] and y - 1 == j.getPosition()[1] and j.getPlayer() == 1:
-                    # print("capture")
                     possibleCaptureDown = True
                     downCapturePiece = j
 
@@ -306,16 +250,16 @@ class bot():
                 captureOrFlee = 0
         if captureOrFlee == 1:
             if possibleCaptureRight:
-                draw_piece.combat(bot.selected, rightCapturePiece, [BOARD_RIGHT - 25 + BOARD_MARGIN * rightCapturePiece.getPosition()[0], BOARD_BOTTOM + 25 + BOARD_MARGIN * rightCapturePiece.getPosition()[1]], gameboard.Gameboard.graveyard1, gameboard.Gameboard.graveyard2, gameboard.Gameboard.army1, gameboard.Gameboard.army2)
+                draw_piece.combat(bot.selected, rightCapturePiece, [BOARD_RIGHT - pieceMidpointAdjuster + BOARD_MARGIN * rightCapturePiece.getPosition()[0], BOARD_BOTTOM + pieceMidpointAdjuster + BOARD_MARGIN * rightCapturePiece.getPosition()[1]], gameboard.Gameboard.graveyard1, gameboard.Gameboard.graveyard2, gameboard.Gameboard.army1, gameboard.Gameboard.army2)
             elif possibleCaptureLeft:
-                draw_piece.combat(bot.selected, leftCapturePiece, [BOARD_LEFT + 25 + BOARD_MARGIN * leftCapturePiece.getPosition()[0], BOARD_BOTTOM + 25 + BOARD_MARGIN * leftCapturePiece.getPosition()[1]], gameboard.Gameboard.graveyard1, gameboard.Gameboard.graveyard2, gameboard.Gameboard.army1, gameboard.Gameboard.army2)
+                draw_piece.combat(bot.selected, leftCapturePiece, [BOARD_LEFT + pieceMidpointAdjuster + BOARD_MARGIN * leftCapturePiece.getPosition()[0], BOARD_BOTTOM + pieceMidpointAdjuster + BOARD_MARGIN * leftCapturePiece.getPosition()[1]], gameboard.Gameboard.graveyard1, gameboard.Gameboard.graveyard2, gameboard.Gameboard.army1, gameboard.Gameboard.army2)
             elif possibleCaptureDown:
                 draw_piece.combat(bot.selected, downCapturePiece,
-                                  [BOARD_LEFT + 25 + BOARD_MARGIN * downCapturePiece.getPosition()[0], BOARD_BOTTOM + 25 + BOARD_MARGIN * downCapturePiece.getPosition()[1]],
+                                  [BOARD_LEFT + pieceMidpointAdjuster + BOARD_MARGIN * downCapturePiece.getPosition()[0], BOARD_BOTTOM + pieceMidpointAdjuster + BOARD_MARGIN * downCapturePiece.getPosition()[1]],
                                   gameboard.Gameboard.graveyard1, gameboard.Gameboard.graveyard2, gameboard.Gameboard.army1, gameboard.Gameboard.army2)
             elif possibleCaptureUp:
                 draw_piece.combat(bot.selected, upCapturePiece,
-                                  [BOARD_RIGHT - 25 + BOARD_MARGIN * upCapturePiece.getPosition()[0], BOARD_TOP - 25 + BOARD_MARGIN * upCapturePiece.getPosition()[1]],
+                                  [BOARD_RIGHT - pieceMidpointAdjuster + BOARD_MARGIN * upCapturePiece.getPosition()[0], BOARD_TOP - pieceMidpointAdjuster + BOARD_MARGIN * upCapturePiece.getPosition()[1]],
                                   gameboard.Gameboard.graveyard1, gameboard.Gameboard.graveyard2, gameboard.Gameboard.army1, gameboard.Gameboard.army2)
 
         # All non attack based movement is executed here
@@ -325,12 +269,9 @@ class bot():
             bot_move = 0
             if bot.selected.getType() != "Sct":
                 bot_move = random.randint(0, len(movement) - 1)
-                # print(bot_move)
                 while movement[bot_move] == False:
                     bot_move = random.randint(0, len(movement) - 1)
-                    # print(bot_move)
                 move = "error"
-                # print("ai", bot.ai)
             if bot.ai == 1 and bot.selected.getType() != "Sct":
                 bot.moves_for_ai_1_no_sct(self, bot_move)
             if bot.ai == 1 and bot.selected.getType() == "Sct":
@@ -501,29 +442,24 @@ class bot():
                 SctMovement.append("up")
             if len(downMovementList) != 0:
                 SctMovement.append("down")
-            # print(SctMovement)
 
             bot_move = random.randint(0, len(SctMovement) - 1)
 
             if SctMovement[bot_move] == "left":
                 direction = "left"
                 movement_magnitude = random.randint(1, len(leftMovementList))
-                # print(direction, movement_magnitude)
                 bot.selected.setPosition(x - movement_magnitude, y)
             if SctMovement[bot_move] == "right":
                 direction = "right"
                 movement_magnitude = random.randint(1, len(rightMovementList))
-                # print(direction, movement_magnitude)
                 bot.selected.setPosition(x + movement_magnitude, y)
             if SctMovement[bot_move] == "up":
                 direction = "up"
                 movement_magnitude = random.randint(1, len(upMovementList))
-                # print(direction, movement_magnitude)
                 bot.selected.setPosition(x, y + movement_magnitude)
             if SctMovement[bot_move] == "down":
                 direction = "down"
                 movement_magnitude = random.randint(1, len(downMovementList))
-                # print(direction, movement_magnitude)
                 bot.selected.setPosition(x, y - movement_magnitude)
 
     def moves_for_ai_3_no_sct(self, bot_move, possibleCaptureLeft, possibleCaptureRight, possibleCaptureUp, possibleCaptureDown, movement):
@@ -609,20 +545,16 @@ class bot():
             if SctMovement[bot_move] == "left":
                 direction = "left"
                 movement_magnitude = 1
-                # print(direction, movement_magnitude)
                 bot.selected.setPosition(x - movement_magnitude, y)
             if SctMovement[bot_move] == "right":
                 direction = "right"
                 movement_magnitude = 1
-                # print(direction, movement_magnitude)
                 bot.selected.setPosition(x + movement_magnitude, y)
             if SctMovement[bot_move] == "up":
                 direction = "up"
                 movement_magnitude = 1
-                # print(direction, movement_magnitude)
                 bot.selected.setPosition(x, y + movement_magnitude)
             if SctMovement[bot_move] == "down":
                 direction = "down"
                 movement_magnitude = 1
-                # print(direction, movement_magnitude)
                 bot.selected.setPosition(x, y - movement_magnitude)

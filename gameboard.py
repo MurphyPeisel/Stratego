@@ -34,6 +34,8 @@ class Gameboard(arcade.View):
     total_pieces = army1 + army2
     hover = []
     player_turn = 1
+    text = [""]
+    text_index = 0
 
     click_counter = 0
     selected = None
@@ -63,6 +65,13 @@ class Gameboard(arcade.View):
         if self.is_menu == False:
             self.clear()
             arcade.start_render()
+            if Gameboard    .text[Gameboard.text_index] != "":
+                arcade.draw_text(f"{Gameboard.text_index} : {Gameboard.text[Gameboard.text_index]}",450,650,arcade.color.BLACK,15,font_name="Kenney Mini Square Font",bold=True,anchor_x= "center", anchor_y= "center", width=400, multiline = True, align="center", )
+            arcade.draw_triangle_filled(TRIANGLE_X1, TRIANGLE_Y1, TRIANGLE_X1, TRIANGLE_Y2, TRIANGLE_X3, TRIANGLE_Y3, arcade.color.BUFF)
+            arcade.draw_triangle_outline(TRIANGLE_X1, TRIANGLE_Y1, TRIANGLE_X1, TRIANGLE_Y2, TRIANGLE_X3, TRIANGLE_Y3, arcade.color.BLACK, 4)
+            arcade.draw_triangle_filled(TRIANGLE2_X1, TRIANGLE_Y1, TRIANGLE2_X1, TRIANGLE_Y2, TRIANGLE2_X3, TRIANGLE_Y3, arcade.color.BUFF)
+            arcade.draw_triangle_outline(TRIANGLE2_X1, TRIANGLE_Y1, TRIANGLE2_X1, TRIANGLE_Y2, TRIANGLE2_X3, TRIANGLE_Y3, arcade.color.BLACK, 4)
+
 
             # initialize formatting details
             start_x = 0
@@ -212,6 +221,13 @@ class Gameboard(arcade.View):
             board_view = esc_menu.Escape(self)
             self.window.show_view(board_view)
             esc_menu.Escape.last_screen = Gameboard.last_screen
+        if x>=215 and x<= 260 and y>= 625 and y<= 670:
+            if Gameboard.text_index > 1:
+                Gameboard.text_index = Gameboard.text_index -1
+        if x>= 640 and x<=685 and y>= 625 and y<= 670:
+            if Gameboard.text_index < len(Gameboard.text)-1:
+                Gameboard.text_index = Gameboard.text_index +1
+
 
         if Gameboard.game_state == "setup":
             click = (x,y)
@@ -237,7 +253,9 @@ class Gameboard(arcade.View):
                 if is_valid_move and cell_occupant == None:
                     draw_piece.move_piece(Gameboard.selected, click)
                     Gameboard.selected = None
-                    if Gameboard.AI == AI_OFF:
+                    Gameboard.text.append("PLAYER MOVES")
+                    Gameboard.text_index = len(Gameboard.text)-1
+                    if Gameboard.AI == 0:
                         # set time of move, this is used as a marker for a timer for the delay to see your piece move before the screen changes
                         # pass_turn.Pass_Turn.turn_pause = time.time()
                         Gameboard.turn_screen(self)
@@ -251,8 +269,9 @@ class Gameboard(arcade.View):
                                 view = win.Win()
                                 self.window.show_view(view)
                             else:
-                                draw_piece.combat(Gameboard.selected, cell_occupant, click, Gameboard.graveyard1, Gameboard.graveyard2, Gameboard.army1, Gameboard.army2) #p1_pieces/p2_pieces = Temp Variables
-                                if Gameboard.AI == AI_OFF:
+                                Gameboard.text.append(draw_piece.combat(Gameboard.selected, cell_occupant, click, Gameboard.graveyard1, Gameboard.graveyard2, Gameboard.army1, Gameboard.army2)) #p1_pieces/p2_pieces = Temp Variables
+                                Gameboard.text_index = len(Gameboard.text)-1
+                                if Gameboard.AI == 0:
                                     # set time of move, this is used as a marker for a timer for the delay to see your piece move before the screen changes
                                     # pass_turn.Pass_Turn.turn_pause = time.time()
                                     Gameboard.turn_screen(self)
@@ -264,6 +283,9 @@ class Gameboard(arcade.View):
 
             if (Gameboard.AI == EASY or Gameboard.AI == MEDIUM or Gameboard.AI == HARD) and (Gameboard.player_turn == PLAYER_TWO):
                 Opponent_AI.bot.select_piece(self, Gameboard.army2)
+                print("AI Moved")
+                Gameboard.text.append("COMPUTER MOVES")
+                Gameboard.text_index = len(Gameboard.text)-1
                 Gameboard.change_turn()
                 
     def setAttack(self, loc, x, y, num, color):

@@ -127,6 +127,7 @@ class Escape(arcade.View):
     def on_click_resign(self, event):
         self.manager.disable()
         gameboard.Gameboard.set_is_menu(gameboard.Gameboard, True)
+        self.manager.disable()
         print("test")
         if gameboard.Gameboard.player_turn == 1:
             gameboard.Gameboard.player_turn = 2
