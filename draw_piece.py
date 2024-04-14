@@ -3,6 +3,7 @@ import arcade
 import gameboard
 from Piece import Piece
 from constants import *
+import game_settings
 import time
 import gameboard as Gameboard
 
@@ -107,7 +108,7 @@ def draw(piece, army):
 
 
     down = 10-y
-    if army == Gameboard.Gameboard.player_turn and piece.getHidden() == True:
+    if game_settings.Computer.sight:
         if piece.getType() == "Flg":
             arcade.draw_text("F", BOARD_LEFT+YARD_MARGIN*x +16, GRID_TOP-YARD_MARGIN*down + 16, arcade.color.WHITE, 18, 1, "center", "Kenney Blocks Font", bold=True)
         elif piece.getType() == "Msh":
@@ -132,6 +133,32 @@ def draw(piece, army):
             arcade.draw_text("S", BOARD_LEFT+YARD_MARGIN*x + 16, GRID_TOP-YARD_MARGIN*down + 16, arcade.color.WHITE, 18, 1, "center", "Kenney Pixel Square Font", bold=True)
         elif piece.getType() == "Bom":
             arcade.draw_text("B", BOARD_LEFT+YARD_MARGIN*x +16, GRID_TOP-YARD_MARGIN*down + 16, arcade.color.WHITE, 18, 1, "center", "Kenney Pixel Square Font", bold=True)
+    else:
+        if army == Gameboard.Gameboard.player_turn and piece.getHidden() == True:
+            if piece.getType() == "Flg":
+                    arcade.draw_text("F", BOARD_LEFT+YARD_MARGIN*x +16, GRID_TOP-YARD_MARGIN*down + 16, arcade.color.WHITE, 18, 1, "center", "Kenney Blocks Font", bold=True)
+            elif piece.getType() == "Msh":
+                arcade.draw_text("10", BOARD_LEFT+YARD_MARGIN*x + 12, GRID_TOP-YARD_MARGIN*down + 16, arcade.color.WHITE, 18, 1, "center", "Kenney Rocket Square Font", bold=True)
+            elif piece.getType() == "Gen":
+                arcade.draw_text("9", BOARD_LEFT+YARD_MARGIN*x + 16, GRID_TOP-YARD_MARGIN*down + 16, arcade.color.WHITE, 18, 1, "center", "Kenney Pixel Square Font", bold=True)
+            if piece.getType() == "Col":
+                arcade.draw_text("8", BOARD_LEFT+YARD_MARGIN*x + 16, GRID_TOP-YARD_MARGIN*down + 16, arcade.color.WHITE, 18, 1, "center", "Kenney Pixel Square Font", bold=True)
+            if piece.getType() == "Maj":
+                arcade.draw_text("7", BOARD_LEFT+YARD_MARGIN*x + 16, GRID_TOP-YARD_MARGIN*down + 16, arcade.color.WHITE, 18, 1, "center", "Kenney Pixel Square Font", bold=True)
+            if piece.getType() == "Cap":
+                arcade.draw_text("6", BOARD_LEFT+YARD_MARGIN*x + 16, GRID_TOP-YARD_MARGIN*down + 16, arcade.color.WHITE, 18, 1, "center", "Kenney Pixel Square Font", bold=True)
+            if piece.getType() == "Ltn":
+                arcade.draw_text("5", BOARD_LEFT+YARD_MARGIN*x + 16, GRID_TOP-YARD_MARGIN*down + 16, arcade.color.WHITE, 18, 1, "center", "Kenney Pixel Square Font", bold=True)
+            if piece.getType() == "Sgt":
+                arcade.draw_text("4", BOARD_LEFT+YARD_MARGIN*x + 16, GRID_TOP-YARD_MARGIN*down + 16, arcade.color.WHITE, 18, 1, "center", "Kenney Pixel Square Font", bold=True)
+            if piece.getType() == "Min":
+                arcade.draw_text("3", BOARD_LEFT+YARD_MARGIN*x + 16, GRID_TOP-YARD_MARGIN*down + 16, arcade.color.WHITE, 18, 1, "center", "Kenney Pixel Square Font", bold=True)
+            elif piece.getType() == "Sct":
+                arcade.draw_text("2", BOARD_LEFT+YARD_MARGIN*x + 16, GRID_TOP-YARD_MARGIN*down + 16, arcade.color.WHITE, 18, 1, "center", "Kenney Pixel Square Font", bold=True)
+            elif piece.getType() == "Spy":
+                arcade.draw_text("S", BOARD_LEFT+YARD_MARGIN*x + 16, GRID_TOP-YARD_MARGIN*down + 16, arcade.color.WHITE, 18, 1, "center", "Kenney Pixel Square Font", bold=True)
+            elif piece.getType() == "Bom":
+                arcade.draw_text("B", BOARD_LEFT+YARD_MARGIN*x +16, GRID_TOP-YARD_MARGIN*down + 16, arcade.color.WHITE, 18, 1, "center", "Kenney Pixel Square Font", bold=True)
 
         
     if piece.getType() == "Flg":
@@ -545,7 +572,7 @@ def move_piece(piece, click):
 
 
 def combat(attacker, defender, click, graveyard1, graveyard2, army1, army2):
-    sound = arcade.load_sound("Death.mp3",False)
+    sound = arcade.load_sound("Death.wav",False)
     
     """ 
     Combat between two pieces. If the attacking piece 
