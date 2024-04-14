@@ -127,7 +127,7 @@ class Gameboard(arcade.View):
 
 
             #draw it
-            if Gameboard.selected is not None:
+            if Gameboard.selected is not None and Gameboard.selected not in Gameboard.graveyard2:
                 draw_piece.show_available_moves(Gameboard.selected, Gameboard.total_pieces)
 
             #DRAW LEFT LAKE
