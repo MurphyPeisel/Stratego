@@ -96,17 +96,18 @@ def draw(piece, army):
     
     x = piece.getPosition()[0]
     y = piece.getPosition()[1]
-    point_list = ((BOARD_LEFT + BOARD_MARGIN*x, BOARD_TOP + BOARD_MARGIN*y),
-                    (BOARD_LEFT + BOARD_MARGIN*x, BOARD_BOTTOM + BOARD_MARGIN*y),
-                    (BOARD_RIGHT + BOARD_MARGIN*x, BOARD_BOTTOM + BOARD_MARGIN*y),
-                    (BOARD_RIGHT + BOARD_MARGIN*x, BOARD_TOP + BOARD_MARGIN*y))
+    point_list = (((BOARD_LEFT+10) + YARD_MARGIN*x, (BOARD_TOP-10) + YARD_MARGIN*y),
+                    ((BOARD_LEFT+10) + YARD_MARGIN*x, (BOARD_BOTTOM+10) + YARD_MARGIN*y),
+                    ((BOARD_RIGHT-10) + YARD_MARGIN*x, (BOARD_BOTTOM+10) + YARD_MARGIN*y),
+                    ((BOARD_RIGHT-10) + YARD_MARGIN*x, (BOARD_TOP-10) + YARD_MARGIN*y))
+    
+    if piece.getType() == "Lke":
+        color = arcade.color.BLUEBERRY
+    arcade.draw_polygon_filled(point_list, color)
 
-    # point_list = ((BOARD_LEFT + BOARD_MARGIN*x, BOARD_TOP + BOARD_MARGIN*y),
-                    # (BOARD_LEFT + BOARD_MARGIN*x, BOARD_BOTTOM + BOARD_MARGIN*y),
-                    # (BOARD_RIGHT + BOARD_MARGIN*x, BOARD_BOTTOM + BOARD_MARGIN*y),
-                    # (BOARD_RIGHT + BOARD_MARGIN*x, BOARD_TOP + BOARD_MARGIN*y))
-    if gameboard.Gameboard.get_visibility(Gameboard) == False:
-    if playerTurn == piece.getPlayer() or piece.getPlayer() == 3:
+
+    down = 10-y
+    if army == Gameboard.Gameboard.player_turn and piece.getHidden() == True:
         if piece.getType() == "Flg":
             arcade.draw_text("F", BOARD_LEFT+YARD_MARGIN*x +16, GRID_TOP-YARD_MARGIN*down + 16, arcade.color.WHITE, 18, 1, "center", "Kenney Blocks Font", bold=True)
         elif piece.getType() == "Msh":
@@ -131,6 +132,7 @@ def draw(piece, army):
             arcade.draw_text("S", BOARD_LEFT+YARD_MARGIN*x + 16, GRID_TOP-YARD_MARGIN*down + 16, arcade.color.WHITE, 18, 1, "center", "Kenney Pixel Square Font", bold=True)
         elif piece.getType() == "Bom":
             arcade.draw_text("B", BOARD_LEFT+YARD_MARGIN*x +16, GRID_TOP-YARD_MARGIN*down + 16, arcade.color.WHITE, 18, 1, "center", "Kenney Pixel Square Font", bold=True)
+
         
     if piece.getType() == "Flg":
         arcade.draw_polygon_outline(point_list, arcade.color.BLACK, 2)

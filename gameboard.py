@@ -175,7 +175,7 @@ class Gameboard(arcade.View):
 
         for piece in Gameboard.army2:
             if piece.defeated != True:
-                draw_piece.draw(piece)  
+                draw_piece.draw(piece, 2)  
             if pass_turn.Pass_Turn.turn_pause != 0:
                 if time.time() - pass_turn.Pass_Turn.turn_pause > .4:
                     pass_turn.Pass_Turn.turn_pause = 0
