@@ -37,6 +37,14 @@ lake_piece_8 = Piece.Piece("Lke", 0, 7, 5, 3)
 # The gameboard class is where the user will engage in gameplay. They can exit via the ESC key and button.  
 # To pass turn, the user must double click the board. 
 class Gameboard(arcade.View):
+   
+    level = 4
+    sound = arcade.load_sound("Gameboard_Screen.wav",False)
+    media_player = arcade.play_sound(sound, level, 0, looping=True)
+    sound.stop(media_player)
+    playing = False
+    
+    
     game_state = "setup"
     highlight_index = 0
     last_screen = "game_board"
@@ -73,9 +81,9 @@ class Gameboard(arcade.View):
         return self.is_menu
 
     def on_show_view(self):
-        if menu.Menu.sound.is_playing(menu.Menu.media_player) or menu.Menu.playing == True:
-            menu.Menu.sound.stop(menu.Menu.media_player)
-            menu.Menu.playing = False
+        self.clear()
+        
+       
 
 
 
@@ -87,6 +95,12 @@ class Gameboard(arcade.View):
 
             self.clear()
             arcade.start_render()
+            if Gameboard.sound.is_playing(Gameboard.media_player) == False:
+                Gameboard.media_player.seek(0)
+                Gameboard.media_player.play()
+                Gameboard.playing = True
+            
+            #   draw game log + back and forwards arrows
             if Gameboard.text[Gameboard.text_index] != "":
                 arcade.draw_text(f"{Gameboard.text_index} : {Gameboard.text[Gameboard.text_index]}",450,650,arcade.color.BLACK,15,font_name="Kenney Mini Square Font",bold=True,anchor_x= "center", anchor_y= "center", width=400, multiline = True, align="center", )
             arcade.draw_triangle_filled(652, 635, 652, 660, 677, 647.5, arcade.color.BUFF)
@@ -217,7 +231,7 @@ class Gameboard(arcade.View):
                 arcade.draw_circle_filled(Gameboard.AttackBelow[0], Gameboard.AttackBelow[1], Gameboard.AttackBelow[2],
                                           Gameboard.AttackBelow[3])
 
-
+            #Setup Phase: Place pieces from graveyards
             if Gameboard.game_state == "setup":
                 if Gameboard.player_turn == 1 and len(Gameboard.graveyard1) !=0:
                     Gameboard.player_turn = 1
@@ -307,9 +321,13 @@ class Gameboard(arcade.View):
                 if x >= 200 and x <= 700 and y>=100 and y<=300:
                     
                     draw_piece.place_piece(Gameboard.graveyard1[Gameboard.highlight_index], click, Gameboard.graveyard1, Gameboard.army1)
+                    place_sound = arcade.load_sound("Placed.wav",False)
+                    arcade.play_sound(place_sound, Gameboard.level, 0)
             if Gameboard.player_turn == 2 and Gameboard.AI == 0:
                 if x>= 200 and x <= 700 and y<=600 and y>=400:
                     draw_piece.place_piece(Gameboard.graveyard2[Gameboard.highlight_index], click, Gameboard.graveyard2, Gameboard.army2)
+                    place_sound = arcade.load_sound("Placed.wav",False)
+                    arcade.play_sound(place_sound, Gameboard.level, 0)
 
 
         if Gameboard.game_state == "play":
@@ -338,6 +356,10 @@ class Gameboard(arcade.View):
                 if is_valid_move and cell_occupant == None:
                     # move piece to open space
                     draw_piece.move_piece(Gameboard.selected, click)
+                    # Make a sound
+                    place_sound = arcade.load_sound("Placed.wav",False)
+                    arcade.play_sound(place_sound, Gameboard.level, 0)
+                    
                     Gameboard.selected = None
                     Gameboard.text.append("PLAYER MOVES")
                     Gameboard.text_index = len(Gameboard.text)-1
@@ -371,6 +393,10 @@ class Gameboard(arcade.View):
             if (Gameboard.AI == 1 or Gameboard.AI == 2 or Gameboard.AI == 3) and (Gameboard.player_turn == 2):
                 Opponent_AI.bot.select_piece(self, Gameboard.army2)
                 print("AI Moved")
+                #make a sound
+                place_sound = arcade.load_sound("Placed.wav",False)
+                arcade.play_sound(place_sound, Gameboard.level, 0)
+                
                 Gameboard.text.append("COMPUTER MOVES")
                 Gameboard.text_index = len(Gameboard.text)-1
                 Gameboard.change_turn()
@@ -396,7 +422,7 @@ class Gameboard(arcade.View):
         # Move the player sprite to place its center on the mouse x, y
         
     
-    def on_key_press(self, key, key_modifiers ):
+    def on_key_press(self, key, key_modifiers):
         if (key == arcade.key.ESCAPE):
             board_view = esc_menu.Escape(self)
             self.window.show_view(board_view)
@@ -428,11 +454,15 @@ class Gameboard(arcade.View):
                         for x in range (10):
                             draw_piece.place_piece(yard[0], (x,i), yard, army)
                     Gameboard.change_turn()
+                    place_sound = arcade.load_sound("Placed.wav",False)
+                    arcade.play_sound(place_sound, Gameboard.level + 2, 0)
                 elif Gameboard.player_turn == 2 and Gameboard.AI == 0 and len(Gameboard.graveyard2) == NUM_PIECES:
                     for i in range(4):
                         for x in range(10):
                             draw_piece.place_piece(yard[0], (x,9-i), yard, army)
                     Gameboard.change_turn()
+                    place_sound = arcade.load_sound("Placed.wav",False)
+                    arcade.play_sound(place_sound, Gameboard.level + 2, 0)
 
 
 
@@ -444,10 +474,13 @@ class Gameboard(arcade.View):
                 if Gameboard.player_turn == 1:
                     if x >= 200 and x <= 700 and y>=100 and y<=300:
                         draw_piece.place_piece(Gameboard.graveyard1[Gameboard.highlight_index], Gameboard.hover, Gameboard.graveyard1, Gameboard.army1)
+                        place_sound = arcade.load_sound("Placed.wav",False)
+                        arcade.play_sound(place_sound, Gameboard.level, 0)
                 if Gameboard.player_turn == 2:
                     if x>= 200 and x <= 700 and y<=600 and y>=400:
                         draw_piece.place_piece(Gameboard.graveyard2[Gameboard.highlight_index], Gameboard.hover, Gameboard.graveyard2, Gameboard.army2)
-                
+                        place_sound = arcade.load_sound("Placed.wav",False)
+                        arcade.play_sound(place_sound, Gameboard.level, 0)
                     
     def change_turn():
         if Gameboard.player_turn == 1:

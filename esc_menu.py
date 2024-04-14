@@ -122,6 +122,11 @@ class Escape(arcade.View):
 
         gameboard.Gameboard.total_pieces = gameboard.Gameboard.army1 + gameboard.Gameboard.army2
         board_view = mn.Menu()
+        #   Stop playing sound from gameboard
+        if gameboard.Gameboard.sound.is_playing(gameboard.Gameboard.media_player) or gameboard.Gameboard.playing == True:
+                gameboard.Gameboard.sound.stop(gameboard.Gameboard.media_player)
+                gameboard.Gameboard.playing = False
+                print("stopped gameboard music")
         self.window.show_view(board_view)
     
     def on_click_resign(self, event):
@@ -159,6 +164,11 @@ class Escape(arcade.View):
         gameboard.Gameboard.AttackAbove = None
         gameboard.Gameboard.AttackBelow = None
         win_view = win.Win()
+        # stop playing sound from gameboard
+        if gameboard.Gameboard.sound.is_playing(gameboard.Gameboard.media_player) or gameboard.Gameboard.playing == True:
+                gameboard.Gameboard.sound.stop(gameboard.Gameboard.media_player)
+                gameboard.Gameboard.playing = False
+                print("stopped gameboard music")
         self.window.show_view(win_view)
 
 

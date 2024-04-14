@@ -62,6 +62,7 @@ class Game_Settings(arcade.View):
         #SET MODE TO PLAY AGAINST COMPUTER (FUTURE)
         self.manager.disable()
         self.window.show_view(Computer())
+        
     
     #Function called when play_buton is clicked
     #Takes user to Gameplay screen
@@ -161,7 +162,10 @@ class Computer(arcade.View):
                 gameboard.Gameboard.set_visibility(gameboard, True)
             else:
                 gameboard.Gameboard.set_visibility(gameboard, False)
-
+            #Stop playing sound from menu
+            if menu.Menu.sound.is_playing(menu.Menu.media_player) or menu.Menu.playing == True:
+                menu.Menu.sound.stop(menu.Menu.media_player)
+                menu.Menu.playing = False
             self.window.show_view(gameboard.Gameboard())
             gameboard.Gameboard.set_is_menu(gameboard.Gameboard, False)
 
@@ -246,7 +250,10 @@ class Players2(arcade.View):
                 gameboard.Gameboard.set_visibility(gameboard, True)
             else:
                 gameboard.Gameboard.set_visibility(gameboard, False)
-
+            #stop playing sound from menu
+            if menu.Menu.sound.is_playing(menu.Menu.media_player) or menu.Menu.playing == True:
+                menu.Menu.sound.stop(menu.Menu.media_player)
+                menu.Menu.playing = False
             self.window.show_view(gameboard.Gameboard())
             gameboard.Gameboard.set_is_menu(gameboard.Gameboard, False)
    
