@@ -214,21 +214,19 @@ class Gameboard(arcade.View):
                     draw_piece.add_highlight(1, Gameboard.highlight_index)
                     if Gameboard.highlight_index >= len(Gameboard.graveyard1):
                         Gameboard.highlight_index = Gameboard.highlight_index-1
-
-
-
-
                 else:
                     Gameboard.player_turn = 2
                 if Gameboard.player_turn == 2 and len(Gameboard.graveyard2) !=0:
-                    Gameboard.player_turn = 2
-                    draw_piece.show_available_placements(Gameboard.total_pieces, 2)
-                    draw_piece.add_highlight(2, Gameboard.highlight_index)
-                    if Gameboard.highlight_index >= len(Gameboard.graveyard2):
-                        Gameboard.highlight_index = Gameboard.highlight_index-1
-
-
-
+                    if Gameboard.AI != 0:
+                        ai_layout.gen_layout(1, Gameboard.graveyard2, Gameboard.army2)
+                        Gameboard.change_turn()
+                        print(f"Done! {Gameboard.AI}")
+                    else: 
+                        Gameboard.player_turn = 2
+                        draw_piece.show_available_placements(Gameboard.total_pieces, 2)
+                        draw_piece.add_highlight(2, Gameboard.highlight_index)
+                        if Gameboard.highlight_index >= len(Gameboard.graveyard2):
+                            Gameboard.highlight_index = Gameboard.highlight_index-1
                 else:
                     Gameboard.player_turn = 1
                 if len(Gameboard.graveyard1) == 0 and len(Gameboard.graveyard2) == 0:
@@ -402,20 +400,17 @@ class Gameboard(arcade.View):
             #Place a full army by hitting the R key.
             if (key == arcade.key.R):
                 print(len(yard))
-                if Gameboard.player_turn == 1:
+                if Gameboard.player_turn == 1 and len(Gameboard.graveyard1) == NUM_PIECES:
                     for i in range(4):
                         for x in range (10):
                             draw_piece.place_piece(yard[0], (x,i), yard, army)
                     Gameboard.change_turn()
-                elif Gameboard.player_turn == 2 and Gameboard.AI == 0:
+                elif Gameboard.player_turn == 2 and Gameboard.AI == 0 and len(Gameboard.graveyard2) == NUM_PIECES:
                     for i in range(4):
                         for x in range(10):
                             draw_piece.place_piece(yard[0], (x,9-i), yard, army)
                     Gameboard.change_turn()
-                elif Gameboard.player_turn == 2 and Gameboard.AI != 0:
-                    ai_layout.gen_layout(1, Gameboard.graveyard2, Gameboard.army2)
-                    Gameboard.change_turn()
-                    print(f"Done! {Gameboard.AI}")
+
 
 
                             
