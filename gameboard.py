@@ -293,7 +293,7 @@ class Gameboard(arcade.View):
                     Gameboard.selected = None
                     if Gameboard.AI == 0:
                         # set time of move, this is used as a marker for a timer for the delay to see your piece move before the screen changes
-                    pass_turn.Pass_Turn.turn_pause = time.time()
+                        pass_turn.Pass_Turn.turn_pause = time.time()
                     else:
                         Gameboard.change_turn()
                 if is_valid_move and cell_occupant != None:
@@ -308,7 +308,7 @@ class Gameboard(arcade.View):
                                 draw_piece.combat(Gameboard.selected, cell_occupant, click, Gameboard.graveyard1, Gameboard.graveyard2, Gameboard.army1, Gameboard.army2) #p1_pieces/p2_pieces = Temp Variables
                                 if Gameboard.AI == 0:
                                     # set time of move, this is used as a marker for a timer for the delay to see your piece move before the screen changes
-                                pass_turn.Pass_Turn.turn_pause = time.time()
+                                    pass_turn.Pass_Turn.turn_pause = time.time()
                                 else:
                                     Gameboard.change_turn()
                     Gameboard.selected = None
