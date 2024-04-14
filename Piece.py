@@ -196,7 +196,7 @@ def printGrid():
 def initPieces(player):
     p1 = []
     #FLAG
-    Flag = Piece("Flg", FLAG_POWER, START_X, START_Y, player)
+    Flag = Piece("Flg", NO_POWER, START_X, START_Y, player)
     p1.append(Flag)
   
     #MARSHALL
