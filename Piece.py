@@ -138,7 +138,7 @@ def check_orthogonal(piece1, piece2, pieces):
         # same row
         elif y_diff == 0 and valid_move:
             if x_diff > 0:
-                for cell in range(piece2.posX - 1, piece1.posX):
+                for cell in range(piece2.posX + 1, piece1.posX):
                     if is_piece_scan2(pieces, (cell, piece1.posY)) != False:
                         valid_move = False
                     for lake in lakes:
@@ -146,7 +146,6 @@ def check_orthogonal(piece1, piece2, pieces):
                             valid_move = False
             else:
                 for cell in range(piece1.posX+1, piece2.posX):
-                    print(f"x-diff < 0: ({cell}, {piece1.posY})")
                     if is_piece_scan2(pieces, (cell, piece1.posY)) != False:
                         valid_move = False
                     for lake in lakes:

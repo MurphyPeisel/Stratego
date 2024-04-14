@@ -40,6 +40,7 @@ class Gameboard(arcade.View):
     game_state = "setup"
     highlight_index = 0
     last_screen = "game_board"
+    is_menu = False
     last_placement = [] #MIGHT NEVER BE USED
     graveyard1 = Piece.initPieces(1)
     graveyard2 = Piece.initPieces(2)
@@ -65,6 +66,12 @@ class Gameboard(arcade.View):
     AttackAbove = None
     AttackBelow = None
 
+    def set_is_menu(self, val):
+        self.is_menu = val
+
+    def get_is_menu(self):
+        return self.is_menu
+
     def on_show_view(self):
         if menu.Menu.sound.is_playing(menu.Menu.media_player) or menu.Menu.playing == True:
             menu.Menu.sound.stop(menu.Menu.media_player)
@@ -74,201 +81,203 @@ class Gameboard(arcade.View):
 
     # This method draws our assets including constructing a grid
     def on_draw(self):
-        self.clear()
-        arcade.start_render()
-        if Gameboard.text[Gameboard.text_index] != "":
-            arcade.draw_text(f"{Gameboard.text_index} : {Gameboard.text[Gameboard.text_index]}",450,650,arcade.color.BLACK,15,font_name="Kenney Mini Square Font",bold=True,anchor_x= "center", anchor_y= "center", width=400, multiline = True, align="center", )
-        arcade.draw_triangle_filled(652, 635, 652, 660, 677, 647.5, arcade.color.BUFF)
-        arcade.draw_triangle_outline(652, 635, 652, 660, 677, 647.5, arcade.color.BLACK, 4)
-        arcade.draw_triangle_filled(248, 635, 248, 660, 223, 647.5, arcade.color.BUFF)
-        arcade.draw_triangle_outline(248, 635, 248, 660, 223, 647.5, arcade.color.BLACK, 4)
+        if self.is_menu == False:
+            self.clear()
+            arcade.start_render()
+
+            self.clear()
+            arcade.start_render()
+            if Gameboard.text[Gameboard.text_index] != "":
+                arcade.draw_text(f"{Gameboard.text_index} : {Gameboard.text[Gameboard.text_index]}",450,650,arcade.color.BLACK,15,font_name="Kenney Mini Square Font",bold=True,anchor_x= "center", anchor_y= "center", width=400, multiline = True, align="center", )
+            arcade.draw_triangle_filled(652, 635, 652, 660, 677, 647.5, arcade.color.BUFF)
+            arcade.draw_triangle_outline(652, 635, 652, 660, 677, 647.5, arcade.color.BLACK, 4)
+            arcade.draw_triangle_filled(248, 635, 248, 660, 223, 647.5, arcade.color.BUFF)
+            arcade.draw_triangle_outline(248, 635, 248, 660, 223, 647.5, arcade.color.BLACK, 4)
 
 
-        # initialize formatting details
-        start_x = 0
-        start_y = SCREEN_HEIGHT - DEFAULT_LINE_HEIGHT * 1.5
+            # initialize formatting details
+            start_x = 0
+            start_y = SCREEN_HEIGHT - DEFAULT_LINE_HEIGHT * 1.5
 
-        # Shape for esc button
-        arcade.draw_rectangle_filled(840,640,84,50,
-                                     arcade.color.GRANNY_SMITH_APPLE)
-        # Text for esc button
-        arcade.draw_text("ESC",
-                         start_x + (SCREEN_WIDTH *.9),
-                         start_y,
-                         arcade.color.BLACK,
-                         DEFAULT_FONT_SIZE,
-                         font_name="Kenney Future")
-        
-        #FILL IN BOARD WITH BACKGROUND COLOR
-        Board = ((200, 100),
-                 (700, 100),
-                 (700, 600),
-                 (200, 600),)
-        arcade.draw_polygon_filled(Board, arcade.color.BUFF)
-        
-        #DRAW BOARD OUTLINE
-        arcade.draw_polygon_outline(Board, arcade.color.BLACK,8)
-        
-        #DRAW OUTLINES OF SPACES ON BOARD 
-        y = 0
-        while (y < 10):
-            x = 0
-            while (x < 10):
-                point_list = ((BOARD_LEFT + BOARD_MARGIN*x, BOARD_TOP + BOARD_MARGIN*y),
-                    (BOARD_LEFT + BOARD_MARGIN*x, BOARD_BOTTOM + BOARD_MARGIN*y),
-                    (BOARD_RIGHT + BOARD_MARGIN*x, BOARD_BOTTOM + BOARD_MARGIN*y),
-                    (BOARD_RIGHT + BOARD_MARGIN*x, BOARD_TOP + BOARD_MARGIN*y))
-                arcade.draw_polygon_outline(point_list, arcade.color.BLACK, 4)
-                x = x + 1
-            y = y + 1
-        
-        Gameboard.total_pieces = Gameboard.army1 + Gameboard.army2
+            # Shape for esc button
+            arcade.draw_rectangle_filled(840,640,84,50,
+                                         arcade.color.GRANNY_SMITH_APPLE)
+            # Text for esc button
+            arcade.draw_text("ESC",
+                             start_x + (SCREEN_WIDTH *.9),
+                             start_y,
+                             arcade.color.BLACK,
+                             DEFAULT_FONT_SIZE,
+                             font_name="Kenney Future")
 
-            
-       
-        #draw it
-        if Gameboard.selected is not None:
-            draw_piece.show_available_moves(Gameboard.selected, Gameboard.total_pieces)
-        
-        #DRAW LEFT LAKE
-        Lake1 = ((LAKE1_LEFT, LAKE_BOTTOM),
-                 (LAKE1_RIGHT, LAKE_BOTTOM),
-                 (LAKE1_RIGHT, LAKE_TOP),
-                 (LAKE1_LEFT, LAKE_TOP),)
-        arcade.draw_polygon_filled(Lake1, arcade.color.BLUEBERRY)
-        arcade.draw_polygon_outline(Lake1, arcade.color.BLACK,4)
-        #DRAW RIGHT LAKE
-        Lake2 = ((LAKE2_LEFT, LAKE_BOTTOM),
-                 (LAKE2_RIGHT, LAKE_BOTTOM),
-                 (LAKE2_RIGHT, LAKE_TOP),
-                 (LAKE2_LEFT, LAKE_TOP),)
-        arcade.draw_polygon_filled(Lake2, arcade.color.BLUEBERRY)
-        arcade.draw_polygon_outline(Lake2, arcade.color.BLACK,4)
-        
-        yard1 = ((GRAVEYARD_1_LEFT, GRAVEYARD_BOTTOM),
-                 (GRAVEYARD_1_RIGHT, GRAVEYARD_BOTTOM),
-                 (GRAVEYARD_1_RIGHT, GRAVEYARD_TOP),
-                 (GRAVEYARD_1_LEFT, GRAVEYARD_TOP),)
-        arcade.draw_polygon_filled(yard1, arcade.color.DARK_TAUPE)
-        arcade.draw_polygon_outline(yard1, arcade.color.BLACK,8)
-        arcade.draw_text("1",
-                         start_x - (SCREEN_WIDTH * .37),
-                         start_y - (SCREEN_HEIGHT * .52),
-                         arcade.color.GRAY,
-                         DEFAULT_FONT_SIZE * 10,
-                         width=SCREEN_WIDTH,
-                         align="center",
-                         font_name="Kenney Future")
-        
-        yard2 = ((GRAVEYARD_2_LEFT, GRAVEYARD_BOTTOM),
-                 (GRAVEYARD_2_RIGHT, GRAVEYARD_BOTTOM),
-                 (GRAVEYARD_2_RIGHT, GRAVEYARD_TOP),
-                 (GRAVEYARD_2_LEFT, GRAVEYARD_TOP),)
-        arcade.draw_polygon_filled(yard2, arcade.color.DARK_TAUPE)
-        arcade.draw_polygon_outline(yard2, arcade.color.BLACK,8)
-        arcade.draw_text("2",
-                        start_x + (SCREEN_WIDTH * .42),
-                        start_y - (SCREEN_HEIGHT * .52),
-                        arcade.color.GRAY,
-                        DEFAULT_FONT_SIZE * 10,
-                        width=SCREEN_WIDTH,
-                        align="center",
-                        font_name="Kenney Future")
+            #FILL IN BOARD WITH BACKGROUND COLOR
+            Board = ((200, 100),
+                     (700, 100),
+                     (700, 600),
+                     (200, 600),)
+            arcade.draw_polygon_filled(Board, arcade.color.BUFF)
 
-        # draw pieces
-        for piece in Gameboard.army1:
-            if piece.defeated != True:
-                draw_piece.draw(piece, 1)
-               
+            #DRAW BOARD OUTLINE
+            arcade.draw_polygon_outline(Board, arcade.color.BLACK,8)
 
-        for piece in Gameboard.army2:
-            if piece.defeated != True:
-                draw_piece.draw(piece, 2)  
-            if pass_turn.Pass_Turn.turn_pause != 0:
-                if time.time() - pass_turn.Pass_Turn.turn_pause > .4:
-                    pass_turn.Pass_Turn.turn_pause = 0
-                    pass_turn.Pass_Turn.turn_screen(self)
-            #else:
-                # piece is defeated --> draw it, but in the graveyary           
-                draw_piece.draw(piece, 2)
-        
-        
-        if Gameboard.AttackRight != None:
-            arcade.draw_circle_filled(Gameboard.AttackRight[0], Gameboard.AttackRight[1], Gameboard.AttackRight[2], Gameboard.AttackRight[3])
+            #DRAW OUTLINES OF SPACES ON BOARD
+            y = 0
+            while (y < 10):
+                x = 0
+                while (x < 10):
+                    point_list = ((BOARD_LEFT + BOARD_MARGIN*x, BOARD_TOP + BOARD_MARGIN*y),
+                        (BOARD_LEFT + BOARD_MARGIN*x, BOARD_BOTTOM + BOARD_MARGIN*y),
+                        (BOARD_RIGHT + BOARD_MARGIN*x, BOARD_BOTTOM + BOARD_MARGIN*y),
+                        (BOARD_RIGHT + BOARD_MARGIN*x, BOARD_TOP + BOARD_MARGIN*y))
+                    arcade.draw_polygon_outline(point_list, arcade.color.BLACK, 4)
+                    x = x + 1
+                y = y + 1
 
-        if Gameboard.AttackLeft != None:
-            arcade.draw_circle_filled(Gameboard.AttackLeft[0], Gameboard.AttackLeft[1], Gameboard.AttackLeft[2],
-                                      Gameboard.AttackLeft[3])
-        if Gameboard.AttackAbove != None:
-            arcade.draw_circle_filled(Gameboard.AttackAbove[0], Gameboard.AttackAbove[1], Gameboard.AttackAbove[2],
-                                      Gameboard.AttackAbove[3])
-        if Gameboard.AttackBelow != None:
-            arcade.draw_circle_filled(Gameboard.AttackBelow[0], Gameboard.AttackBelow[1], Gameboard.AttackBelow[2],
-                                      Gameboard.AttackBelow[3])
-        
-        
-        if Gameboard.game_state == "setup":
-            if Gameboard.player_turn == 1 and len(Gameboard.graveyard1) !=0:
-                Gameboard.player_turn = 1
-                draw_piece.show_available_placements(Gameboard.total_pieces, 1)
-                draw_piece.add_highlight(1, Gameboard.highlight_index)
-                if Gameboard.highlight_index >= len(Gameboard.graveyard1):
-                    Gameboard.highlight_index = Gameboard.highlight_index-1 
-
-                
-
-
-            else:
-                Gameboard.player_turn = 2
-            if Gameboard.player_turn == 2 and len(Gameboard.graveyard2) !=0:
-                Gameboard.player_turn = 2
-                draw_piece.show_available_placements(Gameboard.total_pieces, 2)
-                draw_piece.add_highlight(2, Gameboard.highlight_index)
-                if Gameboard.highlight_index >= len(Gameboard.graveyard2):
-                    Gameboard.highlight_index = Gameboard.highlight_index-1 
-
-                
-
-            else:
-                Gameboard.player_turn = 1
-            if len(Gameboard.graveyard1) == 0 and len(Gameboard.graveyard2) == 0:
-                Gameboard.game_state = "play"
-                print(Gameboard.game_state)
+            Gameboard.total_pieces = Gameboard.army1 + Gameboard.army2
 
 
 
-        #draw army 1
-        i = 0
-        for piece in Gameboard.graveyard1:
-             draw_piece.draw_start(piece, 1, i)
-             i = i+1
-        #draw army 2
-        i = 0
-        for piece in Gameboard.graveyard2:
-             draw_piece.draw_start(piece, 2, i)
-             i = i+1
-        for piece in Gameboard.army1:
+            #draw it
+            if Gameboard.selected is not None and Gameboard.selected not in Gameboard.graveyard2:
+                draw_piece.show_available_moves(Gameboard.selected, Gameboard.total_pieces)
+
+            #DRAW LEFT LAKE
+            Lake1 = ((LAKE1_LEFT, LAKE_BOTTOM),
+                     (LAKE1_RIGHT, LAKE_BOTTOM),
+                     (LAKE1_RIGHT, LAKE_TOP),
+                     (LAKE1_LEFT, LAKE_TOP),)
+            arcade.draw_polygon_filled(Lake1, arcade.color.BLUEBERRY)
+            arcade.draw_polygon_outline(Lake1, arcade.color.BLACK,4)
+            #DRAW RIGHT LAKE
+            Lake2 = ((LAKE2_LEFT, LAKE_BOTTOM),
+                     (LAKE2_RIGHT, LAKE_BOTTOM),
+                     (LAKE2_RIGHT, LAKE_TOP),
+                     (LAKE2_LEFT, LAKE_TOP),)
+            arcade.draw_polygon_filled(Lake2, arcade.color.BLUEBERRY)
+            arcade.draw_polygon_outline(Lake2, arcade.color.BLACK,4)
+
+            yard1 = ((GRAVEYARD_1_LEFT, GRAVEYARD_BOTTOM),
+                     (GRAVEYARD_1_RIGHT, GRAVEYARD_BOTTOM),
+                     (GRAVEYARD_1_RIGHT, GRAVEYARD_TOP),
+                     (GRAVEYARD_1_LEFT, GRAVEYARD_TOP),)
+            arcade.draw_polygon_filled(yard1, arcade.color.DARK_TAUPE)
+            arcade.draw_polygon_outline(yard1, arcade.color.BLACK,8)
+            arcade.draw_text("1",
+                             start_x - (SCREEN_WIDTH * .37),
+                             start_y - (SCREEN_HEIGHT * .52),
+                             arcade.color.GRAY,
+                             DEFAULT_FONT_SIZE * 10,
+                             width=SCREEN_WIDTH,
+                             align="center",
+                             font_name="Kenney Future")
+
+            yard2 = ((GRAVEYARD_2_LEFT, GRAVEYARD_BOTTOM),
+                     (GRAVEYARD_2_RIGHT, GRAVEYARD_BOTTOM),
+                     (GRAVEYARD_2_RIGHT, GRAVEYARD_TOP),
+                     (GRAVEYARD_2_LEFT, GRAVEYARD_TOP),)
+            arcade.draw_polygon_filled(yard2, arcade.color.DARK_TAUPE)
+            arcade.draw_polygon_outline(yard2, arcade.color.BLACK,8)
+            arcade.draw_text("2",
+                            start_x + (SCREEN_WIDTH * .42),
+                            start_y - (SCREEN_HEIGHT * .52),
+                            arcade.color.GRAY,
+                            DEFAULT_FONT_SIZE * 10,
+                            width=SCREEN_WIDTH,
+                            align="center",
+                            font_name="Kenney Future")
+
+            # draw pieces
+            for piece in Gameboard.army1:
+                if piece.defeated != True:
                     draw_piece.draw(piece, 1)
-        for piece in Gameboard.army2:
+
+
+            for piece in Gameboard.army2:
+                if piece.defeated != True:
                     draw_piece.draw(piece, 2)
-                    
+                if pass_turn.Pass_Turn.turn_pause != 0:
+                    if time.time() - pass_turn.Pass_Turn.turn_pause > .4:
+                        pass_turn.Pass_Turn.turn_pause = 0
+                        pass_turn.Pass_Turn.turn_screen(self)
+                #else:
+                    # piece is defeated --> draw it, but in the graveyary
+                    draw_piece.draw(piece, 2)
 
-                
-    
-   
 
-        if Gameboard.AttackRight != None:
-            arcade.draw_circle_filled(Gameboard.AttackRight[0], Gameboard.AttackRight[1], Gameboard.AttackRight[2], Gameboard.AttackRight[3])
+            if Gameboard.AttackRight != None:
+                arcade.draw_circle_filled(Gameboard.AttackRight[0], Gameboard.AttackRight[1], Gameboard.AttackRight[2], Gameboard.AttackRight[3])
 
-        if Gameboard.AttackLeft != None:
-            arcade.draw_circle_filled(Gameboard.AttackLeft[0], Gameboard.AttackLeft[1], Gameboard.AttackLeft[2],
-                                      Gameboard.AttackLeft[3])
-        if Gameboard.AttackAbove != None:
-            arcade.draw_circle_filled(Gameboard.AttackAbove[0], Gameboard.AttackAbove[1], Gameboard.AttackAbove[2],
-                                      Gameboard.AttackAbove[3])
-        if Gameboard.AttackBelow != None:
-            arcade.draw_circle_filled(Gameboard.AttackBelow[0], Gameboard.AttackBelow[1], Gameboard.AttackBelow[2],
-                                      Gameboard.AttackBelow[3])
+            if Gameboard.AttackLeft != None:
+                arcade.draw_circle_filled(Gameboard.AttackLeft[0], Gameboard.AttackLeft[1], Gameboard.AttackLeft[2],
+                                          Gameboard.AttackLeft[3])
+            if Gameboard.AttackAbove != None:
+                arcade.draw_circle_filled(Gameboard.AttackAbove[0], Gameboard.AttackAbove[1], Gameboard.AttackAbove[2],
+                                          Gameboard.AttackAbove[3])
+            if Gameboard.AttackBelow != None:
+                arcade.draw_circle_filled(Gameboard.AttackBelow[0], Gameboard.AttackBelow[1], Gameboard.AttackBelow[2],
+                                          Gameboard.AttackBelow[3])
+
+
+            if Gameboard.game_state == "setup":
+                if Gameboard.player_turn == 1 and len(Gameboard.graveyard1) !=0:
+                    Gameboard.player_turn = 1
+                    draw_piece.show_available_placements(Gameboard.total_pieces, 1)
+                    draw_piece.add_highlight(1, Gameboard.highlight_index)
+                    if Gameboard.highlight_index >= len(Gameboard.graveyard1):
+                        Gameboard.highlight_index = Gameboard.highlight_index-1
+                else:
+                    Gameboard.player_turn = 2
+                if Gameboard.player_turn == 2 and len(Gameboard.graveyard2) !=0:
+                    if Gameboard.AI != 0:
+                        ai_layout.gen_layout(1, Gameboard.graveyard2, Gameboard.army2)
+                        Gameboard.change_turn()
+                        print(f"Done! {Gameboard.AI}")
+                    else: 
+                        Gameboard.player_turn = 2
+                        draw_piece.show_available_placements(Gameboard.total_pieces, 2)
+                        draw_piece.add_highlight(2, Gameboard.highlight_index)
+                        if Gameboard.highlight_index >= len(Gameboard.graveyard2):
+                            Gameboard.highlight_index = Gameboard.highlight_index-1
+                else:
+                    Gameboard.player_turn = 1
+                if len(Gameboard.graveyard1) == 0 and len(Gameboard.graveyard2) == 0:
+                    Gameboard.game_state = "play"
+                    print(Gameboard.game_state)
+
+
+
+            #draw army 1
+            i = 0
+            for piece in Gameboard.graveyard1:
+                 draw_piece.draw_start(piece, 1, i)
+                 i = i+1
+            #draw army 2
+            i = 0
+            for piece in Gameboard.graveyard2:
+                 draw_piece.draw_start(piece, 2, i)
+                 i = i+1
+            for piece in Gameboard.army1:
+                        draw_piece.draw(piece, 1)
+            for piece in Gameboard.army2:
+                        draw_piece.draw(piece, 2)
+
+
+
+
+
+
+            if Gameboard.AttackRight != None:
+                arcade.draw_circle_filled(Gameboard.AttackRight[0], Gameboard.AttackRight[1], Gameboard.AttackRight[2], Gameboard.AttackRight[3])
+
+            if Gameboard.AttackLeft != None:
+                arcade.draw_circle_filled(Gameboard.AttackLeft[0], Gameboard.AttackLeft[1], Gameboard.AttackLeft[2],
+                                          Gameboard.AttackLeft[3])
+            if Gameboard.AttackAbove != None:
+                arcade.draw_circle_filled(Gameboard.AttackAbove[0], Gameboard.AttackAbove[1], Gameboard.AttackAbove[2],
+                                          Gameboard.AttackAbove[3])
+            if Gameboard.AttackBelow != None:
+                arcade.draw_circle_filled(Gameboard.AttackBelow[0], Gameboard.AttackBelow[1], Gameboard.AttackBelow[2],
+                                          Gameboard.AttackBelow[3])
 
              
     def on_mouse_press(self, x, y, button, key_modifiers):
@@ -334,7 +343,8 @@ class Gameboard(arcade.View):
                     Gameboard.text_index = len(Gameboard.text)-1
                     if Gameboard.AI == 0:
                         # set time of move, this is used as a marker for a timer for the delay to see your piece move before the screen changes
-                        pass_turn.Pass_Turn.turn_pause = time.time()
+                        # pass_turn.Pass_Turn.turn_pause = time.time()
+                        Gameboard.turn_screen(self)
                     else:
                         Gameboard.change_turn()
                 if is_valid_move and cell_occupant != None:
@@ -350,7 +360,8 @@ class Gameboard(arcade.View):
                                 Gameboard.text_index = len(Gameboard.text)-1
                                 if Gameboard.AI == 0:
                                     # set time of move, this is used as a marker for a timer for the delay to see your piece move before the screen changes
-                                    pass_turn.Pass_Turn.turn_pause = time.time()
+                                    # pass_turn.Pass_Turn.turn_pause = time.time()
+                                    Gameboard.turn_screen(self)
                                 else:
                                     Gameboard.change_turn()
                     Gameboard.selected = None
@@ -412,18 +423,17 @@ class Gameboard(arcade.View):
             #Place a full army by hitting the R key.
             if (key == arcade.key.R):
                 print(len(yard))
-                if Gameboard.player_turn == 1:
+                if Gameboard.player_turn == 1 and len(Gameboard.graveyard1) == NUM_PIECES:
                     for i in range(4):
                         for x in range (10):
                             draw_piece.place_piece(yard[0], (x,i), yard, army)
-                elif Gameboard.player_turn == 2 and Gameboard.AI == 0:
+                    Gameboard.change_turn()
+                elif Gameboard.player_turn == 2 and Gameboard.AI == 0 and len(Gameboard.graveyard2) == NUM_PIECES:
                     for i in range(4):
                         for x in range(10):
                             draw_piece.place_piece(yard[0], (x,9-i), yard, army)
-                elif Gameboard.player_turn == 2 and Gameboard.AI != 0:
-                    ai_layout.gen_layout(1, Gameboard.graveyard2, Gameboard.army2)
                     Gameboard.change_turn()
-                    print(f"Done! {Gameboard.AI}")
+
 
 
                             

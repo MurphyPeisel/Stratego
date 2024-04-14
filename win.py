@@ -4,6 +4,7 @@ import arcade.gui
 import menu
 import gameboard
 import game_settings
+import Piece
 
 
 # Define constants
@@ -50,9 +51,35 @@ class Win(arcade.View):
 
     # These functions add the functionality to the three button options
     def on_replay_click(self, event):
+        gameboard.Gameboard.set_is_menu(gameboard.Gameboard, False)
         self.manager.disable()
         board_view = gameboard.Gameboard()
         self.window.show_view(board_view)
+        gameboard.Gameboard.game_state = "setup"
+        lake_piece_1 = Piece.Piece("Lke", 0, 2, 4, 3)
+        lake_piece_2 = Piece.Piece("Lke", 0, 3, 4, 3)
+        lake_piece_3 = Piece.Piece("Lke", 0, 2, 5, 3)
+        lake_piece_4 = Piece.Piece("Lke", 0, 3, 5, 3)
+
+        lake_piece_5 = Piece.Piece("Lke", 0, 6, 4, 3)
+        lake_piece_6 = Piece.Piece("Lke", 0, 7, 4, 3)
+        lake_piece_7 = Piece.Piece("Lke", 0, 6, 5, 3)
+        lake_piece_8 = Piece.Piece("Lke", 0, 7, 5, 3)
+
+        #RESET GAME
+        gameboard.Gameboard.game_state = "setup"
+        gameboard.Gameboard.army1 = [lake_piece_1,lake_piece_2,lake_piece_3,lake_piece_4,lake_piece_5,lake_piece_6,lake_piece_7,lake_piece_8]
+        gameboard.Gameboard.army2 = [lake_piece_1,lake_piece_2,lake_piece_3,lake_piece_4,lake_piece_5,lake_piece_6,lake_piece_7,lake_piece_8]
+        gameboard.Gameboard.graveyard1 = Piece.initPieces(1)
+        gameboard.Gameboard.graveyard2 = Piece.initPieces(2)
+        gameboard.Gameboard.AI = 0
+        gameboard.Gameboard.player_turn = 1
+        gameboard.Gameboard.highlight_index = 0
+        gameboard.Gameboard.selected = None
+        gameboard.Gameboard.AttackRight = None
+        gameboard.Gameboard.AttackLeft = None
+        gameboard.Gameboard.AttackAbove = None
+        gameboard.Gameboard.AttackBelow = None
 
     def on_game_settings_click(self, event):
         self.manager.disable()
@@ -67,16 +94,17 @@ class Win(arcade.View):
 
     # This function draws all that is defined in show view to allow the window to appear. The text will show who won
     def on_draw(self):
-        self.clear()
-        arcade.start_render()
-        self.manager.draw()
-        start_x = 0
-        start_y = SCREEN_HEIGHT - DEFAULT_LINE_HEIGHT * 1.5
-        arcade.draw_text("Player " + str(gameboard.Gameboard.get_turn()) + "\nWins",
-                         start_x,
-                         start_y - (SCREEN_HEIGHT * .1),
-                         arcade.color.BLACK,
-                         DEFAULT_FONT_SIZE * 4,
-                         width=SCREEN_WIDTH,
-                         align="center",
-                         font_name="Kenney Future")
+        if gameboard.Gameboard.get_is_menu(gameboard.Gameboard) == True:
+            self.clear()
+            arcade.start_render()
+            self.manager.draw()
+            start_x = 0
+            start_y = SCREEN_HEIGHT - DEFAULT_LINE_HEIGHT * 1.5
+            arcade.draw_text("Player " + str(gameboard.Gameboard.get_turn()) + "\nWins",
+                             start_x,
+                             start_y - (SCREEN_HEIGHT * .1),
+                             arcade.color.BLACK,
+                             DEFAULT_FONT_SIZE * 4,
+                             width=SCREEN_WIDTH,
+                             align="center",
+                             font_name="Kenney Future")

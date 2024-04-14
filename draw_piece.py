@@ -3,6 +3,7 @@ import arcade
 import gameboard
 from Piece import Piece
 from constants import *
+import game_settings
 import time
 import gameboard as Gameboard
 
@@ -107,7 +108,7 @@ def draw(piece, army):
 
 
     down = 10-y
-    if army == Gameboard.Gameboard.player_turn and piece.getHidden() == True:
+    if game_settings.Computer.sight:
         if piece.getType() == "Flg":
             arcade.draw_text("F", BOARD_LEFT+YARD_MARGIN*x +16, GRID_TOP-YARD_MARGIN*down + 16, arcade.color.WHITE, 18, 1, "center", "Kenney Blocks Font", bold=True)
         elif piece.getType() == "Msh":
@@ -132,6 +133,32 @@ def draw(piece, army):
             arcade.draw_text("S", BOARD_LEFT+YARD_MARGIN*x + 16, GRID_TOP-YARD_MARGIN*down + 16, arcade.color.WHITE, 18, 1, "center", "Kenney Pixel Square Font", bold=True)
         elif piece.getType() == "Bom":
             arcade.draw_text("B", BOARD_LEFT+YARD_MARGIN*x +16, GRID_TOP-YARD_MARGIN*down + 16, arcade.color.WHITE, 18, 1, "center", "Kenney Pixel Square Font", bold=True)
+    else:
+        if army == Gameboard.Gameboard.player_turn and piece.getHidden() == True:
+            if piece.getType() == "Flg":
+                    arcade.draw_text("F", BOARD_LEFT+YARD_MARGIN*x +16, GRID_TOP-YARD_MARGIN*down + 16, arcade.color.WHITE, 18, 1, "center", "Kenney Blocks Font", bold=True)
+            elif piece.getType() == "Msh":
+                arcade.draw_text("10", BOARD_LEFT+YARD_MARGIN*x + 12, GRID_TOP-YARD_MARGIN*down + 16, arcade.color.WHITE, 18, 1, "center", "Kenney Rocket Square Font", bold=True)
+            elif piece.getType() == "Gen":
+                arcade.draw_text("9", BOARD_LEFT+YARD_MARGIN*x + 16, GRID_TOP-YARD_MARGIN*down + 16, arcade.color.WHITE, 18, 1, "center", "Kenney Pixel Square Font", bold=True)
+            if piece.getType() == "Col":
+                arcade.draw_text("8", BOARD_LEFT+YARD_MARGIN*x + 16, GRID_TOP-YARD_MARGIN*down + 16, arcade.color.WHITE, 18, 1, "center", "Kenney Pixel Square Font", bold=True)
+            if piece.getType() == "Maj":
+                arcade.draw_text("7", BOARD_LEFT+YARD_MARGIN*x + 16, GRID_TOP-YARD_MARGIN*down + 16, arcade.color.WHITE, 18, 1, "center", "Kenney Pixel Square Font", bold=True)
+            if piece.getType() == "Cap":
+                arcade.draw_text("6", BOARD_LEFT+YARD_MARGIN*x + 16, GRID_TOP-YARD_MARGIN*down + 16, arcade.color.WHITE, 18, 1, "center", "Kenney Pixel Square Font", bold=True)
+            if piece.getType() == "Ltn":
+                arcade.draw_text("5", BOARD_LEFT+YARD_MARGIN*x + 16, GRID_TOP-YARD_MARGIN*down + 16, arcade.color.WHITE, 18, 1, "center", "Kenney Pixel Square Font", bold=True)
+            if piece.getType() == "Sgt":
+                arcade.draw_text("4", BOARD_LEFT+YARD_MARGIN*x + 16, GRID_TOP-YARD_MARGIN*down + 16, arcade.color.WHITE, 18, 1, "center", "Kenney Pixel Square Font", bold=True)
+            if piece.getType() == "Min":
+                arcade.draw_text("3", BOARD_LEFT+YARD_MARGIN*x + 16, GRID_TOP-YARD_MARGIN*down + 16, arcade.color.WHITE, 18, 1, "center", "Kenney Pixel Square Font", bold=True)
+            elif piece.getType() == "Sct":
+                arcade.draw_text("2", BOARD_LEFT+YARD_MARGIN*x + 16, GRID_TOP-YARD_MARGIN*down + 16, arcade.color.WHITE, 18, 1, "center", "Kenney Pixel Square Font", bold=True)
+            elif piece.getType() == "Spy":
+                arcade.draw_text("S", BOARD_LEFT+YARD_MARGIN*x + 16, GRID_TOP-YARD_MARGIN*down + 16, arcade.color.WHITE, 18, 1, "center", "Kenney Pixel Square Font", bold=True)
+            elif piece.getType() == "Bom":
+                arcade.draw_text("B", BOARD_LEFT+YARD_MARGIN*x +16, GRID_TOP-YARD_MARGIN*down + 16, arcade.color.WHITE, 18, 1, "center", "Kenney Pixel Square Font", bold=True)
 
         
     if piece.getType() == "Flg":
@@ -304,7 +331,7 @@ def show_available_moves(piece, total_pieces):
 
         if (is_piece_scan(total_pieces, [BOARD_RIGHT + 25 + BOARD_MARGIN * x, BOARD_BOTTOM + 25 + BOARD_MARGIN * y]) == True and BOARD_RIGHT + 25 + BOARD_MARGIN * x < 700):
             if is_enemy(is_piece(total_pieces, [BOARD_RIGHT + 25 + BOARD_MARGIN * x, BOARD_BOTTOM + 25 + BOARD_MARGIN * y])[1], piece.getPlayer()) and is_piece(total_pieces, [BOARD_RIGHT + 25 + BOARD_MARGIN * x, BOARD_BOTTOM + 25 + BOARD_MARGIN * y])[1].getType() != "Lke":
-                Gameboard.Gameboard.setAttack(Gameboard, "right", BOARD_RIGHT + 25 + BOARD_MARGIN * x, BOARD_BOTTOM + 25 + BOARD_MARGIN * y, 5, arcade.color.RED)
+                Gameboard.Gameboard.setAttack(Gameboard, "right", BOARD_RIGHT + 25 + BOARD_MARGIN * x, BOARD_BOTTOM + 25 + BOARD_MARGIN * y, 5, arcade.color.GREEN)
 
 
         # up scan
@@ -314,7 +341,7 @@ def show_available_moves(piece, total_pieces):
 
         if (is_piece_scan(total_pieces, [BOARD_RIGHT - 25 + BOARD_MARGIN * x, BOARD_TOP + 25 + BOARD_MARGIN * y]) == True and BOARD_TOP + 25 + BOARD_MARGIN * y < 600):
             if is_enemy(is_piece(total_pieces, [BOARD_RIGHT - 25 + BOARD_MARGIN * x, BOARD_TOP + 25 + BOARD_MARGIN * y])[1], piece.getPlayer()) and is_piece(total_pieces, [BOARD_RIGHT - 25 + BOARD_MARGIN * x, BOARD_TOP + 25 + BOARD_MARGIN * y])[1].getType() != "Lke":
-                Gameboard.Gameboard.setAttack(Gameboard, "up", BOARD_RIGHT - 25 + BOARD_MARGIN * x, BOARD_TOP + 25 + BOARD_MARGIN * y, 5, arcade.color.RED)
+                Gameboard.Gameboard.setAttack(Gameboard, "up", BOARD_RIGHT - 25 + BOARD_MARGIN * x, BOARD_TOP + 25 + BOARD_MARGIN * y, 5, arcade.color.GREEN)
 
 
         # down scan
@@ -325,7 +352,7 @@ def show_available_moves(piece, total_pieces):
         if (is_piece_scan(total_pieces, [BOARD_LEFT + 25 + BOARD_MARGIN * x,
                                          BOARD_BOTTOM - 25 + BOARD_MARGIN * y]) == True and BOARD_BOTTOM - 25 + BOARD_MARGIN * y > 100):
             if is_enemy(is_piece(total_pieces, [BOARD_LEFT + 25 + BOARD_MARGIN * x, BOARD_BOTTOM - 25 + BOARD_MARGIN * y])[1], piece.getPlayer()) and is_piece(total_pieces, [BOARD_LEFT + 25 + BOARD_MARGIN * x, BOARD_BOTTOM - 25 + BOARD_MARGIN * y])[1].getType() != "Lke":
-                Gameboard.Gameboard.setAttack(Gameboard, "down", BOARD_LEFT + 25 + BOARD_MARGIN * x, BOARD_BOTTOM - 25 + BOARD_MARGIN * y, 5, arcade.color.RED)
+                Gameboard.Gameboard.setAttack(Gameboard, "down", BOARD_LEFT + 25 + BOARD_MARGIN * x, BOARD_BOTTOM - 25 + BOARD_MARGIN * y, 5, arcade.color.GREEN)
 
         # left scan
         if (is_piece_scan(total_pieces, [BOARD_LEFT - 25 + BOARD_MARGIN * x, BOARD_BOTTOM + 25 + BOARD_MARGIN * y]) == False and BOARD_LEFT - 25 + BOARD_MARGIN * x > 200):
@@ -334,7 +361,7 @@ def show_available_moves(piece, total_pieces):
 
         if (is_piece_scan(total_pieces, [BOARD_LEFT - 25 + BOARD_MARGIN * x, BOARD_BOTTOM + 25 + BOARD_MARGIN * y]) == True and BOARD_LEFT - 25 + BOARD_MARGIN * x > 200):
             if is_enemy(is_piece(total_pieces, [BOARD_LEFT - 25 + BOARD_MARGIN * x, BOARD_BOTTOM + 25 + BOARD_MARGIN * y])[1], piece.getPlayer()) and is_piece(total_pieces, [BOARD_LEFT - 25 + BOARD_MARGIN * x, BOARD_BOTTOM + 25 + BOARD_MARGIN * y])[1].getType() != "Lke":
-                Gameboard.Gameboard.setAttack(Gameboard, "left", BOARD_LEFT - 25 + BOARD_MARGIN * x, BOARD_BOTTOM + 25 + BOARD_MARGIN * y, 5, arcade.color.RED)
+                Gameboard.Gameboard.setAttack(Gameboard, "left", BOARD_LEFT - 25 + BOARD_MARGIN * x, BOARD_BOTTOM + 25 + BOARD_MARGIN * y, 5, arcade.color.GREEN)
 
 
     # if the piece is a scout then this portion of the function scans through all the spaces directly to the left,
@@ -350,7 +377,7 @@ def show_available_moves(piece, total_pieces):
             next_i = next_i + 2
         if is_piece_scan(total_pieces, [BOARD_RIGHT + 25 * next_i + BOARD_MARGIN * x, BOARD_BOTTOM + 25 + BOARD_MARGIN * y]) == True and BOARD_RIGHT + 25 * next_i + BOARD_MARGIN * x < 700:
             if is_enemy(is_piece(total_pieces, [BOARD_RIGHT + 25 * next_i + BOARD_MARGIN * x, BOARD_BOTTOM + 25 + BOARD_MARGIN * y])[1], piece.getPlayer()) and is_piece(total_pieces, [BOARD_RIGHT + 25 * next_i + BOARD_MARGIN * x, BOARD_BOTTOM + 25 + BOARD_MARGIN * y])[1].getType() != "Lke":
-                Gameboard.Gameboard.setAttack(Gameboard, "right", BOARD_RIGHT + 25 * next_i + BOARD_MARGIN * x, BOARD_BOTTOM + 25 + BOARD_MARGIN * y, 5, arcade.color.RED)
+                Gameboard.Gameboard.setAttack(Gameboard, "right", BOARD_RIGHT + 25 * next_i + BOARD_MARGIN * x, BOARD_BOTTOM + 25 + BOARD_MARGIN * y, 5, arcade.color.GREEN)
 
         next_j = 1
         # up
@@ -360,7 +387,7 @@ def show_available_moves(piece, total_pieces):
             next_j = next_j + 2
         if (is_piece_scan(total_pieces, [BOARD_RIGHT - 25 + BOARD_MARGIN * x, BOARD_TOP + 25 * next_j + BOARD_MARGIN * y]) == True and BOARD_TOP + 25 * next_j + BOARD_MARGIN * y < 600):
             if is_enemy(is_piece(total_pieces, [BOARD_RIGHT - 25 + BOARD_MARGIN * x, BOARD_TOP + 25 * next_j + BOARD_MARGIN * y])[1], piece.getPlayer()) and is_piece(total_pieces, [BOARD_RIGHT - 25 + BOARD_MARGIN * x, BOARD_TOP + 25 * next_j + BOARD_MARGIN * y])[1].getType() !="Lke":
-                Gameboard.Gameboard.setAttack(Gameboard, "up", BOARD_RIGHT - 25 + BOARD_MARGIN * x, BOARD_TOP + 25 * next_j + BOARD_MARGIN * y, 5, arcade.color.RED)
+                Gameboard.Gameboard.setAttack(Gameboard, "up", BOARD_RIGHT - 25 + BOARD_MARGIN * x, BOARD_TOP + 25 * next_j + BOARD_MARGIN * y, 5, arcade.color.GREEN)
         next_j = 1
         # down
         while (is_piece_scan(total_pieces, [BOARD_LEFT + 25 + BOARD_MARGIN * x, BOARD_BOTTOM - 25 * next_j + BOARD_MARGIN * y]) == False and BOARD_BOTTOM - 25 * next_j + BOARD_MARGIN * y > 100):
@@ -369,7 +396,7 @@ def show_available_moves(piece, total_pieces):
             next_j = next_j + 2
         if (is_piece_scan(total_pieces, [BOARD_LEFT + 25 + BOARD_MARGIN * x, BOARD_BOTTOM - 25 * next_j + BOARD_MARGIN * y]) == True and BOARD_BOTTOM - 25 * next_j + BOARD_MARGIN * y > 100):
             if is_enemy(is_piece(total_pieces, [BOARD_LEFT + 25 + BOARD_MARGIN * x, BOARD_BOTTOM - 25 * next_j + BOARD_MARGIN * y])[1], piece.getPlayer()) and is_piece(total_pieces, [BOARD_LEFT + 25 + BOARD_MARGIN * x, BOARD_BOTTOM - 25 * next_j + BOARD_MARGIN * y])[1].getType() !="Lke":
-                Gameboard.Gameboard.setAttack(Gameboard, "down", BOARD_LEFT + 25 + BOARD_MARGIN * x, BOARD_BOTTOM - 25 * next_j + BOARD_MARGIN * y, 5, arcade.color.RED)
+                Gameboard.Gameboard.setAttack(Gameboard, "down", BOARD_LEFT + 25 + BOARD_MARGIN * x, BOARD_BOTTOM - 25 * next_j + BOARD_MARGIN * y, 5, arcade.color.GREEN)
         next_i = 1
         while (is_piece_scan(total_pieces, [BOARD_LEFT - 25 * next_i + BOARD_MARGIN * x, BOARD_BOTTOM + 25 + BOARD_MARGIN * y]) == False and BOARD_LEFT - 25 * next_i + BOARD_MARGIN * x > 200):
             arcade.draw_arc_filled(BOARD_LEFT - 25 * next_i + BOARD_MARGIN * x, BOARD_BOTTOM + 25 + BOARD_MARGIN * y, 10, 10,
@@ -377,7 +404,7 @@ def show_available_moves(piece, total_pieces):
             next_i = next_i + 2
         if (is_piece_scan(total_pieces, [BOARD_LEFT - 25 * next_i + BOARD_MARGIN * x, BOARD_BOTTOM + 25 + BOARD_MARGIN * y]) == True and BOARD_LEFT - 25 * next_i + BOARD_MARGIN * x > 200):
             if is_enemy(is_piece(total_pieces, [BOARD_LEFT - 25 * next_i + BOARD_MARGIN * x, BOARD_BOTTOM + 25 + BOARD_MARGIN * y])[1], piece.getPlayer()) and is_piece(total_pieces, [BOARD_LEFT - 25 * next_i + BOARD_MARGIN * x, BOARD_BOTTOM + 25 + BOARD_MARGIN * y])[1].getType() !="Lke":
-                Gameboard.Gameboard.setAttack(Gameboard, "left", BOARD_LEFT - 25 * next_i + BOARD_MARGIN * x, BOARD_BOTTOM + 25 + BOARD_MARGIN * y, 5, arcade.color.RED)
+                Gameboard.Gameboard.setAttack(Gameboard, "left", BOARD_LEFT - 25 * next_i + BOARD_MARGIN * x, BOARD_BOTTOM + 25 + BOARD_MARGIN * y, 5, arcade.color.GREEN)
 
 
 def is_move_available(pieces, piece, click):
@@ -527,6 +554,7 @@ def move_to_graveyard(army, piece, graveyard):
     army.remove(piece)
     graveyard.append(piece)
     print(f"{graveyard[0].getType()} moved to graveyard")
+    gameboard.Gameboard.selected = None
     
 
 def move_piece(piece, click):
