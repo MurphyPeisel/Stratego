@@ -2,6 +2,9 @@ import arcade
 import arcade.gui
 import rules
 import gameboard
+import pass_turn
+import menu
+import rules
 import win
 import Piece
 import menu as mn
@@ -49,8 +52,6 @@ class Escape(arcade.View):
         rules_button.on_click = self.on_click_rules
         back_to_menu_button.on_click = self.on_click_back
         resign_button.on_click = self.on_click_resign
-
-        
         exit_button.on_click = self.on_click_exit
 
         self.manager.add(

@@ -4,6 +4,7 @@ import esc_menu
 import pass_turn
 import Piece
 import draw_piece
+import time
 import win
 from constants import *
 import Opponent_AI
@@ -150,6 +151,13 @@ class Gameboard(arcade.View):
 
         for piece in Gameboard.army2:
             if piece.defeated != True:
+                draw_piece.draw(piece)  
+            if pass_turn.Pass_Turn.turn_pause != 0:
+                if time.time() - pass_turn.Pass_Turn.turn_pause > .4:
+                    pass_turn.Pass_Turn.turn_pause = 0
+                    pass_turn.Pass_Turn.turn_screen(self)
+            #else:
+                # piece is defeated --> draw it, but in the graveyary           
                 draw_piece.draw(piece, 2)
         
         
@@ -284,7 +292,8 @@ class Gameboard(arcade.View):
                     draw_piece.move_piece(Gameboard.selected, click)
                     Gameboard.selected = None
                     if Gameboard.AI == 0:
-                        Gameboard.turn_screen(self)
+                        # set time of move, this is used as a marker for a timer for the delay to see your piece move before the screen changes
+                    pass_turn.Pass_Turn.turn_pause = time.time()
                     else:
                         Gameboard.change_turn()
                 if is_valid_move and cell_occupant != None:
@@ -298,7 +307,8 @@ class Gameboard(arcade.View):
                             else:
                                 draw_piece.combat(Gameboard.selected, cell_occupant, click, Gameboard.graveyard1, Gameboard.graveyard2, Gameboard.army1, Gameboard.army2) #p1_pieces/p2_pieces = Temp Variables
                                 if Gameboard.AI == 0:
-                                    Gameboard.turn_screen(self)
+                                    # set time of move, this is used as a marker for a timer for the delay to see your piece move before the screen changes
+                                pass_turn.Pass_Turn.turn_pause = time.time()
                                 else:
                                     Gameboard.change_turn()
                     Gameboard.selected = None

@@ -14,6 +14,9 @@ DEFAULT_FONT_SIZE = 20
 # each player cannot see the others board by accident
 class Pass_Turn(arcade.View):
 
+    player_turn = 1
+    turn_pause = 0
+
     # This function Defines what the window will look like when called
     def on_show_view(self):
 
@@ -24,12 +27,10 @@ class Pass_Turn(arcade.View):
 
         self.v_box = arcade.gui.UIBoxLayout()
 
-
         player_switch_button = arcade.gui.UIFlatButton(text="Ready", width=200)
         self.v_box.add(player_switch_button.with_space_around(bottom=150))
 
         player_switch_button.on_click = self.on_click_switch
-
 
         self.manager.add(
             arcade.gui.UIAnchorWidget(
@@ -52,7 +53,7 @@ class Pass_Turn(arcade.View):
         self.manager.draw()
         start_x = 0
         start_y = SCREEN_HEIGHT - DEFAULT_LINE_HEIGHT * 1.5
-        player_turn = gameboard.Gameboard.get_turn()
+        player_turn = Pass_Turn.get_turn()
         arcade.draw_text("Player " + str(player_turn) + "\nReady?",
                          start_x,
                          start_y - (SCREEN_HEIGHT * .1),
@@ -61,3 +62,17 @@ class Pass_Turn(arcade.View):
                          width=SCREEN_WIDTH,
                          align="center",
                          font_name="Kenney Future")
+        
+    def change_turn():
+        if Pass_Turn.player_turn == 1:
+            Pass_Turn.player_turn = 2
+        else:
+            Pass_Turn.player_turn = 1
+
+    def turn_screen(self):
+        Pass_Turn.change_turn()
+        view = Pass_Turn()
+        self.window.show_view(view)
+    
+    def get_turn():
+        return Pass_Turn.player_turn
