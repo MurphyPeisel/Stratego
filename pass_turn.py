@@ -36,7 +36,7 @@ class Pass_Turn(arcade.View):
         # Buttons
         self.v_box = arcade.gui.UIBoxLayout()
         player_switch_button = arcade.gui.UIFlatButton(text="Ready", width=200, style= default_style)
-        self.v_box.add(player_switch_button.with_space_around(top=50))
+        self.v_box.add(player_switch_button.with_space_around(top=80))
         player_switch_button.on_click = self.on_click_switch
 
         self.manager.add(
@@ -67,7 +67,7 @@ class Pass_Turn(arcade.View):
         start_y = SCREEN_HEIGHT - DEFAULT_LINE_HEIGHT * 1.5
         arcade.draw_text(" Player " + str(Pass_Turn.player_turn) + "\nReady?",
                          start_x,
-                         start_y - (SCREEN_HEIGHT * .265),
+                         start_y - (SCREEN_HEIGHT * .295),
                          arcade.color.WHITE,
                          DEFAULT_FONT_SIZE * 1.3,
                          width=SCREEN_WIDTH,

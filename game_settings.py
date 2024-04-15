@@ -147,7 +147,6 @@ class Computer(arcade.View):
                 Computer.vision = " * Hide Pieces *"
                 Computer.sight = False  
 
-    #Called when easy_button is clicked
     def on_click_start(self, event):
         if Computer.vision != " -Toggle Seeing Defender Pieces-":
             if Computer.difficulty == "Hard":
@@ -165,8 +164,6 @@ class Computer(arcade.View):
             self.window.show_view(gameboard.Gameboard())
             gameboard.Gameboard.set_is_menu(gameboard.Gameboard, False)
 
-
-    #On draw will create all of our assets onto the screen
     def on_draw(self):
         self.clear()
         arcade.start_render()
