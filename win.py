@@ -7,6 +7,7 @@ import game_settings
 import Piece
 import pass_turn
 
+import sound_settings
 
 # Define constants
 SCREEN_WIDTH = 900
@@ -31,8 +32,8 @@ default_style = {
 # Creates a win screen that identifies the user that won the round and provides three options to move forward
 # The options are to replay with the same settings, return to game settings menu and to return to main menu
 class Win(arcade.View):
-
-    level = 4
+    #Initialize playback for winscreen
+    level = sound_settings.Sound.level
     sound = arcade.load_sound("Win.wav",False)
     media_player = arcade.play_sound(sound, level, 0, looping=True)
     sound.stop(media_player)

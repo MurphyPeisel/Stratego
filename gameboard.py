@@ -7,6 +7,7 @@ import win
 from constants import *
 import Opponent_AI
 import ai_layout
+import sound_settings
 
 lake_piece_1 = Piece.Piece("Lke", 0, 2, 4, 3)
 lake_piece_2 = Piece.Piece("Lke", 0, 3, 4, 3)
@@ -25,7 +26,7 @@ class Gameboard(arcade.View):
 
 
    
-    level = 4
+    level = sound_settings.Sound.level + 2
     sound = arcade.load_sound("Gameboard_Screen.wav",False)
     media_player = arcade.play_sound(sound, level, 0, looping=True)
     sound.stop(media_player)
@@ -102,7 +103,7 @@ class Gameboard(arcade.View):
 
             # initialize formatting details
             start_x = 0
-            start_y = SCREEN_HEIGHT - DEFAULT_LINE_HEIGHT * 1.5
+            start_y = SCREEN_HEIGHT - DEFAULT_LINE_HEIGHT * 1.4
 
             arcade.draw_text("Esc",
                              start_x + (SCREEN_WIDTH *.9),

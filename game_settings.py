@@ -7,6 +7,7 @@ import time
 from arcade.experimental.uislider import UISlider
 from arcade.gui import UIManager, UIAnchorWidget, UILabel
 from arcade.gui.events import UIOnChangeEvent
+import sound_settings
 
 # Define constants
 SCREEN_WIDTH = 900
@@ -43,13 +44,71 @@ class Game_Settings(arcade.View):
         play_button = arcade.gui.UIFlatButton(text="2 Players", width=200, style= default_style)
         self.v_box.add(play_button.with_space_around(top= 90,bottom=20))
         play_bot_button = arcade.gui.UIFlatButton(text="Computer", width=200, style= default_style)
-        self.v_box.add(play_bot_button.with_space_around(bottom=20))
+        self.v_box.add(play_bot_button.with_space_around(bottom=10))
         quit_button = arcade.gui.UIFlatButton(text="Quit", width=150, style= default_style)
         self.v_box.add(quit_button.with_space_around(top=10, bottom=20))
 
         play_bot_button.on_click = self.on_click_bot
         play_button.on_click = self.on_click_play
         quit_button.on_click = self.on_quit_click
+        
+        volume_slider = UISlider(value=50, width=200, height=50)
+        @volume_slider.event()
+        def on_change(event: UIOnChangeEvent):
+            volume_slider.value = volume_slider.value
+            if volume_slider.value == 0:
+                sound_settings.Sound.level = 0
+                menu.Menu.sound.set_volume(0, menu.Menu.media_player)
+                gameboard.Gameboard.sound.set_volume(.1, gameboard.Gameboard.media_player)
+            elif volume_slider.value < 10:
+                sound_settings.Sound.level = .05
+                menu.Menu.sound.set_volume(.05, menu.Menu.media_player)
+                gameboard.Gameboard.sound.set_volume(.8, gameboard.Gameboard.media_player)  
+            elif volume_slider.value < 20:
+                sound_settings.Sound.level = .1
+                menu.Menu.sound.set_volume(.1, menu.Menu.media_player)
+                gameboard.Gameboard.sound.set_volume(.2, gameboard.Gameboard.media_player)  
+            elif volume_slider.value < 30:
+                sound_settings.Sound.level = .2
+                menu.Menu.sound.set_volume(.2, menu.Menu.media_player)
+                gameboard.Gameboard.sound.set_volume(.2, gameboard.Gameboard.media_player)  
+            elif volume_slider.value < 40:
+                sound_settings.Sound.level = .3
+                menu.Menu.sound.set_volume(.3, menu.Menu.media_player)
+                gameboard.Gameboard.sound.set_volume(.3, gameboard.Gameboard.media_player)  
+            elif volume_slider.value < 50:
+                sound_settings.Sound.level = .4
+                menu.Menu.sound.set_volume(.4, menu.Menu.media_player)
+                gameboard.Gameboard.sound.set_volume(.4, gameboard.Gameboard.media_player)  
+            elif volume_slider.value < 60:
+                sound_settings.Sound.level = .5
+                menu.Menu.sound.set_volume(.5, menu.Menu.media_player)
+                gameboard.Gameboard.sound.set_volume(.5, gameboard.Gameboard.media_player)
+            elif volume_slider.value < 70:
+                sound_settings.Sound.level = .6
+                menu.Menu.sound.set_volume(.6, menu.Menu.media_player)
+                gameboard.Gameboard.sound.set_volume(.6, gameboard.Gameboard.media_player)  
+            elif volume_slider.value < 80:
+                sound_settings.Sound.level = .7
+                menu.Menu.sound.set_volume(.7, menu.Menu.media_player)
+                gameboard.Gameboard.sound.set_volume(.7, gameboard.Gameboard.media_player)  
+            elif volume_slider.value < 90:
+                sound_settings.Sound.level = .8
+                menu.Menu.sound.set_volume(.8, menu.Menu.media_player)
+                gameboard.Gameboard.sound.set_volume(.8, gameboard.Gameboard.media_player)   
+            elif volume_slider.value < 100:
+                sound_settings.Sound.level = .9
+                menu.Menu.sound.set_volume(.9, menu.Menu.media_player)
+                gameboard.Gameboard.sound.set_volume(.9, gameboard.Gameboard.media_player)
+
+            else:
+                sound_settings.Sound.level = 1
+                menu.Menu.sound.set_volume(1, menu.Menu.media_player)
+                gameboard.Gameboard.sound.set_volume(1, gameboard.Gameboard.media_player)
+
+
+
+        self.manager.add(UIAnchorWidget(child=volume_slider, anchor_y= "center", align_y= -162))
 
 
         self.manager.add(
@@ -58,6 +117,16 @@ class Game_Settings(arcade.View):
                 anchor_y="center_y",
                 child=self.v_box)
         )
+        start_x = 450
+        start_y = 350 
+        arcade.draw_text("Volume",
+                         start_x,
+                         start_y,
+                         arcade.color.WHITE,
+                         DEFAULT_FONT_SIZE * 1.2,
+                         width=SCREEN_WIDTH,
+                         align="center",
+                         font_name="Kenney Future")
 
     # Opens computer settings
     def on_click_bot(self, event):
@@ -130,13 +199,14 @@ class Computer(arcade.View):
             else:
                 Computer.difficulty = "Hard"
         self.manager.add(UIAnchorWidget(child=ui_slider))
-
+        
         self.manager.add(
             arcade.gui.UIAnchorWidget(
                 anchor_x="center_x",
                 anchor_y="center_y",
                 child=self.v_box)
         )
+
 
     def on_mouse_press(self, x, y, button, key_modifiers):
         if x>=288 and x<=628 and y<= 324 and y>= 270:
