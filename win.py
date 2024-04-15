@@ -79,7 +79,8 @@ class Win(arcade.View):
                 child=self.v_box)
         )
 
-
+    # Navigation on button clicks
+    # On replay will reset the board and keep current settings
     def on_replay_click(self, event):
         gameboard.Gameboard.set_is_menu(gameboard.Gameboard, False)
         self.manager.disable()
@@ -113,6 +114,8 @@ class Win(arcade.View):
         gameboard.Gameboard.AttackBelow = None
 
         self.window.show_view(board_view)
+
+    # On Game Settings will return you to the head of that line and let you reset the settings
     def on_game_settings_click(self, event):
         self.manager.disable()
         board_view = game_settings.Game_Settings()

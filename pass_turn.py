@@ -28,18 +28,15 @@ class Pass_Turn(arcade.View):
 
     player_turn = 1
 
-
-    # This function Defines what the window will look like when called
     def on_show_view(self):
 
         self.manager = arcade.gui.UIManager()
         self.manager.enable()
 
+        # Buttons
         self.v_box = arcade.gui.UIBoxLayout()
-
         player_switch_button = arcade.gui.UIFlatButton(text="Ready", width=200, style= default_style)
         self.v_box.add(player_switch_button.with_space_around(top=50))
-
         player_switch_button.on_click = self.on_click_switch
 
         self.manager.add(
@@ -56,11 +53,11 @@ class Pass_Turn(arcade.View):
         board_view = gameboard.Gameboard()
         self.window.show_view(board_view)
 
-
     def on_draw(self):
         self.clear()
         arcade.start_render()
         self.manager.draw()
+        # Background Image
         img = arcade.load_texture('SettingsMenu.png')
         arcade.draw_texture_rectangle (SCREEN_WIDTH*.5, SCREEN_HEIGHT*.5, SCREEN_WIDTH, SCREEN_HEIGHT, img)
         img = arcade.load_texture('SmallMenu.png')
@@ -68,7 +65,6 @@ class Pass_Turn(arcade.View):
         self.manager.draw()
         start_x = 0
         start_y = SCREEN_HEIGHT - DEFAULT_LINE_HEIGHT * 1.5
-
         arcade.draw_text(" Player " + str(Pass_Turn.player_turn) + "\nReady?",
                          start_x,
                          start_y - (SCREEN_HEIGHT * .265),
@@ -78,6 +74,8 @@ class Pass_Turn(arcade.View):
                          align="center",
                          font_name="Kenney Future")
         
+    # The functions below deal with the manegment of the player_turn Variable: 
+    # Toggle, View Shift, getter
     def change_turn():
         if Pass_Turn.player_turn == 1:
             Pass_Turn.player_turn = 2
