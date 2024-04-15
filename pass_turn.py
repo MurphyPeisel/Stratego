@@ -15,12 +15,10 @@ DEFAULT_FONT_SIZE = 20
 class Pass_Turn(arcade.View):
 
     player_turn = 1
-    turn_pause = 0
+
 
     # This function Defines what the window will look like when called
     def on_show_view(self):
-
-        arcade.set_background_color(arcade.color.GRAY)
 
         self.manager = arcade.gui.UIManager()
         self.manager.enable()
