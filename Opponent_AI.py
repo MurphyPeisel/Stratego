@@ -68,7 +68,7 @@ class bot():
             if bot.selected != None:
                 if bot.are_moves_available(self, bot.selected, bot_pieces) == False:
                     bot.selected = None
-                    selected_num = random.randint(0, len(movable_pieces))
+                    selected_num = random.randint(0, len(movable_pieces)-1)
                     x = 0
         bot.make_move(self, bot_pieces, gameboard.Gameboard.army1)
 
