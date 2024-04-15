@@ -85,7 +85,6 @@ def check_orthogonal(piece1, piece2, pieces):
     lakes = [lake_piece_1,lake_piece_2,lake_piece_3,lake_piece_4,lake_piece_5,lake_piece_6,lake_piece_7,lake_piece_8]
     x_diff = piece1.posX - piece2.posX
     y_diff = piece1.posY - piece2.posY
-    print(f"diff : ({x_diff}, {y_diff})")
     if piece1.getType() == "Sct":
         # same column
         valid_move = True
