@@ -186,3 +186,7 @@ class Win(arcade.View):
                          width=SCREEN_WIDTH,
                          align="center",
                          font_name="Kenney Future")
+        if(Win.sound.is_playing(Win.media_player) == False):
+            Win.media_player.seek(0)
+            Win.media_player.play()
+            Win.playing = True
