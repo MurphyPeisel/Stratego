@@ -291,14 +291,10 @@ class Gameboard(arcade.View):
                         pass_turn.Pass_Turn.change_turn()
                 if is_valid_move and cell_occupant != None:
                     if cell_occupant.getType() != "Lke":
-                        if Piece.check_orthogonal(Gameboard.selected, cell_occupant, Gameboard.total_pieces):
-                            draw_piece.combat(Gameboard.selected, cell_occupant, click, Gameboard.graveyard1, Gameboard.graveyard2, Gameboard.army1, Gameboard.army2)
+                        is_orthogonal = Piece.check_orthogonal(Gameboard.selected, cell_occupant, Gameboard.total_pieces)
+                        if is_orthogonal:
                             if cell_occupant.getType() == "Flg":
                                 self.window.show_view(win.Win(self))
-                                self.window.show_view(esc_menu.Escape(self))
-
-                            if Gameboard.AI == 0:
-                                pass_turn.Pass_Turn.turn_screen(self)
                             else:
                                 Gameboard.text.append(draw_piece.combat(Gameboard.selected, cell_occupant, click, Gameboard.graveyard1, Gameboard.graveyard2, Gameboard.army1, Gameboard.army2)) #p1_pieces/p2_pieces = Temp Variables
                                 Gameboard.text_index = len(Gameboard.text)-1
@@ -307,7 +303,6 @@ class Gameboard(arcade.View):
                                     # pass_turn.Pass_Turn.turn_pause = time.time()
                                     Gameboard.turn_screen(self)
                                 else:
-
                                     pass_turn.Pass_Turn.change_turn()
                     Gameboard.selected = None
             else:
