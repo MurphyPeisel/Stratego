@@ -238,7 +238,6 @@ def select_piece(piece, click, player_turn):
     
     if (coords[0] == hold[0] and coords[1] == hold[1]):
         if piece.getType() == "Bom" or piece.getType() == "Flg" or piece.getType() == "Lke" or piece.getPlayer() != player_turn:
-            print(f"{piece.getType()} is not selectable. Select another piece.")
             return False
         else:
             return True
