@@ -295,7 +295,6 @@ class Gameboard(arcade.View):
                             draw_piece.combat(Gameboard.selected, cell_occupant, click, Gameboard.graveyard1, Gameboard.graveyard2, Gameboard.army1, Gameboard.army2)
                             if cell_occupant.getType() == "Flg":
                                 self.window.show_view(win.Win(self))
-                                self.window.show_view(esc_menu.Escape(self))
 
                             if Gameboard.AI == 0:
                                 pass_turn.Pass_Turn.turn_screen(self)
