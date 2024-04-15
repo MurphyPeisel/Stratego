@@ -21,8 +21,6 @@ def generateBot(ai):
     allAI = ai
     gameboard.Gameboard.changeAI(ai)
 
-
-
 class bot():
     """
     bot class that controls the moves and pieces of the computers moves if the user selects to play against the computer
@@ -341,7 +339,7 @@ class bot():
                 SctMovement.append("up")
             if len(downMovementList) != 0:
                 SctMovement.append("down")
-            # print(SctMovement)
+            # print()
 
             bot_move = random.randint(0, len(SctMovement) - 1)
 

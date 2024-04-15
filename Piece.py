@@ -121,13 +121,11 @@ def check_orthogonal(piece1, piece2, pieces):
                         if lake.getPosition() == [cell, piece1.posY]:
                             valid_move = False
         else:
-            print("can't target diagonally")
             return False              
 
         if valid_move:
             return True
         else:
-            print("piece(s) inbetween, no jumping")
             return False
         
     elif (abs(x_diff) == 0 and abs(y_diff) == 1) or (abs(x_diff) == 1 and (y_diff) == 0):

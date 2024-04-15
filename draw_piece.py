@@ -239,7 +239,6 @@ def select_piece(piece, click, player_turn):
     if (coords[0] == hold[0] and coords[1] == hold[1]):
         if piece.getType() == "Bom" or piece.getType() == "Flg" or piece.getType() == "Lke" or piece.getPlayer() != player_turn:
             print(f"{piece.getType()} is not selectable. Select another piece.")
-            print(f"turn: {player_turn}, player: {piece.getPlayer()}")
             return False
         else:
             return True
@@ -276,7 +275,7 @@ def place_piece(piece, click, graveyard, army):
         try:
             piece.setPosition(coords[0], coords[1])
         except Exception:
-            print(click)
+            pass
         army.append(piece)
         graveyard.remove(piece)
     else:
@@ -431,9 +430,8 @@ def is_move_available(pieces, piece, click):
                             # Moves the x coordinate over to the next piece over to scan
                             x = x + 50
                             if is_piece_scan(pieces, [x, y]) == False:
-                                print("for right movement check x " + str(x) + " check y " + str(y))
+                                pass
                             else:
-                                print("for right movement jump detected at " + str(x) + ", " + str(y))
                                 return (False, None)
                     # This tests for if the user attempts leftward movement of the piece
                     elif x > locx_tester and loc_x != piece_loc_x:
@@ -447,9 +445,8 @@ def is_move_available(pieces, piece, click):
                             # for each loop through
                             x = x - 50
                             if is_piece_scan(pieces, [x, y]) == False:
-                                print("for left movement check x " + str(x) + " check y " + str(y))
+                                pass
                             else:
-                                print("for left movement jump detected at " + str(x) + ", " + str(y))
                                 return (False, None)
                     # This section of the function tests for upward movement of the piece selected
                     elif y < locy_tester and loc_y != piece_loc_y:
@@ -460,9 +457,8 @@ def is_move_available(pieces, piece, click):
                             # the selected piece
                             y = y + 50
                             if is_piece_scan(pieces, [x, y]) == False:
-                                print("for up movement check x " + str(x) + " check y " + str(y))
+                                pass
                             else:
-                                print("for up movement jump detected at " + str(x) + ", " + str(y))
                                 return (False, None)
                     # This section of the function tests for downward movement of the selected piece
                     elif y > locy_tester and loc_y != piece_loc_y:
@@ -474,9 +470,8 @@ def is_move_available(pieces, piece, click):
                         while y > locy_tester:
                             y = y - 50
                             if is_piece_scan(pieces, [x, y]) == False:
-                                print("for up movement check x " + str(x) + " check y " + str(y))
+                                pass
                             else:
-                                print("for up movement jump detected at " + str(x) + ", " + str(y))
                                 return (False, None)
 
                     return (True, None)
@@ -529,7 +524,6 @@ def move_to_graveyard(army, piece, graveyard):
     piece.setPosition(-1, -1)
     army.remove(piece)
     graveyard.append(piece)
-    print(f"{graveyard[0].getType()} moved to graveyard")
     Gameboard.selected = None
     
 

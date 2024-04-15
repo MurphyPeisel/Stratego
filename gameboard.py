@@ -224,7 +224,6 @@ class Gameboard(arcade.View):
                     if Gameboard.AI != AI_OFF:
                         ai_layout.gen_layout(1, Gameboard.graveyard2, Gameboard.army2)
                         pass_turn.Pass_Turn.change_turn()
-                        print(f"Done! {Gameboard.AI}")
                     else: 
                         pass_turn.Pass_Turn.player_turn = PLAYER_TWO
                         draw_piece.show_available_placements(Gameboard.total_pieces, 2)
@@ -235,7 +234,6 @@ class Gameboard(arcade.View):
                     pass_turn.Pass_Turn.player_turn = PLAYER_ONE
                 if len(Gameboard.graveyard1) == 0 and len(Gameboard.graveyard2) == 0:
                     Gameboard.game_state = "play"
-                    print(Gameboard.game_state)
              
     def on_mouse_press(self, x, y, button, key_modifiers):
         click = (x,y)
@@ -311,7 +309,6 @@ class Gameboard(arcade.View):
 
             if (Gameboard.AI == EASY or Gameboard.AI == MEDIUM or Gameboard.AI == HARD) and (pass_turn.Pass_Turn.player_turn == PLAYER_TWO):
                 Opponent_AI.bot.select_piece(self, Gameboard.army2)
-                print("AI Moved")
                 pass_turn.Pass_Turn.change_turn()
                 
     def setAttack(self, loc, x, y, num, color):
@@ -364,8 +361,7 @@ class Gameboard(arcade.View):
                     Gameboard.highlight_index = Gameboard.highlight_index - GRAVEYARD_CELLS_WIDE
 
             #Place a full army by hitting the R key.
-            if (key == arcade.key.R):
-                print(len(yard))
+            if key == arcade.key.R:
                 if pass_turn.Pass_Turn.player_turn == 1 and len(Gameboard.graveyard1) == NUM_PIECES:
                     for i in range(NUM_START_ROWS):
                         for x in range (COLUMN_COUNT):
