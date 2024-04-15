@@ -2,7 +2,7 @@ from constants import *
 import arcade
 
 class Piece():
-    type = None   #Piece types, Lake, Nothing, etc.
+    type = None
     power = None
     posX = None
     posY = None
@@ -17,7 +17,6 @@ class Piece():
         self.posY = y
         self.player = player
         self.hidden = True
-
     
     def getType(self):
         return self.type
@@ -48,37 +47,7 @@ class Piece():
                          font_name = "Kenney Future")
         
 
-column = [Piece] * 10
-
-#During Gameplay
-def movePiece(piece, x,y):
-    #CHECK IF LAKE
-    if(column[y][x] == "[ ]"):
-        return "LAKE"
-    piece.setPosition(x, y)
-    #CHECK IF POSITION IS OCCUPIED
-    if(column[y][x] == "P"):
-        #reveal enemy peice
-        "hooray"
-        #compare peice powers
-        
-        #capture the peice with the lower power
-
-
-#SETUP
-def placePiece(P1):
-    
-    x = P1.getPosition()[0]
-    y = P1.getPosition()[1]
-    if(column[y][x] == "[ ]"):
-        return "Position not Available: LAKE"
-    elif(column[y][x] != "---"):
-        return "Position not Available: Taken"
-    else:
-        column[y][x] = P1.getType()
-        return f"{P1.getType()} Placed Succesfully"
-
-def is_piece_scan2(pieces, loc):
+def is_piece_scan_local(pieces, loc):
     """
     Checks if there is a piece at the location of a provided coordinate set, this is to be used inside the show
     available moves function so that it only returns the necessary values.
@@ -123,14 +92,14 @@ def check_orthogonal(piece1, piece2, pieces):
         if x_diff == 0 and valid_move:
             if y_diff > 0:
                 for cell in range(piece2.posY - 1, piece1.posY):
-                    if is_piece_scan2(pieces, (piece1.posX, cell)) != False:
+                    if is_piece_scan_local(pieces, (piece1.posX, cell)) != False:
                             valid_move = False
                     for lake in lakes:
                         if lake.getPosition() == [piece1.posX, cell]:
                             valid_move = False
             else:
                 for cell in range(piece1.posY+1, piece2.posY):
-                    if is_piece_scan2(pieces, (piece1.posX, cell)) != False:
+                    if is_piece_scan_local(pieces, (piece1.posX, cell)) != False:
                         valid_move = False
                     for lake in lakes:
                         if lake.getPosition() == [piece1.posX, cell]:
@@ -139,14 +108,14 @@ def check_orthogonal(piece1, piece2, pieces):
         elif y_diff == 0 and valid_move:
             if x_diff > 0:
                 for cell in range(piece2.posX + 1, piece1.posX):
-                    if is_piece_scan2(pieces, (cell, piece1.posY)) != False:
+                    if is_piece_scan_local(pieces, (cell, piece1.posY)) != False:
                         valid_move = False
                     for lake in lakes:
                         if lake.getPosition() == [cell, piece1.posY]:
                             valid_move = False
             else:
                 for cell in range(piece1.posX+1, piece2.posX):
-                    if is_piece_scan2(pieces, (cell, piece1.posY)) != False:
+                    if is_piece_scan_local(pieces, (cell, piece1.posY)) != False:
                         valid_move = False
                     for lake in lakes:
                         if lake.getPosition() == [cell, piece1.posY]:
@@ -166,42 +135,17 @@ def check_orthogonal(piece1, piece2, pieces):
     else:
         return False
 
-#Creates a 10x10 Grid
-def createGrid():
-    for i in range(10):
-        row = [Piece] * 10
-        for j in range(10):
-            row[j] = "---"
-        column[i] = row
-
-        
-    column[4][2] = "[ ]"
-    column[4][3] = "[ ]"
-    column[5][2] = "[ ]"
-    column[5][3] = "[ ]"
- 
-
-    column[4][6] = "[ ]"
-    column[4][7] = "[ ]"
-    column[5][6] = "[ ]"
-    column[5][7] = "[ ]"
-
-
-def printGrid():    
-    for i in range(10):
-        print(column[i])
-        
 
 #Initialize 40 pieces per player
 def initPieces(player):
     p1 = []
     #FLAG
-    Flag = Piece("Flg", FLAG_POWER, START_X, START_Y, player)
+    Flag = Piece("Flg", NO_POWER, START_X, START_Y, player)
     p1.append(Flag)
   
-    #MARSHALL
-    Marshall = Piece("Msh", MARSHALL_POWER, START_X, START_Y, player) 
-    p1.append(Marshall)
+    #MARSHAL
+    Marshal = Piece("Msh", MARSHAL_POWER, START_X, START_Y, player) 
+    p1.append(Marshal)
     
     #GENERAL
     General = Piece("Gen", GENERAL_POWER,START_X,START_Y, player)

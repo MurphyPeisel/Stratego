@@ -18,6 +18,12 @@ DEFAULT_FONT_SIZE = 20
 # Creates a win screen that identifies the user that won the round and provides three options to move forward
 # The options are to replay with the same settings, return to game settings menu and to return to main menu
 class Win(arcade.View):
+    #Initialize playback for winscreen
+    level = 4
+    sound = arcade.load_sound("Win.wav",False)
+    media_player = arcade.play_sound(sound, level, 0, looping=True)
+    sound.stop(media_player)
+    playing = False
     
     def __init__(self, menu_instance):
         super().__init__()
@@ -59,7 +65,10 @@ class Win(arcade.View):
         gameboard.Gameboard.set_is_menu(gameboard.Gameboard, False)
         self.manager.disable()
         board_view = gameboard.Gameboard()
-        self.window.show_view(board_view)
+        if Win.sound.is_playing(Win.media_player) or Win.playing == True:
+                Win.sound.stop(Win.media_player)
+                Win.playing = False
+        
         gameboard.Gameboard.game_state = "setup"
         lake_piece_1 = Piece.Piece("Lke", 0, 2, 4, 3)
         lake_piece_2 = Piece.Piece("Lke", 0, 3, 4, 3)
@@ -85,16 +94,31 @@ class Win(arcade.View):
         gameboard.Gameboard.AttackLeft = None
         gameboard.Gameboard.AttackAbove = None
         gameboard.Gameboard.AttackBelow = None
+        
+        self.window.show_view(board_view)
+
 
     def on_game_settings_click(self, event):
         self.manager.disable()
         board_view = game_settings.Game_Settings()
+        # stop playing sound
+        if Win.sound.is_playing(Win.media_player) or Win.playing == True:
+                Win.sound.stop(Win.media_player)
+                Win.playing = False
+                menu.Menu.media_player.seek(0)
+                menu.Menu.media_player.play()
+                menu.Menu.playing = True
         self.window.show_view(board_view)
+        
 
     def on_exit_click(self, event):
         self.manager.disable()
         board_view = menu.Menu()
+        if Win.sound.is_playing(Win.media_player) or Win.playing == True:
+                Win.sound.stop(Win.media_player)
+                Win.playing = False
         self.window.show_view(board_view)
+        
     
 
     # This function draws all that is defined in show view to allow the window to appear. The text will show who won
@@ -113,3 +137,8 @@ class Win(arcade.View):
                              width=SCREEN_WIDTH,
                              align="center",
                              font_name="Kenney Future")
+            #   Play sound for the win screen
+            if Win.sound.is_playing(Win.media_player) == False:
+                Win.media_player.seek(0)
+                Win.media_player.play()
+                Win.playing = True

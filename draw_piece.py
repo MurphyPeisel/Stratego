@@ -3,57 +3,51 @@ from Piece import *
 from constants import *
 import game_settings
 import pass_turn
+import time
 import gameboard as Gameboard
 
-GRAVEYARD_1_LEFT = 5
-GRAVEYARD_1_RIGHT = 195
-GRAVEYARD_2_LEFT = 705
-GRAVEYARD_2_RIGHT = 895
-GRAVEYARD_BOTTOM = 105
-GRAVEYARD_TOP = 595
-YARD_MARGIN = 50
 
 
 def draw_start(piece, army, index):
     yard_left = 0
-    if army == 1:
+    if army == PLAYER_ONE:
         yard_left = GRAVEYARD_1_LEFT
         color = arcade.color.BLUE
     else:
         yard_left = GRAVEYARD_2_LEFT
         color = arcade.color.RED
    
-    row = index // 4
-    point_list = ((yard_left+YARD_MARGIN*(index - 4*row),GRAVEYARD_TOP - YARD_MARGIN*row), 
-                  (yard_left+YARD_MARGIN*(index - 4*row), (GRAVEYARD_TOP- YARD_MARGIN*row) - 40),
-                  (yard_left+(YARD_MARGIN * (index-4*row)) + 40, (GRAVEYARD_TOP - YARD_MARGIN*row)-40),
-                  (yard_left+(YARD_MARGIN * (index-4*row)) + 40, GRAVEYARD_TOP - YARD_MARGIN*row))
+    row = index // GRAVEYARD_CELLS_WIDE
+    point_list = ((yard_left+YARD_MARGIN*(index - GRAVEYARD_CELLS_WIDE*row),GRAVEYARD_TOP - YARD_MARGIN*row), 
+                  (yard_left+YARD_MARGIN*(index - GRAVEYARD_CELLS_WIDE*row), (GRAVEYARD_TOP - YARD_MARGIN*row) - 40),
+                  (yard_left+(YARD_MARGIN * (index-GRAVEYARD_CELLS_WIDE*row)) + 40, (GRAVEYARD_TOP - YARD_MARGIN*row)-40),
+                  (yard_left+(YARD_MARGIN * (index-GRAVEYARD_CELLS_WIDE*row)) + 40, GRAVEYARD_TOP - YARD_MARGIN*row))
     arcade.draw_polygon_filled(point_list, color)
 
     if piece.getType() == "Flg":
-        arcade.draw_text("F", yard_left+YARD_MARGIN*(index-4*row)+13, GRID_TOP-YARD_MARGIN*row-33, arcade.color.WHITE, 20, 1, "center", "Kenney Blocks Font", bold=True)
+        arcade.draw_text("F", yard_left+YARD_MARGIN*(index-GRAVEYARD_CELLS_WIDE*row)+13, GRID_TOP-YARD_MARGIN*row-33, arcade.color.WHITE, 20, 1, "center", "Kenney Pixel Square Font", bold=True)
     elif piece.getType() == "Msh":
-        arcade.draw_text("10", yard_left+YARD_MARGIN*(index-4*row)+5, GRID_TOP-YARD_MARGIN*row-33, arcade.color.WHITE, 20, 1, "center", "Kenney Rocket Square Font", bold=True)
+        arcade.draw_text("10", yard_left+YARD_MARGIN*(index-GRAVEYARD_CELLS_WIDE*row)+5, GRID_TOP-YARD_MARGIN*row-33, arcade.color.WHITE, 20, 1, "center", "Kenney Pixel Square Font", bold=True)
     elif piece.getType() == "Gen":
-        arcade.draw_text("9", yard_left+YARD_MARGIN*(index-4*row)+12, GRID_TOP-YARD_MARGIN*row-33, arcade.color.WHITE, 20, 1, "center", "Kenney Pixel Square Font", bold=True)
+        arcade.draw_text("9", yard_left+YARD_MARGIN*(index-GRAVEYARD_CELLS_WIDE*row)+12, GRID_TOP-YARD_MARGIN*row-33, arcade.color.WHITE, 20, 1, "center", "Kenney Pixel Square Font", bold=True)
     if piece.getType() == "Col":
-        arcade.draw_text("8", yard_left+YARD_MARGIN*(index-4*row)+12, GRID_TOP-YARD_MARGIN*row-33, arcade.color.WHITE, 20, 1, "center", "Kenney Pixel Square Font", bold=True)
+        arcade.draw_text("8", yard_left+YARD_MARGIN*(index-GRAVEYARD_CELLS_WIDE*row)+12, GRID_TOP-YARD_MARGIN*row-33, arcade.color.WHITE, 20, 1, "center", "Kenney Pixel Square Font", bold=True)
     if piece.getType() == "Maj":
-        arcade.draw_text("7", yard_left+YARD_MARGIN*(index-4*row)+12, GRID_TOP-YARD_MARGIN*row-33, arcade.color.WHITE, 20, 1, "center", "Kenney Pixel Square Font", bold=True)
+        arcade.draw_text("7", yard_left+YARD_MARGIN*(index-GRAVEYARD_CELLS_WIDE*row)+12, GRID_TOP-YARD_MARGIN*row-33, arcade.color.WHITE, 20, 1, "center", "Kenney Pixel Square Font", bold=True)
     if piece.getType() == "Cap":
-        arcade.draw_text("6", yard_left+YARD_MARGIN*(index-4*row)+12, GRID_TOP-YARD_MARGIN*row-33, arcade.color.WHITE, 20, 1, "center", "Kenney Pixel Square Font", bold=True)
+        arcade.draw_text("6", yard_left+YARD_MARGIN*(index-GRAVEYARD_CELLS_WIDE*row)+12, GRID_TOP-YARD_MARGIN*row-33, arcade.color.WHITE, 20, 1, "center", "Kenney Pixel Square Font", bold=True)
     if piece.getType() == "Ltn":
-        arcade.draw_text("5", yard_left+YARD_MARGIN*(index-4*row)+12, GRID_TOP-YARD_MARGIN*row-33, arcade.color.WHITE, 20, 1, "center", "Kenney Pixel Square Font", bold=True)
+        arcade.draw_text("5", yard_left+YARD_MARGIN*(index-GRAVEYARD_CELLS_WIDE*row)+12, GRID_TOP-YARD_MARGIN*row-33, arcade.color.WHITE, 20, 1, "center", "Kenney Pixel Square Font", bold=True)
     if piece.getType() == "Sgt":
-        arcade.draw_text("4", yard_left+YARD_MARGIN*(index-4*row)+12, GRID_TOP-YARD_MARGIN*row-33, arcade.color.WHITE, 20, 1, "center", "Kenney Pixel Square Font", bold=True)
+        arcade.draw_text("4", yard_left+YARD_MARGIN*(index-GRAVEYARD_CELLS_WIDE*row)+12, GRID_TOP-YARD_MARGIN*row-33, arcade.color.WHITE, 20, 1, "center", "Kenney Pixel Square Font", bold=True)
     if piece.getType() == "Min":
-        arcade.draw_text("3", yard_left+YARD_MARGIN*(index-4*row)+12, GRID_TOP-YARD_MARGIN*row-33, arcade.color.WHITE, 20, 1, "center", "Kenney Pixel Square Font", bold=True)
+        arcade.draw_text("3", yard_left+YARD_MARGIN*(index-GRAVEYARD_CELLS_WIDE*row)+12, GRID_TOP-YARD_MARGIN*row-33, arcade.color.WHITE, 20, 1, "center", "Kenney Pixel Square Font", bold=True)
     elif piece.getType() == "Sct":
-        arcade.draw_text("2", yard_left+YARD_MARGIN*(index-4*row)+12, GRID_TOP-YARD_MARGIN*row-33, arcade.color.WHITE, 20, 1, "center", "Kenney Pixel Square Font", bold=True)
+        arcade.draw_text("2", yard_left+YARD_MARGIN*(index-GRAVEYARD_CELLS_WIDE*row)+12, GRID_TOP-YARD_MARGIN*row-33, arcade.color.WHITE, 20, 1, "center", "Kenney Pixel Square Font", bold=True)
     elif piece.getType() == "Spy":
-        arcade.draw_text("S", yard_left+YARD_MARGIN*(index-4*row)+13, GRID_TOP-YARD_MARGIN*row-33, arcade.color.WHITE, 20, 1, "center", "Kenney Pixel Square Font", bold=True)
+        arcade.draw_text("S", yard_left+YARD_MARGIN*(index-GRAVEYARD_CELLS_WIDE*row)+13, GRID_TOP-YARD_MARGIN*row-33, arcade.color.WHITE, 20, 1, "center", "Kenney Pixel Square Font", bold=True)
     elif piece.getType() == "Bom":
-        arcade.draw_text("B", yard_left+YARD_MARGIN*(index-4*row)+13, GRID_TOP-YARD_MARGIN*row-33, arcade.color.WHITE, 20, 1, "center", "Kenney Pixel Square Font", bold=True)
+        arcade.draw_text("B", yard_left+YARD_MARGIN*(index-GRAVEYARD_CELLS_WIDE*row)+13, GRID_TOP-YARD_MARGIN*row-33, arcade.color.WHITE, 20, 1, "center", "Kenney Pixel Square Font", bold=True)
 
     if piece.getType() == "Lke":
         arcade.draw_polygon_filled(point_list, arcade.color.BLACK)
@@ -71,12 +65,12 @@ def add_highlight(army, index):
     else:
         yard_left = GRAVEYARD_2_LEFT
     
-    row = index //4
+    row = index // GRAVEYARD_CELLS_WIDE
     
-    point_list = ((yard_left+YARD_MARGIN*(index - 4*row),GRAVEYARD_TOP - YARD_MARGIN*row), 
-                  (yard_left+YARD_MARGIN*(index - 4*row), (GRAVEYARD_TOP- YARD_MARGIN*row) - 40),
-                  (yard_left+(YARD_MARGIN * (index-4*row)) + 40, (GRAVEYARD_TOP - YARD_MARGIN*row)-40),
-                  (yard_left+(YARD_MARGIN * (index-4*row)) + 40, GRAVEYARD_TOP - YARD_MARGIN*row))
+    point_list = ((yard_left+YARD_MARGIN*(index - GRAVEYARD_CELLS_WIDE*row),GRAVEYARD_TOP - YARD_MARGIN*row), 
+                  (yard_left+YARD_MARGIN*(index - GRAVEYARD_CELLS_WIDE*row), (GRAVEYARD_TOP- YARD_MARGIN*row) - 40),
+                  (yard_left+(YARD_MARGIN * (index-GRAVEYARD_CELLS_WIDE*row)) + 40, (GRAVEYARD_TOP - YARD_MARGIN*row)-40),
+                  (yard_left+(YARD_MARGIN * (index-GRAVEYARD_CELLS_WIDE*row)) + 40, GRAVEYARD_TOP - YARD_MARGIN*row))
     arcade.draw_polygon_outline(point_list, arcade.color.GREEN, 4)
 
 
@@ -216,6 +210,19 @@ def is_piece_scan(pieces, loc):
             y>= BOARD_BOTTOM + BOARD_MARGIN*piecey):
             return True
     return False
+
+def select_yard_piece(piece, army, click, index):
+    yard_left = 0
+    if army == 1:
+        yard_left = GRAVEYARD_1_LEFT
+    else:
+        yard_left = GRAVEYARD_2_LEFT    
+    
+    row = index // GRAVEYARD_CELLS_WIDE
+
+    x, y = click
+    
+    
 
 def select_piece(piece, click, player_turn):
     """
@@ -472,7 +479,7 @@ def is_move_available(pieces, piece, click):
                                 return (False, None)
 
                     return (True, None)
-                
+
             else:
                 if loc_x != piece_loc_x and loc_y != piece_loc_y:
                     print("invalid please try again")
@@ -492,7 +499,6 @@ def is_move_available(pieces, piece, click):
                 else:
                     return (True, None)
 
-
 def get_coordinates(click):
     """ 
     Converts cursor click to coordinates on grid
@@ -507,14 +513,19 @@ def get_coordinates(click):
         loc_x = abs(x - GRID_LEFT) // CELL_WIDTH
         coordinates = (loc_x, loc_y)
         return coordinates
-    
     else:
         return click
 
     
 def move_to_graveyard(army, piece, graveyard):
+    """ 
+    Sends a piece to its graveyard
+    :param army: List of active pieces
+    :param piece: Piece 
+    :param graveyard: List of inactive pieces
+    """
     piece.defeated = True
-    piece.setPosition(-1,-1)
+    piece.setPosition(-1, -1)
     army.remove(piece)
     graveyard.append(piece)
     print(f"{graveyard[0].getType()} moved to graveyard")
@@ -535,95 +546,125 @@ def move_piece(piece, click):
         piece.setPosition(loc_x, loc_y)
         Gameboard.Gameboard.resetAttack(Gameboard)
 
+def convert_piece_type(piece):
+    """ 
+    Converts piece short name to long name
+    :param piece: Piece 
+    :return: Piece long name
+    :rtype: String
+    """
+    if piece.getType() == "Flg":
+        return "FLAG"
+    elif piece.getType() == "Msh":
+        return "MARSHALL"
+    elif piece.getType() == "Gen":
+        return "GENERAL"
+    if piece.getType() == "Col":
+        return "COLONEL"
+    if piece.getType() == "Maj":
+        return "MAJOR"
+    if piece.getType() == "Cap":
+        return "CAPTAIN"
+    if piece.getType() == "Ltn":
+        return "LIEUTENANT"
+    if piece.getType() == "Sgt":
+        return "SERGEANT"
+    if piece.getType() == "Min":
+        return "MINER"
+    elif piece.getType() == "Sct":
+        return "SCOUT"
+    elif piece.getType() == "Spy":
+        return "SPY"
+    elif piece.getType() == "Bom":
+        return "BOMB"
 
 def combat(attacker, defender, click, graveyard1, graveyard2, army1, army2):
-    sound = arcade.load_sound("Death.wav",False)
-    
     """ 
     Combat between two pieces. 
     :param attacker: Attacking piece
     :param defender: Defending piece
     :param click: Cursor click location (x, y)
     """
-    
-    # temp debug code
-    print("COMBAT")
-    print(f"attacker located at {attacker.getPosition()}, type: {attacker.getType()}, power: {attacker.getPower()}")
-    print(f"defender located at {defender.getPosition()}, type: {defender.getType()}, power: {defender.getPower()}")
 
+    if Gameboard.Gameboard.AI == AI_OFF:
+        opponent = "PLAYER 2"
+    else:
+        opponent = "COMPUTER"
+    sound = arcade.load_sound("Death.wav",False)
+    
+    output = ""
+    
     # SPECIAL CASE: Miner vs. Bomb
     if attacker.getType() == "Min" and defender.getType() == "Bom": #HISS SFX
-        print("Miner defuses bomb")
-        if defender.getPlayer() == 1:
+        if defender.getPlayer() == PLAYER_ONE:
             move_to_graveyard(army1, defender, graveyard1)
+            output = f"{opponent}'S MINER DEFUSES PLAYER 1'S BOMB"
         else:
             move_to_graveyard(army2, defender, graveyard2)
+            output = f"{opponent}'S MINER DEFUSES PLAYER 2'S BOMB"
         move_piece(attacker, click)
 
     # SPECIAL CASE: Non-miner attacks bomb
     elif defender.getType() == "Bom":
-        print("Bomb explodes")
-        if attacker.getPlayer() == 1:
+        if attacker.getPlayer() == PLAYER_ONE:
             move_to_graveyard(army1, attacker, graveyard1)
-            arcade.play_sound(sound, 4, 0)
-
+            arcade.play_sound(sound, 3, 0)
+            output = f"BOMB EXPLODES, PLAYER 1'S {convert_piece_type(attacker)} DEFEATED"
         else:
             move_to_graveyard(army2, attacker, graveyard2)
-            arcade.play_sound(sound, 4, 0)
-
+            arcade.play_sound(sound, 3, 0)
+            output = f"BOMB EXPLODES, {opponent}'S {convert_piece_type(attacker)} DEFEATED"
 
     # SPECIAL CASE: Spy is attacking Marshall
     elif attacker.getType() == "Spy" and defender.getType() == "Msh":
         # spy attacks msh, msh defeated
-        print("SPY wins: attacked Marshall")
-        if defender.getPlayer() == 1:
+        if defender.getPlayer() == PLAYER_ONE:
             move_to_graveyard(army1, defender, graveyard1)
-            arcade.play_sound(sound, 4, 0)
-
+            arcade.play_sound(sound, 3, 0)
+            output = f"{opponent}'S SPY DEFEATS PLAYER 1'S MARSHALL"
         else:
             move_to_graveyard(army2, defender, graveyard2)
-            arcade.play_sound(sound, 4, 0)
-
+            arcade.play_sound(sound, 3, 0)
+            output =  f"PLAYER 1'S SPY DEFEATS {opponent}'S MARSHALL"
         move_piece(attacker, click) 
 
     elif attacker.getPower() > defender.getPower():
         # attacking piece wins and takes defending piece's place
-        print("attacker wins")
-        if defender.getPlayer() == 1:
+        if defender.getPlayer() == PLAYER_ONE:
             move_to_graveyard(army1, defender, graveyard1)
-            arcade.play_sound(sound, 4, 0)
-
+            arcade.play_sound(sound, 3, 0)
+            output = f"{opponent}'S {convert_piece_type(attacker)} DEFEATS PLAYER 1'S {convert_piece_type(defender)}"
         else:
             move_to_graveyard(army2, defender, graveyard2)
-            arcade.play_sound(sound, 4, 0)
-
+            arcade.play_sound(sound, 3, 0)
+            output = f"PLAYER 1'S {convert_piece_type(attacker)} DEFEATS {opponent}'S {convert_piece_type(defender)}"
         move_piece(attacker, click)
 
     elif attacker.getPower() < defender.getPower():
         # defending piece wins
-        print("defender wins")
-        if attacker.getPlayer() == 1:
+        if attacker.getPlayer() == PLAYER_ONE:
             move_to_graveyard(army1, attacker, graveyard1)
-            arcade.play_sound(sound, 4, 0)
-
+            arcade.play_sound(sound, 3, 0)
+            output = f"{opponent}'S {convert_piece_type(defender)} DEFEATS PLAYERS 1'S {convert_piece_type(attacker)}"
         else:
             move_to_graveyard(army2, attacker, graveyard2)
-            arcade.play_sound(sound, 4, 0)
-
+            arcade.play_sound(sound, 3, 0)
+            output = f"PLAYER 1'S {convert_piece_type(defender)} DEFEATS {opponent}'S {convert_piece_type(attacker)}"
     else:
         # attacker and defender have same power, both sent to graveyards
-        print("attacker and defender defeated")
-        if attacker.getPlayer() == 1:
+        if attacker.getPlayer() == PLAYER_ONE:
             move_to_graveyard(army1, attacker, graveyard1)
             move_to_graveyard(army2, defender, graveyard2)
-            arcade.play_sound(sound, 4, 0)
-            #time.sleep(.2)
-
-            arcade.play_sound(sound, 4, 0)
-
+            arcade.play_sound(sound, 3, 0)
+            time.sleep(.2)
+            arcade.play_sound(sound, 3, 0)
+            output = f"{opponent}'S {convert_piece_type(defender)} DEFEATED. PLAYER 1'S {convert_piece_type(attacker)} DEFEATED"
         else:
             move_to_graveyard(army1, defender, graveyard1)
             move_to_graveyard(army2, attacker, graveyard2)
-            arcade.play_sound(sound, 4, 0)
-            #time.sleep(.2)
-            arcade.play_sound(sound, 4, 0)
+            arcade.play_sound(sound, 3, 0)
+            time.sleep(.2)
+            arcade.play_sound(sound, 3, 0)
+            output = f"PLAYER 1'S {convert_piece_type(defender)} DEFEATED. {opponent}'S {convert_piece_type(attacker)} DEFEATED"
+            
+    return output

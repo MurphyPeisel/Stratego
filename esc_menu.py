@@ -111,12 +111,19 @@ class Escape(arcade.View):
         gameboard.Gameboard.AttackLeft = None
         gameboard.Gameboard.AttackAbove = None
         gameboard.Gameboard.AttackBelow = None
-
+        gameboard.Gameboard.text_index = 0
+        gameboard.Gameboard.text = [""]
 
         
 
         gameboard.Gameboard.total_pieces = gameboard.Gameboard.army1 + gameboard.Gameboard.army2
-        self.window.show_view(menu.Menu())
+        board_view = menu.Menu()
+        #   Stop playing sound from gameboard
+        if gameboard.Gameboard.sound.is_playing(gameboard.Gameboard.media_player) or gameboard.Gameboard.playing == True:
+                gameboard.Gameboard.sound.stop(gameboard.Gameboard.media_player)
+                gameboard.Gameboard.playing = False
+                print("stopped gameboard music")
+        self.window.show_view(board_view)
     
     def on_click_resign(self, event):
         self.manager.disable()
@@ -150,8 +157,15 @@ class Escape(arcade.View):
         gameboard.Gameboard.AttackLeft = None
         gameboard.Gameboard.AttackAbove = None
         gameboard.Gameboard.AttackBelow = None
-        self.manager.disable()
-        self.window.show_view(win.Win(self))
+        gameboard.Gameboard.text_index = 0
+        gameboard.Gameboard.text = [""]
+        win_view = win.Win()
+        # stop playing sound from gameboard
+        if gameboard.Gameboard.sound.is_playing(gameboard.Gameboard.media_player) or gameboard.Gameboard.playing == True:
+                gameboard.Gameboard.sound.stop(gameboard.Gameboard.media_player)
+                gameboard.Gameboard.playing = False
+                print("stopped gameboard music")
+        self.window.show_view(win_view)
 
 
     # This function closes the program when the user hits the exit button

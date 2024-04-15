@@ -15,9 +15,9 @@ DEFAULT_FONT_SIZE = 20
 # This view is what is first displayed upon running main
 class Menu(arcade.View):
     last_screen = "menu"
-    Loop = 0
     sound = arcade.load_sound("Menu_Screen.wav",False)
-    media_player = arcade.play_sound(sound, 4, 0)
+    level = 4
+    media_player = arcade.play_sound(sound, level,0, looping= True)
     playing = False
 
     def on_show_view(self):
@@ -30,15 +30,9 @@ class Menu(arcade.View):
         gameboard.Gameboard.set_is_menu(gameboard.Gameboard, True)
         arcade.start_render()
         self.clear()
-        try:
-            if(Menu.sound.is_playing(Menu.media_player) == False):
-                    Menu.media_player.seek(0)
-                    Menu.media_player.loop(True)
-                    Menu.media_player.play()
-                    Menu.playing = True
-
-        except Exception:
-            Menu.media_player = arcade.play_sound(Menu.sound, 4, 0)
+        if(Menu.sound.is_playing(Menu.media_player) == False):
+            Menu.media_player.seek(0)
+            Menu.media_player.play()
             Menu.playing = True
 
 
@@ -122,7 +116,7 @@ class Menu(arcade.View):
             arcade.exit()
 
     # Listening for ESC menu call and opens that menu
-    def on_key_press(self, key):
+    def on_key_press(self, key, key_modifiers):
         if(key == arcade.key.ESCAPE):
             board_view = esc_menu.Escape(self)
             self.window.show_view(board_view)
