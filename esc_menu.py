@@ -145,7 +145,7 @@ class Escape(arcade.View):
                 gameboard.Gameboard.sound.stop(gameboard.Gameboard.media_player)
                 gameboard.Gameboard.playing = False
                 print("stopped gameboard music")
-        self.window.show_view(win_view)            
+        self.window.show_view(win.Win(self))            
 
     # This function closes the program when the user hits the exit button
     def on_click_exit(self, event):
