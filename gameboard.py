@@ -284,7 +284,11 @@ class Gameboard(arcade.View):
                     arcade.play_sound(place_sound, Gameboard.level, 0)
                     
                     Gameboard.selected = None
-                    Gameboard.text.append("PLAYER MOVES")
+                    if Gameboard.player_turn == 1:
+                        flip = 2
+                    else:
+                        flip = 1
+                    Gameboard.text.append(f"PLAYER {flip} MOVES")
                     Gameboard.text_index = len(Gameboard.text)-1
                     if Gameboard.AI == 0:
                         pass_turn.Pass_Turn.turn_screen(self)
