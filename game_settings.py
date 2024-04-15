@@ -231,7 +231,7 @@ class Players2(arcade.View):
         )
 
     def on_mouse_press(self, x, y, button, key_modifiers):
-        if x>=288 and x<=628 and y<= 324 and y>= 270:
+        if x>=310 and x<=590 and y<= 380 and y>= 332:
             if Computer.sight == False:
                 Computer.vision = " o Show Pieces o"
                 Computer.sight = True  
@@ -260,8 +260,6 @@ class Players2(arcade.View):
         self.manager.draw()
         start_x = 0
         start_y = SCREEN_HEIGHT - DEFAULT_LINE_HEIGHT * 1.5
-        #img = arcade.load_texture('SettingsMenu.png')
-        #arcade.draw_texture_rectangle (SCREEN_WIDTH*.5, SCREEN_HEIGHT*.5, SCREEN_WIDTH, SCREEN_HEIGHT, img) 
         arcade.draw_text(" Game Settings",
                          start_x,
                          start_y - (SCREEN_HEIGHT * .265),
@@ -272,7 +270,7 @@ class Players2(arcade.View):
                          font_name="Kenney Future")
         arcade.draw_text(" " + Computer.vision, 
                          start_x,
-                         start_y - (SCREEN_HEIGHT * .49),
+                         start_y - (SCREEN_HEIGHT * .4),
                          arcade.color.WHITE,
                          DEFAULT_FONT_SIZE * .7,
                          width=SCREEN_WIDTH,

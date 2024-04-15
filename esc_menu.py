@@ -15,6 +15,19 @@ SCREEN_HEIGHT = 700
 DEFAULT_LINE_HEIGHT = 45
 DEFAULT_FONT_SIZE = 20
 
+default_style = {
+            "font_color": arcade.color.WHITE,
+            "border_width": 2,
+            "border_color": arcade.color.BLACK,
+            "bg_color": arcade.color.GRAY_ASPARAGUS,
+            "font_name": "Kenney Future",
+
+            # used if button is pressed
+            "bg_color_pressed": arcade.color.WHITE,
+            "border_color_pressed": arcade.color.WHITE,  # also used when hovered
+            "font_color_pressed": arcade.color.BLACK,
+        }
+
 # A class to define the view and buttons for the escape menu which is pulled up whenever a user presses the escape
 # button
 class Escape(arcade.View):
@@ -29,30 +42,25 @@ class Escape(arcade.View):
     # Defines the view of the window when open
     def on_show_view(self):
 
-        arcade.set_background_color(arcade.color.GRAY)
-
         self.manager = arcade.gui.UIManager()
         self.manager.enable()
 
         self.v_box = arcade.gui.UIBoxLayout()
 
         # Button formatting
-        resume_button = arcade.gui.UIFlatButton(text="Resume", width=200)
-        self.v_box.add(resume_button.with_space_around(bottom=20))
-        rules_button = arcade.gui.UIFlatButton(text="Rules", width=200)
-        self.v_box.add(rules_button.with_space_around(bottom=20))
-        back_to_menu_button = arcade.gui.UIFlatButton(text="Return to Menu", width=200)
-        self.v_box.add(back_to_menu_button.with_space_around(bottom=20))
-        resign_button = arcade.gui.UIFlatButton(text="Resign", width=200)
-        self.v_box.add(resign_button.with_space_around(bottom=20))
-        exit_button = arcade.gui.UIFlatButton(text="Exit Program", width=200)
-        self.v_box.add(exit_button.with_space_around(bottom=20))
+        resume_button = arcade.gui.UIFlatButton(text="Resume", width=200, style= default_style)
+        self.v_box.add(resume_button.with_space_around(top = 100, bottom=10))
+        rules_button = arcade.gui.UIFlatButton(text="Rules", width=200, style= default_style)
+        self.v_box.add(rules_button.with_space_around(bottom=10))
+        back_to_menu_button = arcade.gui.UIFlatButton(text="Return to Menu", width=200, style= default_style)
+        self.v_box.add(back_to_menu_button.with_space_around(bottom=10))
+        resign_button = arcade.gui.UIFlatButton(text="Resign", width=200, style= default_style)
+        self.v_box.add(resign_button.with_space_around(bottom=10))
         
         resume_button.on_click = self.on_click_resume
         rules_button.on_click = self.on_click_rules
         back_to_menu_button.on_click = self.on_click_back
         resign_button.on_click = self.on_click_resign
-        exit_button.on_click = self.on_click_exit
 
         self.manager.add(
             arcade.gui.UIAnchorWidget(
@@ -150,7 +158,7 @@ class Escape(arcade.View):
         gameboard.Gameboard.graveyard1 = Piece.initPieces(1)
         gameboard.Gameboard.graveyard2 = Piece.initPieces(2)
         gameboard.Gameboard.AI = 0
-        gameboard.Gameboard.player_turn = 1
+        pass_turn.Pass_Turn.player_turn = 1
         gameboard.Gameboard.highlight_index = 0
         gameboard.Gameboard.selected = None
         gameboard.Gameboard.AttackRight = None
@@ -159,19 +167,12 @@ class Escape(arcade.View):
         gameboard.Gameboard.AttackBelow = None
         gameboard.Gameboard.text_index = 0
         gameboard.Gameboard.text = [""]
-        win_view = win.Win()
         # stop playing sound from gameboard
         if gameboard.Gameboard.sound.is_playing(gameboard.Gameboard.media_player) or gameboard.Gameboard.playing == True:
                 gameboard.Gameboard.sound.stop(gameboard.Gameboard.media_player)
                 gameboard.Gameboard.playing = False
                 print("stopped gameboard music")
-        self.window.show_view(win_view(self))
-
-
-    # This function closes the program when the user hits the exit button
-    def on_click_exit(self, event):
-        self.manager.disable()
-        arcade.exit()
+        self.window.show_view(win.Win(self))
 
     @classmethod
     def get_last_screen(cls):
@@ -182,3 +183,20 @@ class Escape(arcade.View):
         self.clear()
         arcade.start_render()
         self.manager.draw()
+        img = arcade.load_texture('SettingsMenu.png')
+        arcade.draw_texture_rectangle (SCREEN_WIDTH*.5, SCREEN_HEIGHT*.5, SCREEN_WIDTH, SCREEN_HEIGHT, img)
+        img = arcade.load_texture('SmallMenu.png')
+        arcade.draw_texture_rectangle (SCREEN_WIDTH*.485, SCREEN_HEIGHT*.5, SCREEN_WIDTH, SCREEN_HEIGHT, img) 
+        self.manager.draw()
+        start_x = 0
+        start_y = SCREEN_HEIGHT - DEFAULT_LINE_HEIGHT * 1.5
+        #img = arcade.load_texture('SettingsMenu.png')
+        #arcade.draw_texture_rectangle (SCREEN_WIDTH*.5, SCREEN_HEIGHT*.5, SCREEN_WIDTH, SCREEN_HEIGHT, img) 
+        arcade.draw_text(" Escape Menu",
+                         start_x,
+                         start_y - (SCREEN_HEIGHT * .265),
+                         arcade.color.WHITE,
+                         DEFAULT_FONT_SIZE * 1.2,
+                         width=SCREEN_WIDTH,
+                         align="center",
+                         font_name="Kenney Future")

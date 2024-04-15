@@ -1,10 +1,8 @@
 import arcade
-import menu
 import esc_menu
 import pass_turn
 import Piece
 import draw_piece
-import time
 import win
 from constants import *
 import Opponent_AI
@@ -77,16 +75,15 @@ class Gameboard(arcade.View):
 
     def on_show_view(self):
         self.clear()
-        
-       
-
-
-
+ 
     # This method draws our assets including constructing a grid
     def on_draw(self):
         if self.is_menu == False:
             self.clear()
             arcade.start_render()
+
+            img = arcade.load_texture('SettingsMenu.png')
+            arcade.draw_texture_rectangle (SCREEN_WIDTH*.5, SCREEN_HEIGHT*.5, SCREEN_WIDTH, SCREEN_HEIGHT, img)           
 
             
             if Gameboard.sound.is_playing(Gameboard.media_player) == False:
@@ -96,7 +93,7 @@ class Gameboard(arcade.View):
             
             #   draw game log + back and forwards arrows
             if Gameboard.text[Gameboard.text_index] != "":
-                arcade.draw_text(f"{Gameboard.text_index} : {Gameboard.text[Gameboard.text_index]}",450,650,arcade.color.BLACK,15,font_name="Kenney Mini Square Font",bold=True,anchor_x= "center", anchor_y= "center", width=400, multiline = True, align="center", )
+                arcade.draw_text(f"{Gameboard.text_index} : {Gameboard.text[Gameboard.text_index]}",450,650,arcade.color.WHITE,15,font_name="Kenney Mini Square Font",bold=True,anchor_x= "center", anchor_y= "center", width=400, multiline = True, align="center", )
             arcade.draw_triangle_filled(TRIANGLE_X1, TRIANGLE_Y1, TRIANGLE_X1, TRIANGLE_Y2, TRIANGLE_X3, TRIANGLE_Y3, arcade.color.BUFF)
             arcade.draw_triangle_outline(TRIANGLE_X1, TRIANGLE_Y1, TRIANGLE_X1, TRIANGLE_Y2, TRIANGLE_X3, TRIANGLE_Y3, arcade.color.BLACK, 4)
             arcade.draw_triangle_filled(TRIANGLE2_X1, TRIANGLE_Y1, TRIANGLE2_X1, TRIANGLE_Y2, TRIANGLE2_X3, TRIANGLE_Y3, arcade.color.BUFF)
@@ -107,13 +104,10 @@ class Gameboard(arcade.View):
             start_x = 0
             start_y = SCREEN_HEIGHT - DEFAULT_LINE_HEIGHT * 1.5
 
-            # ESCAPE BUTTON
-            arcade.draw_rectangle_filled(ESC_X_CENTER,ESC_Y_CENTER,ESC_WIDTH,ESC_HEIGHT,
-                                         arcade.color.GRANNY_SMITH_APPLE)
-            arcade.draw_text("ESC",
+            arcade.draw_text("Esc",
                              start_x + (SCREEN_WIDTH *.9),
                              start_y,
-                             arcade.color.BLACK,
+                             arcade.color.WHITE,
                              DEFAULT_FONT_SIZE,
                              font_name="Kenney Future")
 
