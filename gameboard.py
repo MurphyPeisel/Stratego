@@ -24,6 +24,8 @@ lake_piece_8 = Piece.Piece("Lke", 0, 7, 5, 3)
 # The gameboard class is where the user will engage in gameplay. They can exit via the ESC key and button.  
 # To pass turn, the user must double click the board. 
 class Gameboard(arcade.View):
+
+
    
     level = 4
     sound = arcade.load_sound("Gameboard_Screen.wav",False)
@@ -58,6 +60,7 @@ class Gameboard(arcade.View):
 
     click_counter = 0
     selected = None
+    viable = True
     AI = Opponent_AI.bot.ai
     
 
@@ -243,35 +246,6 @@ class Gameboard(arcade.View):
                 if len(Gameboard.graveyard1) == 0 and len(Gameboard.graveyard2) == 0:
                     Gameboard.game_state = "play"
                     print(Gameboard.game_state)
-
-            #draw army 1
-            # i = 0
-            # for piece in Gameboard.graveyard1:
-                #  draw_piece.draw_start(piece, 1, i)
-                #  i = i+1
-            #draw army 2
-            # i = 0
-            # for piece in Gameboard.graveyard2:
-                #  draw_piece.draw_start(piece, 2, i)
-                #  i = i+1
-            # for piece in Gameboard.army1:
-                        # draw_piece.draw(piece, 1)
-            # for piece in Gameboard.army2:
-                        # draw_piece.draw(piece, 2)
-
-            # if Gameboard.AttackRight != None:
-                # arcade.draw_circle_filled(Gameboard.AttackRight[0], Gameboard.AttackRight[1], Gameboard.AttackRight[2], Gameboard.AttackRight[3])
-
-            # if Gameboard.AttackLeft != None:
-                # arcade.draw_circle_filled(Gameboard.AttackLeft[0], Gameboard.AttackLeft[1], Gameboard.AttackLeft[2],
-                                        #   Gameboard.AttackLeft[3])
-            # if Gameboard.AttackAbove != None:
-                # arcade.draw_circle_filled(Gameboard.AttackAbove[0], Gameboard.AttackAbove[1], Gameboard.AttackAbove[2],
-                                        #   Gameboard.AttackAbove[3])
-            # if Gameboard.AttackBelow != None:
-                # arcade.draw_circle_filled(Gameboard.AttackBelow[0], Gameboard.AttackBelow[1], Gameboard.AttackBelow[2],
-                                        #   Gameboard.AttackBelow[3])
-
              
     def on_mouse_press(self, x, y, button, key_modifiers):
         click = (x,y)
@@ -306,7 +280,7 @@ class Gameboard(arcade.View):
                 
                 if draw_piece.select_piece(piece, click, pass_turn.Pass_Turn.player_turn) == True:
                     if Gameboard.selected != None:
-                        if pass_turn.Pass_Turn.selected.getPlayer() == piece.getPlayer():
+                        if Gameboard.selected.getPlayer() == piece.getPlayer():
                             Gameboard.selected = piece
                     else:
                         Gameboard.selected = piece
@@ -452,6 +426,9 @@ class Gameboard(arcade.View):
 
     def get_visibility(self):
         return Gameboard.visible
+    
+    def set_visibility(self, visible):
+        Gameboard.visible = visible
 
     def get_ai():
         return Gameboard.AI
