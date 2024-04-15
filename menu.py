@@ -5,6 +5,7 @@ import game_settings
 import gameboard
 import rules
 import pyglet
+import sound_settings
 
 # initialize formatting details
 SCREEN_WIDTH = 900
@@ -19,7 +20,7 @@ DEFAULT_FONT_SIZE = 20
 class Menu(arcade.View):
     last_screen = "menu"
     sound = arcade.load_sound("Menu_Screen.wav",False)
-    level = 4
+    level = sound_settings.Sound.level
     media_player = arcade.play_sound(sound, level,0, looping= True)
     playing = False
 
@@ -33,6 +34,7 @@ class Menu(arcade.View):
         gameboard.Gameboard.set_is_menu(gameboard.Gameboard, True)
         arcade.start_render()
         self.clear()
+        Menu.level = sound_settings.Sound.level 
         if(Menu.sound.is_playing(Menu.media_player) == False):
             Menu.media_player.seek(0)
             Menu.media_player.play()

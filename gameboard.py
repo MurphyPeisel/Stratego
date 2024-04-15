@@ -9,12 +9,13 @@ import win
 from constants import *
 import Opponent_AI
 import ai_layout
+import sound_settings
 
 # The gameboard class is where the user will engage in gameplay. They can exit via the ESC key and button.  
 # To pass turn, the user must double click the board. 
 class Gameboard(arcade.View):
    
-    level = 4
+    level = sound_settings.Sound.level + 2
     sound = arcade.load_sound("Gameboard_Screen.wav",False)
     media_player = arcade.play_sound(sound, level, 0, looping=True)
     sound.stop(media_player)
@@ -91,7 +92,7 @@ class Gameboard(arcade.View):
 
             # initialize formatting details
             start_x = 0
-            start_y = SCREEN_HEIGHT - DEFAULT_LINE_HEIGHT * 1.5
+            start_y = SCREEN_HEIGHT - DEFAULT_LINE_HEIGHT * 1.4
 
             # ESCAPE BUTTON
             arcade.draw_rectangle_filled(ESC_X_CENTER,ESC_Y_CENTER,ESC_WIDTH,ESC_HEIGHT,

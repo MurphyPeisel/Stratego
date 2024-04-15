@@ -5,7 +5,7 @@ import menu
 import gameboard
 import game_settings
 import Piece
-
+import sound_settings
 
 # Define constants
 SCREEN_WIDTH = 900
@@ -18,7 +18,7 @@ DEFAULT_FONT_SIZE = 20
 # The options are to replay with the same settings, return to game settings menu and to return to main menu
 class Win(arcade.View):
     #Initialize playback for winscreen
-    level = 4
+    level = sound_settings.Sound.level
     sound = arcade.load_sound("Win.wav",False)
     media_player = arcade.play_sound(sound, level, 0, looping=True)
     sound.stop(media_player)
