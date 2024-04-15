@@ -295,6 +295,9 @@ class Gameboard(arcade.View):
                         is_orthogonal = Piece.check_orthogonal(Gameboard.selected, cell_occupant, Gameboard.total_pieces)
                         if is_orthogonal:
                             if cell_occupant.getType() == "Flg":
+                                if Gameboard.sound.is_playing(Gameboard.media_player) or Gameboard.playing == True:
+                                    Gameboard.sound.stop(Gameboard.media_player)
+                                    Gameboard.playing = False
                                 self.window.show_view(win.Win(self))
                             else:
                                 Gameboard.text.append(draw_piece.combat(Gameboard.selected, cell_occupant, click, Gameboard.graveyard1, Gameboard.graveyard2, Gameboard.army1, Gameboard.army2)) #p1_pieces/p2_pieces = Temp Variables
