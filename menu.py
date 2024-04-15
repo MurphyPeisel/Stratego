@@ -13,8 +13,6 @@ SCREEN_HEIGHT = 700
 DEFAULT_LINE_HEIGHT = 45
 DEFAULT_FONT_SIZE = 20
 
-
-
 # The menu class displays three possible button options that navigates you to their resepective views
 # This view is what is first displayed upon running main
 class Menu(arcade.View):

@@ -30,7 +30,7 @@ class bot():
     selected = None
     ai = allAI
 
-    def generateBot(ai):
+    def generate_bot(ai):
         """
         sets the AI difficultly to what the user selected
         :param ai: integer representing the difficulty of the AI
@@ -46,25 +46,29 @@ class bot():
         :param bot_pieces: a list of all the pieces on the bots side
         """
         bot.selected = None
+        
         # this filters for pieces that inherently cannot be moved as a part of the rules
         movable_pieces = []
         for piece in bot_pieces:
             if piece.getType() != "Lke" and piece.getType() != "Flg" and piece.getType() != "Bom":
                 movable_pieces.append(piece)
+
         # generates a random number to be used to pick the piece to move
-        selected_num = random.randint(0, len(movable_pieces) - 1)
+        selected_num = random.randint(0, len(movable_pieces))
+
+        
         x = 0
         while bot.selected == None:
             for piece in movable_pieces:
                 # uses the selected number to find the piece at that point in the list. if the piece is movable it
                 # becomes selected and calls make move
-                if x == selected_num and piece.getType() != "Lke" and piece.getType() != "Flg" and piece.getType() != "Bom":
+                if x == selected_num:
                     bot.selected = piece
                 x = x + 1
             if bot.selected != None:
                 if bot.are_moves_available(self, bot.selected, bot_pieces) == False:
                     bot.selected = None
-                    selected_num = random.randint(0, len(movable_pieces) - 1)
+                    selected_num = random.randint(0, len(movable_pieces)-1)
                     x = 0
         bot.make_move(self, bot_pieces, gameboard.Gameboard.army1)
 

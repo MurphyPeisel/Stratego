@@ -1,19 +1,30 @@
 import arcade
-import menu
 import esc_menu
 import pass_turn
 import Piece
 import draw_piece
-import time
 import win
 from constants import *
 import Opponent_AI
 import ai_layout
 import sound_settings
 
+lake_piece_1 = Piece.Piece("Lke", 0, 2, 4, 3)
+lake_piece_2 = Piece.Piece("Lke", 0, 3, 4, 3)
+lake_piece_3 = Piece.Piece("Lke", 0, 2, 5, 3)
+lake_piece_4 = Piece.Piece("Lke", 0, 3, 5, 3)
+
+lake_piece_5 = Piece.Piece("Lke", 0, 6, 4, 3)
+lake_piece_6 = Piece.Piece("Lke", 0, 7, 4, 3)
+lake_piece_7 = Piece.Piece("Lke", 0, 6, 5, 3)
+lake_piece_8 = Piece.Piece("Lke", 0, 7, 5, 3)
+
+
 # The gameboard class is where the user will engage in gameplay. They can exit via the ESC key and button.  
 # To pass turn, the user must double click the board. 
 class Gameboard(arcade.View):
+
+
    
     level = sound_settings.Sound.level + 2
     sound = arcade.load_sound("Gameboard_Screen.wav",False)
@@ -48,6 +59,7 @@ class Gameboard(arcade.View):
 
     click_counter = 0
     selected = None
+    viable = True
     AI = Opponent_AI.bot.ai
     
 
@@ -64,16 +76,15 @@ class Gameboard(arcade.View):
 
     def on_show_view(self):
         self.clear()
-        
-       
-
-
-
+ 
     # This method draws our assets including constructing a grid
     def on_draw(self):
         if self.is_menu == False:
             self.clear()
             arcade.start_render()
+
+            img = arcade.load_texture('SettingsMenu.png')
+            arcade.draw_texture_rectangle (SCREEN_WIDTH*.5, SCREEN_HEIGHT*.5, SCREEN_WIDTH, SCREEN_HEIGHT, img)           
 
             
             if Gameboard.sound.is_playing(Gameboard.media_player) == False:
@@ -83,7 +94,7 @@ class Gameboard(arcade.View):
             
             #   draw game log + back and forwards arrows
             if Gameboard.text[Gameboard.text_index] != "":
-                arcade.draw_text(f"{Gameboard.text_index} : {Gameboard.text[Gameboard.text_index]}",450,650,arcade.color.BLACK,15,font_name="Kenney Mini Square Font",bold=True,anchor_x= "center", anchor_y= "center", width=400, multiline = True, align="center", )
+                arcade.draw_text(f"{Gameboard.text_index} : {Gameboard.text[Gameboard.text_index]}",450,650,arcade.color.WHITE,15,font_name="Kenney Mini Square Font",bold=True,anchor_x= "center", anchor_y= "center", width=400, multiline = True, align="center", )
             arcade.draw_triangle_filled(TRIANGLE_X1, TRIANGLE_Y1, TRIANGLE_X1, TRIANGLE_Y2, TRIANGLE_X3, TRIANGLE_Y3, arcade.color.BUFF)
             arcade.draw_triangle_outline(TRIANGLE_X1, TRIANGLE_Y1, TRIANGLE_X1, TRIANGLE_Y2, TRIANGLE_X3, TRIANGLE_Y3, arcade.color.BLACK, 4)
             arcade.draw_triangle_filled(TRIANGLE2_X1, TRIANGLE_Y1, TRIANGLE2_X1, TRIANGLE_Y2, TRIANGLE2_X3, TRIANGLE_Y3, arcade.color.BUFF)
@@ -94,13 +105,10 @@ class Gameboard(arcade.View):
             start_x = 0
             start_y = SCREEN_HEIGHT - DEFAULT_LINE_HEIGHT * 1.4
 
-            # ESCAPE BUTTON
-            arcade.draw_rectangle_filled(ESC_X_CENTER,ESC_Y_CENTER,ESC_WIDTH,ESC_HEIGHT,
-                                         arcade.color.GRANNY_SMITH_APPLE)
-            arcade.draw_text("ESC",
+            arcade.draw_text("Esc",
                              start_x + (SCREEN_WIDTH *.9),
                              start_y,
-                             arcade.color.BLACK,
+                             arcade.color.WHITE,
                              DEFAULT_FONT_SIZE,
                              font_name="Kenney Future")
 
@@ -176,11 +184,6 @@ class Gameboard(arcade.View):
             for piece in Gameboard.army2:
                 if piece.defeated != True:
                     draw_piece.draw(piece, 2)
-                if pass_turn.Pass_Turn.turn_pause != 0:
-                    if time.time() - pass_turn.Pass_Turn.turn_pause > .4:
-                        pass_turn.Pass_Turn.turn_pause = 0
-                        pass_turn.Pass_Turn.turn_screen(self)
-                    draw_piece.draw(piece, 2)
 
             i = 0
             for piece in Gameboard.graveyard1:
@@ -220,18 +223,20 @@ class Gameboard(arcade.View):
                 if Gameboard.player_turn == PLAYER_TWO and len(Gameboard.graveyard2) != 0:
                     if Gameboard.AI != AI_OFF:
                         ai_layout.gen_layout(1, Gameboard.graveyard2, Gameboard.army2)
-                        Gameboard.change_turn()
+                        pass_turn.Pass_Turn.change_turn()
+                        print(f"Done! {Gameboard.AI}")
                     else: 
-                        Gameboard.player_turn = PLAYER_TWO
-                        draw_piece.show_available_placements(Gameboard.total_pieces, PLAYER_TWO)
+                        pass_turn.Pass_Turn.player_turn = PLAYER_TWO
+                        draw_piece.show_available_placements(Gameboard.total_pieces, 2)
                         draw_piece.add_highlight(2, Gameboard.highlight_index)
                         if Gameboard.highlight_index >= len(Gameboard.graveyard2):
                             Gameboard.highlight_index = Gameboard.highlight_index - 1
                 else:
-                    Gameboard.player_turn = PLAYER_ONE
+                    pass_turn.Pass_Turn.player_turn = PLAYER_ONE
                 if len(Gameboard.graveyard1) == 0 and len(Gameboard.graveyard2) == 0:
                     Gameboard.game_state = "play"
-
+                    print(Gameboard.game_state)
+             
     def on_mouse_press(self, x, y, button, key_modifiers):
         click = (x,y)
         if x >= ESC_LEFT and x <= ESC_RIGHT and y <= ESC_TOP and y >= ESC_BOTTOM:
@@ -248,12 +253,12 @@ class Gameboard(arcade.View):
 
         if Gameboard.game_state == "setup":
             click = (x,y)
-            if Gameboard.player_turn == 1:
+            if pass_turn.Pass_Turn.player_turn == 1:
                 if x >= GRID_LEFT and x <= GRID_RIGHT and y >= GRID_BOTTOM and y <= GRID_BOTTOM + NUM_START_ROWS*CELL_WIDTH:
                     draw_piece.place_piece(Gameboard.graveyard1[Gameboard.highlight_index], click, Gameboard.graveyard1, Gameboard.army1)
                     place_sound = arcade.load_sound("Placed.wav",False)
                     arcade.play_sound(place_sound, Gameboard.level, 0)
-            if Gameboard.player_turn == 2 and Gameboard.AI == AI_OFF:
+            if pass_turn.Pass_Turn == PLAYER_TWO and Gameboard.AI == AI_OFF:
                 if x >= GRID_LEFT and x <= GRID_RIGHT and y <= GRID_TOP and y >= GRID_TOP - NUM_START_ROWS*CELL_WIDTH:
                     draw_piece.place_piece(Gameboard.graveyard2[Gameboard.highlight_index], click, Gameboard.graveyard2, Gameboard.army2)
                     place_sound = arcade.load_sound("Placed.wav",False)
@@ -262,7 +267,8 @@ class Gameboard(arcade.View):
         if Gameboard.game_state == "play":
             click = (x,y)
             for piece in Gameboard.total_pieces:
-                if draw_piece.select_piece(piece, click, Gameboard.player_turn) == True:
+                
+                if draw_piece.select_piece(piece, click, pass_turn.Pass_Turn.player_turn) == True:
                     if Gameboard.selected != None:
                         if Gameboard.selected.getPlayer() == piece.getPlayer():
                             Gameboard.selected = piece
@@ -281,18 +287,18 @@ class Gameboard(arcade.View):
                     Gameboard.text.append("PLAYER MOVES")
                     Gameboard.text_index = len(Gameboard.text)-1
                     if Gameboard.AI == 0:
-                        # set time of move, this is used as a marker for a timer for the delay to see your piece move before the screen changes
-                        # pass_turn.Pass_Turn.turn_pause = time.time()
-                        Gameboard.turn_screen(self)
+                        pass_turn.Pass_Turn.turn_screen(self)
                     else:
-                        Gameboard.change_turn()
+                        pass_turn.Pass_Turn.change_turn()
                 if is_valid_move and cell_occupant != None:
                     if cell_occupant.getType() != "Lke":
-                        is_orthogonal = Piece.check_orthogonal(Gameboard.selected, cell_occupant, Gameboard.total_pieces)
-                        if is_orthogonal:
+                        if Piece.check_orthogonal(Gameboard.selected, cell_occupant, Gameboard.total_pieces):
+                            draw_piece.combat(Gameboard.selected, cell_occupant, click, Gameboard.graveyard1, Gameboard.graveyard2, Gameboard.army1, Gameboard.army2)
                             if cell_occupant.getType() == "Flg":
-                                view = win.Win()
-                                self.window.show_view(view)
+                                self.window.show_view(win.Win(self))
+
+                            if Gameboard.AI == 0:
+                                pass_turn.Pass_Turn.turn_screen(self)
                             else:
                                 Gameboard.text.append(draw_piece.combat(Gameboard.selected, cell_occupant, click, Gameboard.graveyard1, Gameboard.graveyard2, Gameboard.army1, Gameboard.army2)) #p1_pieces/p2_pieces = Temp Variables
                                 Gameboard.text_index = len(Gameboard.text)-1
@@ -301,21 +307,16 @@ class Gameboard(arcade.View):
                                     # pass_turn.Pass_Turn.turn_pause = time.time()
                                     Gameboard.turn_screen(self)
                                 else:
-                                    Gameboard.change_turn()
+
+                                    pass_turn.Pass_Turn.change_turn()
                     Gameboard.selected = None
             else:
                 Gameboard.selected = None
 
-            if (Gameboard.AI == EASY or Gameboard.AI == MEDIUM or Gameboard.AI == HARD) and (Gameboard.player_turn == PLAYER_TWO):
+            if (Gameboard.AI == EASY or Gameboard.AI == MEDIUM or Gameboard.AI == HARD) and (pass_turn.Pass_Turn.player_turn == PLAYER_TWO):
                 Opponent_AI.bot.select_piece(self, Gameboard.army2)
                 print("AI Moved")
-                #make a sound
-                place_sound = arcade.load_sound("Placed.wav",False)
-                arcade.play_sound(place_sound, Gameboard.level, 0)
-                
-                Gameboard.text.append("COMPUTER MOVES")
-                Gameboard.text_index = len(Gameboard.text)-1
-                Gameboard.change_turn()
+                pass_turn.Pass_Turn.change_turn()
                 
     def setAttack(self, loc, x, y, num, color):
         if loc == "right":
@@ -341,8 +342,7 @@ class Gameboard(arcade.View):
     
     def on_key_press(self, key, key_modifiers):
         if (key == arcade.key.ESCAPE):
-            board_view = esc_menu.Escape(self)
-            self.window.show_view(board_view)
+            self.window.show_view(esc_menu.Escape(self))
             esc_menu.Escape.last_screen = Gameboard.last_screen
 
         if (Gameboard.game_state == "setup"):
@@ -369,20 +369,20 @@ class Gameboard(arcade.View):
 
             #Place a full army by hitting the R key.
             if (key == arcade.key.R):
-                if Gameboard.player_turn == 1 and len(Gameboard.graveyard1) == NUM_PIECES:
+                print(len(yard))
+                if pass_turn.Pass_Turn.player_turn == 1 and len(Gameboard.graveyard1) == NUM_PIECES:
                     for i in range(NUM_START_ROWS):
                         for x in range (COLUMN_COUNT):
-                            draw_piece.place_piece(yard[0], (x,i), yard, army)
-                    Gameboard.change_turn()
-                    place_sound = arcade.load_sound("Placed.wav",False)
-                    arcade.play_sound(place_sound, Gameboard.level + 2, 0)
-                elif Gameboard.player_turn == PLAYER_TWO and Gameboard.AI == AI_OFF and len(Gameboard.graveyard2) == NUM_PIECES:
-                    for i in range(NUM_START_ROWS):
-                        for x in range(COLUMN_COUNT):
-                            draw_piece.place_piece(yard[0], (x, 9-i), yard, army) # 9-i to start at top of board
-                    Gameboard.change_turn()
-                    place_sound = arcade.load_sound("Placed.wav",False)
-                    arcade.play_sound(place_sound, Gameboard.level + 2, 0)
+                            if pass_turn.Pass_Turn.player_turn == 1 and len(Gameboard.graveyard1) == NUM_PIECES:
+                                for i in range(NUM_START_ROWS):
+                                    for x in range (COLUMN_COUNT):
+                                        draw_piece.place_piece(yard[0], (x,i), yard, army)
+                    pass_turn.Pass_Turn.change_turn()
+                elif pass_turn.Pass_Turn.player_turn == 2 and Gameboard.AI == 0 and len(Gameboard.graveyard2) == NUM_PIECES:
+                    for i in range(4):
+                        for x in range(10):
+                            draw_piece.place_piece(yard[0], (x,9-i), yard, army)
+                    pass_turn.Pass_Turn.change_turn()
 
 
 
@@ -391,8 +391,8 @@ class Gameboard(arcade.View):
             if Gameboard.game_state == "setup": 
                 x = Gameboard.hover[0]
                 y = Gameboard.hover[1]
-                if Gameboard.player_turn == PLAYER_ONE:
-                    if x >= GRID_LEFT and x <= GRID_RIGHT and y >= GRID_BOTTOM and y <= GRID_BOTTOM + NUM_START_ROWS*CELL_WIDTH:
+                if pass_turn.Pass_Turn.player_turn == 1:
+                    if x >= 200 and x <= 700 and y>=100 and y<=300:
                         draw_piece.place_piece(Gameboard.graveyard1[Gameboard.highlight_index], Gameboard.hover, Gameboard.graveyard1, Gameboard.army1)
                         place_sound = arcade.load_sound("Placed.wav",False)
                         arcade.play_sound(place_sound, Gameboard.level, 0)
@@ -409,18 +409,15 @@ class Gameboard(arcade.View):
             Gameboard.player_turn = PLAYER_ONE
 
     def turn_screen(self):
-        Gameboard.change_turn()
+        pass_turn.Pass_Turn.change_turn()
         view = pass_turn.Pass_Turn()
         self.window.show_view(view)
-
-    def set_visibility(self, visible):
-        Gameboard.visible = visible
 
     def get_visibility(self):
         return Gameboard.visible
     
-    def get_turn():
-        return Gameboard.player_turn
+    def set_visibility(self, visible):
+        Gameboard.visible = visible
 
     def get_ai():
         return Gameboard.AI

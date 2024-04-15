@@ -30,6 +30,9 @@ default_style = {
 
 # Game Settings Creates a view that allows the user to select between 2 player and computer settings
 class Game_Settings(arcade.View):
+
+    mode = ""
+
     # This function Defines what the window will look like when called
     def on_show_view(self):
 
@@ -125,19 +128,15 @@ class Game_Settings(arcade.View):
                          align="center",
                          font_name="Kenney Future")
 
-    # These functions add the functionality to the three button options
-    # Takes user to Difficulty screen
+    # Opens computer settings
     def on_click_bot(self, event):
-        #SET MODE TO PLAY AGAINST COMPUTER (FUTURE)
+        mode = "comp"
         self.manager.disable()
         self.window.show_view(Computer())
-        
     
     #Function called when play_buton is clicked
-    #Takes user to Gameplay screen
     def on_click_play(self, event):
-        #SET MODE TO PASS AND PLAY (FUTURE)
-        
+        mode = "2play"
         self.manager.disable()
         self.window.show_view(Players2())
 
@@ -218,29 +217,23 @@ class Computer(arcade.View):
                 Computer.vision = " * Hide Pieces *"
                 Computer.sight = False  
 
-    #Called when easy_button is clicked
     def on_click_start(self, event):
         if Computer.vision != " -Toggle Seeing Defender Pieces-":
             if Computer.difficulty == "Hard":
-                Opponent_AI.bot.generateBot(3)
+                Opponent_AI.bot.generate_bot(3)
             elif Computer.difficulty == "Medium":
-                Opponent_AI.bot.generateBot(2)
+                Opponent_AI.bot.generate_bot(2)
             else:
-                Opponent_AI.bot.generateBot(1)
+                Opponent_AI.bot.generate_bot(1)
 
             if Computer.sight == True:
                 gameboard.Gameboard.set_visibility(gameboard, True)
             else:
                 gameboard.Gameboard.set_visibility(gameboard, False)
-            #Stop playing sound from menu
-            if menu.Menu.sound.is_playing(menu.Menu.media_player) or menu.Menu.playing == True:
-                menu.Menu.sound.stop(menu.Menu.media_player)
-                menu.Menu.playing = False
+
             self.window.show_view(gameboard.Gameboard())
             gameboard.Gameboard.set_is_menu(gameboard.Gameboard, False)
 
-
-    #On draw will create all of our assets onto the screen
     def on_draw(self):
         self.clear()
         arcade.start_render()
@@ -305,7 +298,7 @@ class Players2(arcade.View):
         )
 
     def on_mouse_press(self, x, y, button, key_modifiers):
-        if x>=288 and x<=628 and y<= 324 and y>= 270:
+        if x>=310 and x<=590 and y<= 380 and y>= 332:
             if Computer.sight == False:
                 Computer.vision = " o Show Pieces o"
                 Computer.sight = True  
@@ -320,10 +313,7 @@ class Players2(arcade.View):
                 gameboard.Gameboard.set_visibility(gameboard, True)
             else:
                 gameboard.Gameboard.set_visibility(gameboard, False)
-            #stop playing sound from menu
-            if menu.Menu.sound.is_playing(menu.Menu.media_player) or menu.Menu.playing == True:
-                menu.Menu.sound.stop(menu.Menu.media_player)
-                menu.Menu.playing = False
+
             self.window.show_view(gameboard.Gameboard())
             gameboard.Gameboard.set_is_menu(gameboard.Gameboard, False)
    
@@ -337,8 +327,6 @@ class Players2(arcade.View):
         self.manager.draw()
         start_x = 0
         start_y = SCREEN_HEIGHT - DEFAULT_LINE_HEIGHT * 1.5
-        #img = arcade.load_texture('SettingsMenu.png')
-        #arcade.draw_texture_rectangle (SCREEN_WIDTH*.5, SCREEN_HEIGHT*.5, SCREEN_WIDTH, SCREEN_HEIGHT, img) 
         arcade.draw_text(" Game Settings",
                          start_x,
                          start_y - (SCREEN_HEIGHT * .265),
@@ -349,7 +337,7 @@ class Players2(arcade.View):
                          font_name="Kenney Future")
         arcade.draw_text(" " + Computer.vision, 
                          start_x,
-                         start_y - (SCREEN_HEIGHT * .49),
+                         start_y - (SCREEN_HEIGHT * .4),
                          arcade.color.WHITE,
                          DEFAULT_FONT_SIZE * .7,
                          width=SCREEN_WIDTH,
