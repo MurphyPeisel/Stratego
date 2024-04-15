@@ -154,6 +154,8 @@ class Game_Settings(arcade.View):
         arcade.draw_texture_rectangle (SCREEN_WIDTH*.5, SCREEN_HEIGHT*.5, SCREEN_WIDTH, SCREEN_HEIGHT, img)
         img = arcade.load_texture('SmallMenu.png')
         arcade.draw_texture_rectangle (SCREEN_WIDTH*.485, SCREEN_HEIGHT*.5, SCREEN_WIDTH, SCREEN_HEIGHT, img) 
+        sounds = arcade.load_texture('sound.png')
+        arcade.draw_texture_rectangle (SCREEN_WIDTH*.385, SCREEN_HEIGHT*.275, SCREEN_WIDTH*.08, SCREEN_HEIGHT*.08, sounds) 
         self.manager.draw()
         start_x = 0
         start_y = SCREEN_HEIGHT - DEFAULT_LINE_HEIGHT * 1.5
