@@ -5,6 +5,7 @@ import menu
 import gameboard
 import game_settings
 import Piece
+import pass_turn
 
 
 # Define constants
@@ -17,6 +18,10 @@ DEFAULT_FONT_SIZE = 20
 # Creates a win screen that identifies the user that won the round and provides three options to move forward
 # The options are to replay with the same settings, return to game settings menu and to return to main menu
 class Win(arcade.View):
+    
+    def __init__(self, menu_instance):
+        super().__init__()
+        self.menu_instance = menu_instance
 
     # This function Defines what the window will look like when called
     def on_show_view(self):
@@ -100,7 +105,7 @@ class Win(arcade.View):
             self.manager.draw()
             start_x = 0
             start_y = SCREEN_HEIGHT - DEFAULT_LINE_HEIGHT * 1.5
-            arcade.draw_text("Player " + str(gameboard.Gameboard.get_turn()) + "\nWins",
+            arcade.draw_text("Player " + str(pass_turn.Pass_Turn.get_turn()) + "\nWins",
                              start_x,
                              start_y - (SCREEN_HEIGHT * .1),
                              arcade.color.BLACK,

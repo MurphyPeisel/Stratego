@@ -29,6 +29,9 @@ default_style = {
 
 # Game Settings Creates a view that allows the user to select between 2 player and computer settings
 class Game_Settings(arcade.View):
+
+    mode = ""
+
     # This function Defines what the window will look like when called
     def on_show_view(self):
 
@@ -56,18 +59,15 @@ class Game_Settings(arcade.View):
                 child=self.v_box)
         )
 
-    # These functions add the functionality to the three button options
-    # Takes user to Difficulty screen
+    # Opens Computer Settings Menu
     def on_click_bot(self, event):
-        #SET MODE TO PLAY AGAINST COMPUTER (FUTURE)
+        mode = "comp"
         self.manager.disable()
         self.window.show_view(Computer())
     
     #Function called when play_buton is clicked
-    #Takes user to Gameplay screen
     def on_click_play(self, event):
-        #SET MODE TO PASS AND PLAY (FUTURE)
-        
+        mode = "2play"
         self.manager.disable()
         self.window.show_view(Players2())
 
@@ -151,11 +151,11 @@ class Computer(arcade.View):
     def on_click_start(self, event):
         if Computer.vision != " -Toggle Seeing Defender Pieces-":
             if Computer.difficulty == "Hard":
-                Opponent_AI.bot.generateBot(3)
+                Opponent_AI.bot.generate_bot(3)
             elif Computer.difficulty == "Medium":
-                Opponent_AI.bot.generateBot(2)
+                Opponent_AI.bot.generate_bot(2)
             else:
-                Opponent_AI.bot.generateBot(1)
+                Opponent_AI.bot.generate_bot(1)
 
             if Computer.sight == True:
                 gameboard.Gameboard.set_visibility(gameboard, True)

@@ -7,7 +7,7 @@ import menu
 import rules
 import win
 import Piece
-import menu as mn
+import menu
 
 # initialize formatting details
 SCREEN_WIDTH = 900
@@ -69,23 +69,18 @@ class Escape(arcade.View):
         self.manager.disable()
         last_screen = self.menu_instance.get_last_screen()
         if last_screen == "menu":
-            board_view = mn.Menu()
-            self.window.show_view(board_view)
+            self.window.show_view(menu.Menu())
         elif last_screen == "game_board":
-            board_view = gameboard.Gameboard()
-            self.window.show_view(board_view)
+            self.window.show_view(gameboard.Gameboard())
         elif last_screen == "rules":
-            board_view = rules.Rules()
-            self.window.show_view(board_view)
+            self.window.show_view(rules.Rules())
         elif last_screen == "exit":
-            board_view = arcade.exit()
-            self.window.show_view(board_view)
+            self.window.show_view(arcade.exit())
 
     # This method opens the rules screen which will return to the esc menu when called from there.
     def on_click_rules(self, event):
         self.manager.disable()
-        board_view = rules.Rules(self)
-        self.window.show_view(board_view)
+        self.window.show_view(rules.Rules(self))
         rules.Rules.last_screen = Escape.last_screen
 
     # Functionality for when the user presses the back to menu button to change the screen back to the menu screen
@@ -109,7 +104,7 @@ class Escape(arcade.View):
         gameboard.Gameboard.graveyard1 = Piece.initPieces(1)
         gameboard.Gameboard.graveyard2 = Piece.initPieces(2)
         gameboard.Gameboard.AI = 0
-        gameboard.Gameboard.player_turn = 1
+        pass_turn.Pass_Turn.player_turn = 1
         gameboard.Gameboard.highlight_index = 0
         gameboard.Gameboard.selected = None
         gameboard.Gameboard.AttackRight = None
@@ -121,18 +116,15 @@ class Escape(arcade.View):
         
 
         gameboard.Gameboard.total_pieces = gameboard.Gameboard.army1 + gameboard.Gameboard.army2
-        board_view = mn.Menu()
-        self.window.show_view(board_view)
+        self.window.show_view(menu.Menu())
     
     def on_click_resign(self, event):
         self.manager.disable()
         gameboard.Gameboard.set_is_menu(gameboard.Gameboard, True)
-        self.manager.disable()
-        print("test")
-        if gameboard.Gameboard.player_turn == 1:
-            gameboard.Gameboard.player_turn = 2
+        if pass_turn.Pass_Turn.player_turn == 1:
+            pass_turn.Pass_Turn.player_turn = 2
         else:
-            gameboard.Gameboard.player_turn = 1
+            pass_turn.Pass_Turn.player_turn = 1
         #RESET GAME 
         lake_piece_1 = Piece.Piece("Lke", 0, 2, 4, 3)
         lake_piece_2 = Piece.Piece("Lke", 0, 3, 4, 3)
@@ -158,8 +150,8 @@ class Escape(arcade.View):
         gameboard.Gameboard.AttackLeft = None
         gameboard.Gameboard.AttackAbove = None
         gameboard.Gameboard.AttackBelow = None
-        win_view = win.Win()
-        self.window.show_view(win_view)
+        self.manager.disable()
+        self.window.show_view(win.Win(self))
 
 
     # This function closes the program when the user hits the exit button

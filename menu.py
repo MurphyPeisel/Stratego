@@ -4,15 +4,12 @@ import esc_menu
 import game_settings
 import gameboard
 import rules
-import pyglet
 
 # initialize formatting details
 SCREEN_WIDTH = 900
 SCREEN_HEIGHT = 700
 DEFAULT_LINE_HEIGHT = 45
 DEFAULT_FONT_SIZE = 20
-
-
 
 # The menu class displays three possible button options that navigates you to their resepective views
 # This view is what is first displayed upon running main

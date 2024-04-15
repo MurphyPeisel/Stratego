@@ -1,10 +1,8 @@
 import arcade
-
-import gameboard
-from Piece import Piece
+from Piece import *
 from constants import *
 import game_settings
-import time
+import pass_turn
 import gameboard as Gameboard
 
 GRAVEYARD_1_LEFT = 5
@@ -66,10 +64,6 @@ def is_enemy(piece, player_turn):
         return True
     else:
         return False
-
-
-def draw(piece, playerTurn):
-    print("BRONGO")
         
 def add_highlight(army, index):
     if army == 1:
@@ -84,9 +78,6 @@ def add_highlight(army, index):
                   (yard_left+(YARD_MARGIN * (index-4*row)) + 40, (GRAVEYARD_TOP - YARD_MARGIN*row)-40),
                   (yard_left+(YARD_MARGIN * (index-4*row)) + 40, GRAVEYARD_TOP - YARD_MARGIN*row))
     arcade.draw_polygon_outline(point_list, arcade.color.GREEN, 4)
-
-    
-    
 
 
 def draw(piece, army):
@@ -134,7 +125,7 @@ def draw(piece, army):
         elif piece.getType() == "Bom":
             arcade.draw_text("B", BOARD_LEFT+YARD_MARGIN*x +16, GRID_TOP-YARD_MARGIN*down + 16, arcade.color.WHITE, 18, 1, "center", "Kenney Pixel Square Font", bold=True)
     else:
-        if army == Gameboard.Gameboard.player_turn and piece.getHidden() == True:
+        if army == pass_turn.Pass_Turn.player_turn and piece.getHidden() == True:
             if piece.getType() == "Flg":
                     arcade.draw_text("F", BOARD_LEFT+YARD_MARGIN*x +16, GRID_TOP-YARD_MARGIN*down + 16, arcade.color.WHITE, 18, 1, "center", "Kenney Blocks Font", bold=True)
             elif piece.getType() == "Msh":
@@ -219,22 +210,12 @@ def is_piece_scan(pieces, loc):
     for piece in pieces:
         piecex = piece.getPosition()[0]
         piecey = piece.getPosition()[1]
-        if x>=BOARD_LEFT + BOARD_MARGIN*piecex and x<=BOARD_RIGHT + BOARD_MARGIN*piecex and y<= BOARD_TOP + BOARD_MARGIN*piecey and y>= BOARD_BOTTOM + BOARD_MARGIN*piecey:
+        if (x>=BOARD_LEFT + BOARD_MARGIN*piecex and 
+            x<=BOARD_RIGHT + BOARD_MARGIN*piecex and 
+            y<= BOARD_TOP + BOARD_MARGIN*piecey and 
+            y>= BOARD_BOTTOM + BOARD_MARGIN*piecey):
             return True
     return False
-
-def select_yard_piece(piece, army, click, index):
-    yard_left = 0
-    if army == 1:
-        yard_left = GRAVEYARD_1_LEFT
-    else:
-        yard_left = GRAVEYARD_2_LEFT    
-    
-    row = index // 4
-
-    x, y = click
-    
-    
 
 def select_piece(piece, click, player_turn):
     """
@@ -246,15 +227,6 @@ def select_piece(piece, click, player_turn):
     """
     hold = piece.getPosition()
     coords = get_coordinates(click)
-    
-    
-    # x, y = click
-    # piece_x, piece_y = piece.getPosition()
-    # if (x >= BOARD_LEFT + BOARD_MARGIN * piece_x and 
-    #     x <= BOARD_RIGHT + BOARD_MARGIN * piece_x and
-    #     y <= BOARD_TOP + BOARD_MARGIN * piece_y and 
-    #     y >= BOARD_BOTTOM + BOARD_MARGIN * piece_y):
-    
     
     if (coords[0] == hold[0] and coords[1] == hold[1]):
         if piece.getType() == "Bom" or piece.getType() == "Flg" or piece.getType() == "Lke" or piece.getPlayer() != player_turn:
@@ -289,8 +261,8 @@ def show_available_placements(total_pieces, player):
                     x = x + 1
                 y = y + 1
         
-    
-def place_piece(piece, click,graveyard,army):
+# Board Setup: Determines if pieces are placed on the board or into the graveyard. Toggle Function  
+def place_piece(piece, click, graveyard, army):
     coords = get_coordinates(click)
     if is_piece_scan(army, click) == False:
         try:
@@ -305,7 +277,6 @@ def place_piece(piece, click,graveyard,army):
                 graveyard.append(piece)
                 army.remove(piece)
         
-    
 
 def show_available_moves(piece, total_pieces):
     """
@@ -434,7 +405,6 @@ def is_move_available(pieces, piece, click):
             if piece.getType() == "Sct":
                 # This checks to make sure that the user isn't attempting to move the piece diagonally
                 if loc_x != piece_loc_x and loc_y != piece_loc_y:
-                    print("invalid please try again")
                     return (False, None)
                 else:
                     # this converts the location of the piece from the game-board coordinates to the coordinates of the
@@ -537,15 +507,9 @@ def get_coordinates(click):
         loc_x = abs(x - GRID_LEFT) // CELL_WIDTH
         coordinates = (loc_x, loc_y)
         return coordinates
-    # click in left graveyard
-    # elif:
-    #     pass
-    # click in right graveyard
-    # elif:
-    #     pass
+    
     else:
-        return click        #Changed Return from none to click prevents errors and allows get coordinates to return coordinates if the value of click is already coordinates.
-                            #USEFUL FOR PLACING PIECES TO PRESET POSITIONS.
+        return click
 
     
 def move_to_graveyard(army, piece, graveyard):
@@ -554,7 +518,7 @@ def move_to_graveyard(army, piece, graveyard):
     army.remove(piece)
     graveyard.append(piece)
     print(f"{graveyard[0].getType()} moved to graveyard")
-    gameboard.Gameboard.selected = None
+    Gameboard.selected = None
     
 
 def move_piece(piece, click):
@@ -576,7 +540,7 @@ def combat(attacker, defender, click, graveyard1, graveyard2, army1, army2):
     sound = arcade.load_sound("Death.wav",False)
     
     """ 
-    Combat between two pieces. If the attacking piece 
+    Combat between two pieces. 
     :param attacker: Attacking piece
     :param defender: Defending piece
     :param click: Cursor click location (x, y)
@@ -595,7 +559,7 @@ def combat(attacker, defender, click, graveyard1, graveyard2, army1, army2):
         else:
             move_to_graveyard(army2, defender, graveyard2)
         move_piece(attacker, click)
-    
+
     # SPECIAL CASE: Non-miner attacks bomb
     elif defender.getType() == "Bom":
         print("Bomb explodes")
@@ -653,7 +617,7 @@ def combat(attacker, defender, click, graveyard1, graveyard2, army1, army2):
             move_to_graveyard(army1, attacker, graveyard1)
             move_to_graveyard(army2, defender, graveyard2)
             arcade.play_sound(sound, 4, 0)
-            time.sleep(.2)
+            #time.sleep(.2)
 
             arcade.play_sound(sound, 4, 0)
 
@@ -661,5 +625,5 @@ def combat(attacker, defender, click, graveyard1, graveyard2, army1, army2):
             move_to_graveyard(army1, defender, graveyard1)
             move_to_graveyard(army2, attacker, graveyard2)
             arcade.play_sound(sound, 4, 0)
-            time.sleep(.2)
+            #time.sleep(.2)
             arcade.play_sound(sound, 4, 0)
