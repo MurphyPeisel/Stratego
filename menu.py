@@ -38,6 +38,8 @@ class Menu(arcade.View):
             Menu.media_player.play()
             Menu.playing = True
 
+    
+
 
 
         start_x = 0
