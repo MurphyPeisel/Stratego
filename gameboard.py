@@ -75,6 +75,7 @@ class Gameboard(arcade.View):
         return self.is_menu
 
     def on_show_view(self):
+        Gameboard.player_turn = 1
         self.clear()
  
     # This method draws our assets including constructing a grid
@@ -383,7 +384,7 @@ class Gameboard(arcade.View):
             if Gameboard.game_state == "setup": 
                 x = Gameboard.hover[0]
                 y = Gameboard.hover[1]
-                if pass_turn.Pass_Turn.player_turn == 1:
+                if pass_turn.Pass_Turn.player_turn == PLAYER_ONE:
                     if x >= 200 and x <= 700 and y>=100 and y<=300:
                         draw_piece.place_piece(Gameboard.graveyard1[Gameboard.highlight_index], Gameboard.hover, Gameboard.graveyard1, Gameboard.army1)
                         place_sound = arcade.load_sound("Placed.wav",False)
