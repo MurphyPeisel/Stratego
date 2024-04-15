@@ -77,6 +77,7 @@ class Gameboard(arcade.View):
     def on_show_view(self):
         Gameboard.player_turn = 1
         self.clear()
+        Gameboard.player_turn = 1
  
     # This method draws our assets including constructing a grid
     def on_draw(self):
@@ -371,11 +372,15 @@ class Gameboard(arcade.View):
                                     for x in range (COLUMN_COUNT):
                                         draw_piece.place_piece(yard[0], (x,i), yard, army)
                     pass_turn.Pass_Turn.change_turn()
+                    place_sound = arcade.load_sound("Placed.wav",False)
+                    arcade.play_sound(place_sound, Gameboard.level, 0)
                 elif pass_turn.Pass_Turn.player_turn == 2 and Gameboard.AI == 0 and len(Gameboard.graveyard2) == NUM_PIECES:
                     for i in range(4):
                         for x in range(10):
                             draw_piece.place_piece(yard[0], (x,9-i), yard, army)
                     pass_turn.Pass_Turn.change_turn()
+                    place_sound = arcade.load_sound("Placed.wav",False)
+                    arcade.play_sound(place_sound, Gameboard.level, 0)
 
 
 

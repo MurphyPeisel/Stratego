@@ -30,9 +30,6 @@ default_style = {
 
 # Game Settings Creates a view that allows the user to select between 2 player and computer settings
 class Game_Settings(arcade.View):
-
-    mode = ""
-
     # This function Defines what the window will look like when called
     def on_show_view(self):
 
@@ -100,7 +97,6 @@ class Game_Settings(arcade.View):
                 sound_settings.Sound.level = .9
                 menu.Menu.sound.set_volume(.9, menu.Menu.media_player)
                 gameboard.Gameboard.sound.set_volume(.9, gameboard.Gameboard.media_player)
-
             else:
                 sound_settings.Sound.level = 1
                 menu.Menu.sound.set_volume(1, menu.Menu.media_player)
@@ -117,26 +113,21 @@ class Game_Settings(arcade.View):
                 anchor_y="center_y",
                 child=self.v_box)
         )
-        start_x = 450
-        start_y = 350 
-        arcade.draw_text("Volume",
-                         start_x,
-                         start_y,
-                         arcade.color.WHITE,
-                         DEFAULT_FONT_SIZE * 1.2,
-                         width=SCREEN_WIDTH,
-                         align="center",
-                         font_name="Kenney Future")
+       
 
-    # Opens computer settings
+    # These functions add the functionality to the three button options
+    # Takes user to Difficulty screen
     def on_click_bot(self, event):
-        mode = "comp"
+        #SET MODE TO PLAY AGAINST COMPUTER (FUTURE)
         self.manager.disable()
         self.window.show_view(Computer())
+        
     
     #Function called when play_buton is clicked
+    #Takes user to Gameplay screen
     def on_click_play(self, event):
-        mode = "2play"
+        #SET MODE TO PASS AND PLAY (FUTURE)
+        
         self.manager.disable()
         self.window.show_view(Players2())
 
@@ -219,6 +210,7 @@ class Computer(arcade.View):
                 Computer.vision = " * Hide Pieces *"
                 Computer.sight = False  
 
+    #Called when easy_button is clicked
     def on_click_start(self, event):
         if Computer.vision != " -Toggle Seeing Defender Pieces-":
             if Computer.difficulty == "Hard":
@@ -232,10 +224,18 @@ class Computer(arcade.View):
                 gameboard.Gameboard.set_visibility(gameboard, True)
             else:
                 gameboard.Gameboard.set_visibility(gameboard, False)
-
+            #Stop playing sound from menu
+            if menu.Menu.sound.is_playing(menu.Menu.media_player) or menu.Menu.playing == True:
+                menu.Menu.sound.stop(menu.Menu.media_player)
+                menu.Menu.playing = False
+            if menu.Menu.sound.is_playing(menu.Menu.media_player) or menu.Menu.playing == True:
+                menu.Menu.sound.stop(menu.Menu.media_player)
+                menu.Menu.playing = False
             self.window.show_view(gameboard.Gameboard())
             gameboard.Gameboard.set_is_menu(gameboard.Gameboard, False)
 
+
+    #On draw will create all of our assets onto the screen
     def on_draw(self):
         self.clear()
         arcade.start_render()
@@ -300,7 +300,7 @@ class Players2(arcade.View):
         )
 
     def on_mouse_press(self, x, y, button, key_modifiers):
-        if x>=310 and x<=590 and y<= 380 and y>= 332:
+        if x>=288 and x<=628 and y<= 324 and y>= 270:
             if Computer.sight == False:
                 Computer.vision = " o Show Pieces o"
                 Computer.sight = True  
@@ -315,7 +315,10 @@ class Players2(arcade.View):
                 gameboard.Gameboard.set_visibility(gameboard, True)
             else:
                 gameboard.Gameboard.set_visibility(gameboard, False)
-
+            #stop playing sound from menu
+            if menu.Menu.sound.is_playing(menu.Menu.media_player) or menu.Menu.playing == True:
+                menu.Menu.sound.stop(menu.Menu.media_player)
+                menu.Menu.playing = False
             self.window.show_view(gameboard.Gameboard())
             gameboard.Gameboard.set_is_menu(gameboard.Gameboard, False)
    
@@ -329,6 +332,8 @@ class Players2(arcade.View):
         self.manager.draw()
         start_x = 0
         start_y = SCREEN_HEIGHT - DEFAULT_LINE_HEIGHT * 1.5
+        #img = arcade.load_texture('SettingsMenu.png')
+        #arcade.draw_texture_rectangle (SCREEN_WIDTH*.5, SCREEN_HEIGHT*.5, SCREEN_WIDTH, SCREEN_HEIGHT, img) 
         arcade.draw_text(" Game Settings",
                          start_x,
                          start_y - (SCREEN_HEIGHT * .265),
@@ -339,7 +344,7 @@ class Players2(arcade.View):
                          font_name="Kenney Future")
         arcade.draw_text(" " + Computer.vision, 
                          start_x,
-                         start_y - (SCREEN_HEIGHT * .4),
+                         start_y - (SCREEN_HEIGHT * .49),
                          arcade.color.WHITE,
                          DEFAULT_FONT_SIZE * .7,
                          width=SCREEN_WIDTH,
